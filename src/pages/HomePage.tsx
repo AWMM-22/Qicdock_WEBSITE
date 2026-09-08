@@ -609,12 +609,11 @@ export default function HomePage() {
 
             {/* Card 2: Car Pack */}
             <div className="bg-[#121212] border border-[#262626] rounded-2xl md:rounded-3xl p-3 md:p-5 lg:p-6 flex flex-col relative overflow-hidden group hover:border-[#444] transition-all hover:-translate-y-1">
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-2 md:mb-4 mt-6 md:mt-[30px]">
-                  <div>
-                    <h3 className="text-sm md:text-2xl font-bold text-white mb-0.5 group-hover:text-[#04D9FF] transition-colors line-clamp-2 md:line-clamp-none leading-snug">Complete Car Drive Pack</h3>
-                    <p className="text-[#E2E8F0] text-[9px] md:text-xs font-medium tracking-wide">Front & Backseat Charging</p>
-                  </div>
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="mb-2 md:mb-4">
+                  <h3 className="text-sm md:text-2xl font-bold text-white mb-0.5 group-hover:text-[#04D9FF] transition-colors line-clamp-2 md:line-clamp-none leading-snug">Front & Rear Vehicle Charging</h3>
+                  <p className="text-[#04D9FF] text-[9px] md:text-xs font-bold uppercase tracking-wider mb-1">Car Combo</p>
+                  <p className="text-[#E2E8F0] text-[9px] md:text-xs font-medium tracking-wide leading-relaxed">All-in-one car charger bundle designed for front and rear passengers. Keep your phone locked in place over speed bumps, potholes, and sharp corners while delivering 15W fast charging.</p>
                 </div>
 
                 <div className="h-24 md:h-44 w-full bg-[#050505] rounded-xl md:rounded-2xl border border-[#262626] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-2 md:p-4 relative">

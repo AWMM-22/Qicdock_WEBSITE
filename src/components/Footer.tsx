@@ -41,20 +41,6 @@ export default function Footer() {
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
               High-output 15W Qi2 wireless charging solutions precision-tailored for modern automobile cabins, home workstations, and bedside spaces.
             </p>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <button 
-                onClick={handleFindYourCar}
-                className="bg-[#04D9FF] hover:bg-[#3bf0ff] text-black font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all shadow-[0_0_15px_rgba(4,217,255,0.3)] cursor-pointer"
-              >
-                Find Your Car
-              </button>
-              <button 
-                onClick={handleShopUniversal}
-                className="bg-[#1a1a1a] hover:bg-[#262626] text-white border border-[#333] hover:border-[#04D9FF] font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all cursor-pointer"
-              >
-                Shop Universal
-              </button>
-            </div>
           </div>
 
           <div className="w-full lg:w-auto flex-1 max-w-md">
