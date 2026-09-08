@@ -1,20 +1,60 @@
 import { ArrowRight, Facebook, Twitter, Instagram, Youtube, Linkedin, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import type { MouseEvent } from 'react';
+import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.jpg';
 
 export default function Footer() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleFindYourCar = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (location.pathname !== '/') {
+      navigate('/#compatibility');
+    } else {
+      const el = document.getElementById('compatibility');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
+  const handleShopUniversal = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    navigate('/categories');
+  };
+
   return (
     <footer className="bg-[#050505] pt-14 pb-24 md:pb-12 px-4 sm:px-6 lg:px-10 border-t border-[#1a1a1a] text-white">
       <div className="max-w-[1400px] mx-auto">
         
         {/* Top Brand & Newsletter (Desktop & Mobile) */}
         <div className="mb-10 pb-10 border-b border-[#1f1f1f] flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-          <div className="max-w-md space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-['Anton'] tracking-wider text-white uppercase">
-              QIC<span className="text-[#04D9FF]">DOCK</span>
-            </h2>
+          <div className="max-w-md space-y-4">
+            <Link to="/" className="inline-block">
+              <img 
+                src={brandLogo} 
+                alt="QicDock" 
+                className="h-10 sm:h-12 w-auto object-contain rounded-lg border border-[#04D9FF]/30 shadow-[0_0_15px_rgba(4,217,255,0.2)]" 
+              />
+            </Link>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
               High-output 15W Qi2 wireless charging solutions precision-tailored for modern automobile cabins, home workstations, and bedside spaces.
             </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <button 
+                onClick={handleFindYourCar}
+                className="bg-[#04D9FF] hover:bg-[#3bf0ff] text-black font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all shadow-[0_0_15px_rgba(4,217,255,0.3)] cursor-pointer"
+              >
+                Find Your Car
+              </button>
+              <button 
+                onClick={handleShopUniversal}
+                className="bg-[#1a1a1a] hover:bg-[#262626] text-white border border-[#333] hover:border-[#04D9FF] font-bold text-xs uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all cursor-pointer"
+              >
+                Shop Universal
+              </button>
+            </div>
           </div>
 
           <div className="w-full lg:w-auto flex-1 max-w-md">
@@ -38,7 +78,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Let's Get Social Section (Directly formatted like the screenshot) */}
+        {/* Let's Get Social Section */}
         <div className="pt-8 pb-6 text-center border-t border-[#1a1a1a]">
           <h4 className="text-sm sm:text-base font-medium text-gray-300 mb-4 tracking-wide">
             Let's get social
@@ -91,15 +131,15 @@ export default function Footer() {
             </a>
           </div>
 
-          {/* Horizontal Policies Row with separator dots (matching user's screenshot) */}
+          {/* Horizontal Policies Row */}
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-gray-400 mb-4 px-4">
-            <Link to="/#faq" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/about" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span className="text-gray-400 select-none">•</span>
-            <Link to="/#faq" className="hover:text-white transition-colors">Terms of Use</Link>
+            <Link to="/about" className="hover:text-white transition-colors">Terms of Use</Link>
             <span className="text-gray-400 select-none">•</span>
-            <Link to="/#faq" className="hover:text-white transition-colors">Warranty Policy</Link>
+            <Link to="/about" className="hover:text-white transition-colors">Warranty Policy</Link>
             <span className="text-gray-400 select-none">•</span>
-            <Link to="/#faq" className="hover:text-white transition-colors">D2D Replacement Service Policy</Link>
+            <Link to="/about" className="hover:text-white transition-colors">D2D Replacement Service Policy</Link>
           </div>
 
           {/* Copyright notice */}

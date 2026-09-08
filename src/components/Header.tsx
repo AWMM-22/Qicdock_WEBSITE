@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, User, ShoppingBag, Menu, X, ChevronRight, Zap, Shield, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.jpg';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,11 +32,13 @@ export default function Header() {
           <Link 
             to="/" 
             onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center gap-1.5 text-xl sm:text-2xl font-bold tracking-widest text-white uppercase group"
+            className="flex items-center gap-2 group"
           >
-            <span>QIC</span>
-            <span className="text-[#04D9FF] group-hover:text-white transition-colors">DOCK</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#04D9FF] animate-pulse"></span>
+            <img 
+              src={brandLogo} 
+              alt="QicDock" 
+              className="h-9 sm:h-11 w-auto object-contain rounded-lg border border-[#04D9FF]/30 shadow-[0_0_15px_rgba(4,217,255,0.2)]" 
+            />
           </Link>
         </div>
 

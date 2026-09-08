@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
@@ -7,48 +7,133 @@ import leftMountImg from '../assets/images/m1.png';
 import rightMountImg from '../assets/images/m3.png';
 import combinedImg from '../assets/images/3in1 copy.png';
 
-const vehicleProducts = [
-  {
-    id: 1,
-    title: "QICDOCK Creta OEM-Fit Wireless Console Charger",
-    desc: "Factory-style precision molded charging dock for Hyundai Creta & Alcazar",
-    price: "₹3,499",
-    oldPrice: "₹4,299",
-    speed: "15W Ultra Fast Charge",
-    rating: "4.9",
-    reviews: "184",
-    installedIn: "CRETA"
-  },
-  {
-    id: 2,
-    title: "QICDOCK Universal MagCharge Pro Console Pad",
-    desc: "Slim magnetic wireless charging pad designed for any vehicle center console",
-    price: "₹2,499",
-    oldPrice: "₹2,999",
-    speed: "15W Fast Charge",
-    rating: "4.8",
-    reviews: "342",
-    installedIn: "CRETA"
-  },
-  {
-    id: 3,
-    title: "QICDOCK Custom Bespoke Vehicle Dock Solution",
-    desc: "Custom 3D-scanned & CAD engineered dock built for YOUR specific car dashboard",
-    price: "₹5,499",
-    oldPrice: "₹6,499",
-    speed: "15W / 20W Fast Charge",
-    rating: "5",
-    reviews: "94",
-    installedIn: "CRETA"
-  }
-];
+const carModelsData: Record<string, { id: number; title: string; desc: string; price: string; oldPrice: string; speed: string; rating: string; reviews: string; installedIn: string }[]> = {
+  "Universal": [
+    {
+      id: 1,
+      title: "Universal Car Charging Pad",
+      desc: "Universal 15W Qi2 fast wireless charging pad with secure dashboard & console grip",
+      price: "₹2,499",
+      oldPrice: "₹2,999",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.8",
+      reviews: "342",
+      installedIn: "UNIVERSAL"
+    },
+    {
+      id: 2,
+      title: "Universal MagCharge Console Mount",
+      desc: "Adjustable magnetic arm mount for all standard automotive consoles and air vents",
+      price: "₹2,799",
+      oldPrice: "₹3,499",
+      speed: "15W Fast Charge",
+      rating: "4.9",
+      reviews: "215",
+      installedIn: "UNIVERSAL"
+    }
+  ],
+  "Fronx": [
+    {
+      id: 1,
+      title: "Fronx Car Charger",
+      desc: "Custom-molded 15W Qi2 wireless charging pad engineered specifically for Maruti Suzuki Fronx",
+      price: "₹3,299",
+      oldPrice: "₹3,999",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.9",
+      reviews: "180",
+      installedIn: "FRONX"
+    }
+  ],
+  "Baleno": [
+    {
+      id: 1,
+      title: "Baleno Car Charger",
+      desc: "Precision fit 15W magnetic wireless charging dock seamlessly integrated into Baleno console",
+      price: "₹3,299",
+      oldPrice: "₹3,999",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.8",
+      reviews: "196",
+      installedIn: "BALENO"
+    }
+  ],
+  "Glanza": [
+    {
+      id: 1,
+      title: "Glanza Car Charger",
+      desc: "Custom-fit wireless charging tray engineered for Toyota Glanza center console",
+      price: "₹3,299",
+      oldPrice: "₹3,999",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.9",
+      reviews: "142",
+      installedIn: "GLANZA"
+    }
+  ],
+  "Taisor": [
+    {
+      id: 1,
+      title: "Taisor Car Charger",
+      desc: "OEM-fit wireless fast charging pad designed exclusively for Toyota Urban Cruiser Taisor",
+      price: "₹3,399",
+      oldPrice: "₹4,099",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.9",
+      reviews: "118",
+      installedIn: "TAISOR"
+    }
+  ],
+  "Ertiga": [
+    {
+      id: 1,
+      title: "Ertiga Car Charger",
+      desc: "Multi-device 15W fast wireless charging console integration for Maruti Suzuki Ertiga",
+      price: "₹3,599",
+      oldPrice: "₹4,299",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.7",
+      reviews: "230",
+      installedIn: "ERTIGA"
+    }
+  ],
+  "Swift": [
+    {
+      id: 1,
+      title: "Swift Car Charger",
+      desc: "Precision molded 15W magnetic fast charging pad tailored for Swift dashboard console",
+      price: "₹3,199",
+      oldPrice: "₹3,899",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.9",
+      reviews: "310",
+      installedIn: "SWIFT"
+    }
+  ],
+  "Swift Dzire": [
+    {
+      id: 1,
+      title: "Swift Dzire Car Charger",
+      desc: "Custom-contoured 15W wireless charging dock designed precisely for Swift Dzire console",
+      price: "₹3,299",
+      oldPrice: "₹3,999",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.9",
+      reviews: "285",
+      installedIn: "SWIFT DZIRE"
+    }
+  ]
+};
 
 export default function HomePage() {
+  const [selectedMake, setSelectedMake] = useState('Maruti Suzuki & Toyota / Universal');
+  const [selectedModel, setSelectedModel] = useState('Fronx');
+
+  const availableModels = ['Universal', 'Fronx', 'Baleno', 'Glanza', 'Taisor', 'Ertiga', 'Swift', 'Swift Dzire'];
+  const currentProducts = carModelsData[selectedModel] || carModelsData['Universal'];
+
   return (
     <>
-      {/* Navigation Bar */}
-      
-
       {/* Hero Section */}
       <main className="flex-1 relative flex flex-col justify-center items-center overflow-hidden pb-16 md:pb-32 pt-6 md:pt-8">
         
@@ -110,7 +195,7 @@ export default function HomePage() {
                 to="/categories"
                 className="bg-[#04D9FF] hover:bg-[#3bf0ff] text-black font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full shadow-[0_0_20px_rgba(4,217,255,0.4)] transition-all active:scale-95"
               >
-                Explore Modules
+                Explore Categories
               </Link>
             </div>
           </div>
@@ -343,18 +428,28 @@ export default function HomePage() {
           <div className="bg-[#0c0c0c] rounded-2xl border border-[#222] p-4 md:p-6 mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div className="w-full space-y-2">
               <label className="text-[10px] font-bold text-gray-400 tracking-wider uppercase px-1">1. Select Make</label>
-              <select className="w-full bg-[#080808] border border-[#333] text-white text-sm rounded-xl px-4 py-3.5 outline-none focus:border-[#04D9FF] appearance-none cursor-pointer">
-                <option>Hyundai</option>
+              <select 
+                value={selectedMake}
+                onChange={(e) => setSelectedMake(e.target.value)}
+                className="w-full bg-[#080808] border border-[#333] text-white text-sm rounded-xl px-4 py-3.5 outline-none focus:border-[#04D9FF] appearance-none cursor-pointer"
+              >
+                <option value="Maruti Suzuki & Toyota / Universal">Maruti Suzuki & Toyota / Universal</option>
               </select>
             </div>
             <div className="w-full space-y-2">
               <label className="text-[10px] font-bold text-gray-400 tracking-wider uppercase px-1">2. Select Model</label>
-              <select className="w-full bg-[#080808] border border-[#333] text-white text-sm rounded-xl px-4 py-3.5 outline-none focus:border-[#04D9FF] appearance-none cursor-pointer">
-                <option>Select Model...</option>
+              <select 
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                className="w-full bg-[#080808] border border-[#333] text-white text-sm rounded-xl px-4 py-3.5 outline-none focus:border-[#04D9FF] appearance-none cursor-pointer"
+              >
+                {availableModels.map(model => (
+                  <option key={model} value={model}>{model}</option>
+                ))}
               </select>
             </div>
             <div className="w-full pt-2 md:pt-0">
-              <button className="w-full bg-[#04D9FF] hover:bg-white text-black px-6 py-3.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors">
+              <button className="w-full bg-[#04D9FF] hover:bg-white text-black px-6 py-3.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors cursor-pointer">
                 Show Fit Results &gt;
               </button>
             </div>
@@ -368,18 +463,21 @@ export default function HomePage() {
               </div>
               <div>
                 <div className="text-[#04D9FF] text-[10px] font-bold tracking-widest uppercase mb-0.5">100% Fit Guarantee Confirmed</div>
-                <div className="text-white text-sm md:text-base font-medium">Compatible chargers for <span className="text-[#04D9FF]">2025 HYUNDAI CRETA</span></div>
+                <div className="text-white text-sm md:text-base font-medium">Compatible chargers for <span className="text-[#04D9FF]">2025 {selectedModel.toUpperCase()}</span></div>
               </div>
             </div>
-            <button className="flex items-center gap-2 text-gray-400 hover:text-white border border-[#1E293B] hover:border-gray-500 bg-[#121824] px-4 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase transition-all shrink-0">
+            <button 
+              onClick={() => setSelectedModel('Universal')}
+              className="flex items-center gap-2 text-gray-400 hover:text-white border border-[#1E293B] hover:border-gray-500 bg-[#121824] px-4 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase transition-all shrink-0 cursor-pointer"
+            >
               <RefreshCw className="w-3 h-3" />
-              Clear Vehicle
+              Reset
             </button>
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-            {vehicleProducts.map(product => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+            {currentProducts.map(product => (
               <div key={product.id} className="bg-[#121824] border border-[#1E293B] rounded-2xl overflow-hidden flex flex-col group hover:border-[#04D9FF]/50 transition-colors">
                 {/* Image Area */}
                 <div className="w-full aspect-[16/10] bg-[#0a0d14] relative overflow-hidden">
@@ -418,12 +516,12 @@ export default function HomePage() {
                   
                   {/* Buttons */}
                   <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-auto">
-                    <button className="flex-1 flex items-center justify-center gap-1 md:gap-2 bg-[#1E293B]/50 hover:bg-[#1E293B] border border-[#2D3748] text-gray-300 hover:text-white px-2 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-bold tracking-widest uppercase transition-colors">
+                    <Link to="/category/vehicle-specific" className="flex-1 flex items-center justify-center gap-1 md:gap-2 bg-[#1E293B]/50 hover:bg-[#1E293B] border border-[#2D3748] text-gray-300 hover:text-white px-2 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-bold tracking-widest uppercase transition-colors">
                       <Eye className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" /> <span className="hidden sm:inline">View Product</span><span className="sm:hidden">View</span>
-                    </button>
-                    <button className="flex-1 sm:flex-none flex items-center justify-center gap-1 md:gap-2 bg-[#04D9FF] hover:bg-[#03b8d9] text-[#0a0d14] px-2 py-2 md:px-5 md:py-2.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-bold tracking-widest uppercase transition-colors shadow-[0_0_15px_rgba(4,217,255,0.3)]">
+                    </Link>
+                    <Link to="/cart" className="flex-1 sm:flex-none flex items-center justify-center gap-1 md:gap-2 bg-[#04D9FF] hover:bg-[#03b8d9] text-[#0a0d14] px-2 py-2 md:px-5 md:py-2.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-bold tracking-widest uppercase transition-colors shadow-[0_0_15px_rgba(4,217,255,0.3)]">
                       <ShoppingBag className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" /> Add
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

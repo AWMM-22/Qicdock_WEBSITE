@@ -149,13 +149,13 @@ export default function CategoriesPage() {
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-[#1a1a1a] mt-auto">
+                <div className="pt-4 border-t border-[#1a1a1a] mt-auto flex flex-col gap-3">
                   <div>
                     <span className="text-[11px] text-gray-400 uppercase tracking-wider block">Starting at</span>
                     <span className="text-lg font-bold text-white tracking-wide">{cat.price}</span>
                   </div>
-                  <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#04D9FF] group-hover:translate-x-1 transition-transform">
-                    Configure <ArrowRight className="w-4 h-4" />
+                  <span className="w-full text-center py-2.5 px-4 rounded-xl bg-[#04D9FF] hover:bg-[#3bf0ff] text-black font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(4,217,255,0.3)]">
+                    Explore
                   </span>
                 </div>
               </div>
