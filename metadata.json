@@ -1,0 +1,6 @@
+{
+  "name": "QicDock",
+  "description": "Modular Wireless Charging Solutions for Automotive, Home & Office",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
