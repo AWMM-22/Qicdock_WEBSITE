@@ -13,6 +13,7 @@ import VehicleSpecific from './pages/VehicleSpecific';
 import StandAloneMounts from './pages/StandAloneMounts';
 import CartPage from './pages/CartPage';
 import AboutPage from './pages/AboutPage';
+import SupportPage from './pages/SupportPage';
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -47,6 +48,7 @@ export default function App() {
             <Route path="/category/vehicle-specific" element={<VehicleSpecific />} />
             <Route path="/category/stand-alone" element={<StandAloneMounts />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/support" element={<SupportPage />} />
           </Routes>
         </main>
         <Footer />

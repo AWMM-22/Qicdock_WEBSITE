@@ -134,8 +134,11 @@ export default function Footer() {
           </p>
 
           {/* Company address block */}
-          <p className="text-[10px] sm:text-[11px] text-gray-400 max-w-2xl mx-auto leading-relaxed px-4">
+          <p className="text-[10px] sm:text-[11px] text-gray-400 max-w-2xl mx-auto leading-relaxed px-4 mb-2">
             For queries contact us: QICDOCK Automotive Labs, Unit no. 204 & 205, 2nd Floor, Signature Park, Electronic City, Bengaluru, Karnataka-560100, India
+          </p>
+          <p className="text-[11px] sm:text-xs text-gray-400 font-medium">
+            Support: <a href="mailto:support@qicdock.com" className="text-[#04D9FF] hover:text-white transition-colors">support@qicdock.com</a>
           </p>
         </div>
 

@@ -3,26 +3,33 @@ import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Search, Car, Che
 import { Link } from 'react-router-dom';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
+import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
+import ertigaImg from '../assets/images/Ertiga.png';
+import swiftDzireImg from '../assets/images/Dzire and Swift.png';
+import universalPadImg from '../assets/images/Universal_.png';
+import threeXoImg from '../assets/images/3XO.png';
 
 interface CarModel {
   id: string;
   name: string;
-  brand: 'Maruti Suzuki' | 'Toyota' | 'Hyundai' | 'Universal';
+  brand: 'Maruti Suzuki' | 'Toyota' | 'Hyundai' | 'Mahindra' | 'Universal';
   years: string;
   slot: string;
   price: number;
   badge: string;
+  image: string;
 }
 
 const vehicleModels: CarModel[] = [
-  { id: 'fronx', name: 'Maruti Suzuki Fronx', brand: 'Maruti Suzuki', years: '2023 - 2025', slot: 'Center Console Tray', price: 2098, badge: 'Best Seller' },
-  { id: 'baleno', name: 'Maruti Suzuki Baleno', brand: 'Maruti Suzuki', years: '2022 - 2025', slot: 'Cup Holder & Storage Cavity', price: 2098, badge: 'Direct OEM Fit' },
-  { id: 'taisor', name: 'Toyota Urban Cruiser Taisor', brand: 'Toyota', years: '2024 - 2025', slot: 'Under-Dashboard Console Tray', price: 2098, badge: 'New Release' },
-  { id: 'glanza', name: 'Toyota Glanza', brand: 'Toyota', years: '2022 - 2025', slot: 'Gear Lever Lower Storage', price: 2098, badge: 'Direct OEM Fit' },
-  { id: 'ertiga', name: 'Maruti Suzuki Ertiga', brand: 'Maruti Suzuki', years: '2019 - 2025', slot: 'Center Console Cooled Cup Space', price: 2098, badge: 'High Demand' },
-  { id: 'swift-2024', name: 'Maruti Suzuki Swift (4th Gen)', brand: 'Maruti Suzuki', years: '2024 - 2025', slot: 'Dedicated Wireless Tray', price: 2098, badge: 'Latest Gen' },
-  { id: 'dzire', name: 'Maruti Suzuki Swift Dzire', brand: 'Maruti Suzuki', years: '2020 - 2025', slot: 'Center Console Lower Pocket', price: 2098, badge: 'Direct OEM Fit' },
-  { id: 'universal', name: 'Universal Automotive Charging Pad', brand: 'Universal', years: 'All Models', slot: 'Flat Dash & Console Surfaces', price: 2098, badge: 'Universal Fit' },
+  { id: '3xo', name: 'Mahindra XUV 3XO', brand: 'Mahindra', years: '2024 - 2025', slot: 'Center Console Tray', price: 2098, badge: 'New Arrival', image: threeXoImg },
+  { id: 'fronx', name: 'Maruti Suzuki Fronx', brand: 'Maruti Suzuki', years: '2023 - 2025', slot: 'Center Console Tray', price: 2098, badge: 'Best Seller', image: fronxEtcImg },
+  { id: 'baleno', name: 'Maruti Suzuki Baleno', brand: 'Maruti Suzuki', years: '2022 - 2025', slot: 'Cup Holder & Storage Cavity', price: 2098, badge: 'Direct OEM Fit', image: fronxEtcImg },
+  { id: 'taisor', name: 'Toyota Urban Cruiser Taisor', brand: 'Toyota', years: '2024 - 2025', slot: 'Under-Dashboard Console Tray', price: 2098, badge: 'New Release', image: fronxEtcImg },
+  { id: 'glanza', name: 'Toyota Glanza', brand: 'Toyota', years: '2022 - 2025', slot: 'Gear Lever Lower Storage', price: 2098, badge: 'Direct OEM Fit', image: fronxEtcImg },
+  { id: 'ertiga', name: 'Maruti Suzuki Ertiga', brand: 'Maruti Suzuki', years: '2019 - 2025', slot: 'Center Console Cooled Cup Space', price: 2098, badge: 'High Demand', image: ertigaImg },
+  { id: 'swift-2024', name: 'Maruti Suzuki Swift (4th Gen)', brand: 'Maruti Suzuki', years: '2024 - 2025', slot: 'Dedicated Wireless Tray', price: 2098, badge: 'Latest Gen', image: swiftDzireImg },
+  { id: 'dzire', name: 'Maruti Suzuki Swift Dzire', brand: 'Maruti Suzuki', years: '2020 - 2025', slot: 'Center Console Lower Pocket', price: 2098, badge: 'Direct OEM Fit', image: swiftDzireImg },
+  { id: 'universal', name: 'Universal Automotive Charging Pad', brand: 'Universal', years: 'All Models', slot: 'Flat Dash & Console Surfaces', price: 2098, badge: 'Universal Fit', image: universalPadImg },
 ];
 
 export default function VehicleSpecific() {
@@ -30,7 +37,7 @@ export default function VehicleSpecific() {
   const [searchQuery, setSearchQuery] = useState('');
   const [addedItems, setAddedItems] = useState<{ [key: string]: boolean }>({});
 
-  const brands = ['All', 'Maruti Suzuki', 'Toyota', 'Universal'];
+  const brands = ['All', 'Maruti Suzuki', 'Toyota', 'Mahindra', 'Universal'];
 
   const filteredVehicles = vehicleModels.filter(v => {
     const matchesBrand = selectedBrand === 'All' || v.brand === selectedBrand;
@@ -145,7 +152,7 @@ export default function VehicleSpecific() {
                     {/* Image Stage */}
                     <div className="h-44 bg-[#080808] rounded-xl border border-[#1a1a1a] p-4 flex items-center justify-center mb-5 overflow-hidden">
                       <img
-                        src={vehicle.id === 'fronx' || vehicle.id === 'baleno' ? centerMountTransparentImg : centerMountImg}
+                        src={vehicle.image}
                         alt={vehicle.name}
                         className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]"
                       />
@@ -208,12 +215,12 @@ export default function VehicleSpecific() {
               We produce custom bespoke 3D-scanned docks for luxury and performance cars upon request. Send us your console photo and our engineering team will fabricate your custom dock.
             </p>
           </div>
-          <Link
-            to="/#compatibility"
+          <a
+            href="mailto:support@qicdock.com?subject=Custom%20Dock%20Request"
             className="whitespace-nowrap px-6 py-3.5 rounded-xl bg-[#04D9FF] hover:bg-white text-[#080808] font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(4,217,255,0.3)]"
           >
             Request Custom Fit Dock
-          </Link>
+          </a>
         </div>
 
       </div>

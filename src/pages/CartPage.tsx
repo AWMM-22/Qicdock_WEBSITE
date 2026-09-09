@@ -105,30 +105,30 @@ export default function CartPage() {
             {/* Left Col: Cart Items */}
             <div className="w-full lg:flex-1 space-y-4 md:space-y-6">
               {cartItems.map((item) => (
-                <div key={item.id} className="bg-[#121212] border border-[#262626] rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 md:gap-6 relative group hover:border-[#444] transition-colors">
+                <div key={item.id} className="bg-[#121212] border border-[#262626] rounded-2xl md:rounded-3xl p-3 sm:p-4 md:p-6 flex flex-row items-start sm:items-center gap-3 sm:gap-4 md:gap-6 relative group hover:border-[#444] transition-colors">
                   
                   {/* Remove btn (Mobile absolute, desktop standard) */}
                   <button 
                     onClick={() => handleRemove(item.id)}
-                    className="absolute top-4 right-4 sm:static sm:order-last w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-500 transition-colors"
+                    className="absolute top-3 right-3 sm:static sm:order-last w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-500 transition-colors z-10"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
 
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 bg-[#050505] rounded-xl border border-[#333] flex items-center justify-center overflow-hidden shrink-0">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-[#050505] rounded-xl border border-[#333] flex items-center justify-center overflow-hidden shrink-0">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform" />
                   </div>
 
-                  <div className="flex-1 w-full">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-4">
-                      <div>
-                        <h3 className="text-lg md:text-xl font-bold text-white mb-1 leading-tight pr-8 sm:pr-0">{item.name}</h3>
-                        <p className="text-xs md:text-sm text-[#04D9FF] font-medium">{item.variant}</p>
+                  <div className="flex-1 w-full min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 sm:gap-2 mb-2 sm:mb-4">
+                      <div className="pr-6 sm:pr-0">
+                        <h3 className="text-sm sm:text-lg md:text-xl font-bold text-white mb-0.5 sm:mb-1 leading-tight truncate sm:whitespace-normal">{item.name}</h3>
+                        <p className="text-[10px] sm:text-xs md:text-sm text-[#04D9FF] font-medium truncate sm:whitespace-normal">{item.variant}</p>
                       </div>
-                      <div className="text-left sm:text-right">
-                        <div className="text-xl md:text-2xl font-['Anton'] tracking-wide">₹{(item.price * item.quantity).toLocaleString()}</div>
+                      <div className="text-left sm:text-right mt-1 sm:mt-0">
+                        <div className="text-base sm:text-xl md:text-2xl font-['Anton'] tracking-wide leading-none">₹{(item.price * item.quantity).toLocaleString()}</div>
                         {item.originalPrice > item.price && (
-                          <div className="text-xs text-gray-500 line-through">₹{(item.originalPrice * item.quantity).toLocaleString()}</div>
+                          <div className="text-[9px] sm:text-xs text-gray-500 line-through mt-0.5">₹{(item.originalPrice * item.quantity).toLocaleString()}</div>
                         )}
                       </div>
                     </div>

@@ -6,8 +6,14 @@ import centerMountTransparentImg from '../assets/images/center-mount-transparent
 import leftMountImg from '../assets/images/m1.png';
 import rightMountImg from '../assets/images/m3.png';
 import combinedImg from '../assets/images/3in1 copy.png';
+import universalPadImg from '../assets/images/Universal_.png';
+import universalMountImg from '../assets/images/Compact_.png';
+import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
+import ertigaImg from '../assets/images/Ertiga.png';
+import swiftDzireImg from '../assets/images/Dzire and Swift.png';
+import threeXoImg from '../assets/images/3XO.png';
 
-const carModelsData: Record<string, { id: number; title: string; desc: string; price: string; oldPrice: string; speed: string; rating: string; reviews: string; installedIn: string }[]> = {
+const carModelsData: Record<string, { id: number; title: string; desc: string; price: string; oldPrice: string; speed: string; rating: string; reviews: string; installedIn: string; image: string }[]> = {
   "Universal": [
     {
       id: 1,
@@ -18,7 +24,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.8",
       reviews: "342",
-      installedIn: "UNIVERSAL"
+      installedIn: "UNIVERSAL",
+      image: universalPadImg
     },
     {
       id: 2,
@@ -29,7 +36,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Fast Charge",
       rating: "4.9",
       reviews: "215",
-      installedIn: "UNIVERSAL"
+      installedIn: "UNIVERSAL",
+      image: universalMountImg
     }
   ],
   "Fronx": [
@@ -42,7 +50,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.9",
       reviews: "180",
-      installedIn: "FRONX"
+      installedIn: "FRONX",
+      image: fronxEtcImg
     }
   ],
   "Baleno": [
@@ -55,7 +64,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.8",
       reviews: "196",
-      installedIn: "BALENO"
+      installedIn: "BALENO",
+      image: fronxEtcImg
     }
   ],
   "Glanza": [
@@ -68,7 +78,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.9",
       reviews: "142",
-      installedIn: "GLANZA"
+      installedIn: "GLANZA",
+      image: fronxEtcImg
     }
   ],
   "Taisor": [
@@ -81,7 +92,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.9",
       reviews: "118",
-      installedIn: "TAISOR"
+      installedIn: "TAISOR",
+      image: fronxEtcImg
     }
   ],
   "Ertiga": [
@@ -94,7 +106,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.7",
       reviews: "230",
-      installedIn: "ERTIGA"
+      installedIn: "ERTIGA",
+      image: ertigaImg
     }
   ],
   "Swift": [
@@ -107,7 +120,8 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.9",
       reviews: "310",
-      installedIn: "SWIFT"
+      installedIn: "SWIFT",
+      image: swiftDzireImg
     }
   ],
   "Swift Dzire": [
@@ -120,7 +134,22 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
       speed: "15W Qi2 Fast Charge",
       rating: "4.9",
       reviews: "285",
-      installedIn: "SWIFT DZIRE"
+      installedIn: "SWIFT DZIRE",
+      image: swiftDzireImg
+    }
+  ],
+  "3XO": [
+    {
+      id: 1,
+      title: "Mahindra 3XO Car Charger",
+      desc: "Precision-molded wireless charging center console tray designed for Mahindra XUV 3XO",
+      price: "₹3,499",
+      oldPrice: "₹4,199",
+      speed: "15W Qi2 Fast Charge",
+      rating: "4.8",
+      reviews: "112",
+      installedIn: "3XO",
+      image: threeXoImg
     }
   ]
 };
@@ -129,7 +158,7 @@ export default function HomePage() {
   const [selectedMake, setSelectedMake] = useState('Maruti Suzuki & Toyota / Universal');
   const [selectedModel, setSelectedModel] = useState('Fronx');
 
-  const availableModels = ['Universal', 'Fronx', 'Baleno', 'Glanza', 'Taisor', 'Ertiga', 'Swift', 'Swift Dzire'];
+  const availableModels = ['Universal', 'Fronx', 'Baleno', 'Glanza', 'Taisor', 'Ertiga', 'Swift', 'Swift Dzire', '3XO'];
   const currentProducts = carModelsData[selectedModel] || carModelsData['Universal'];
 
   return (
@@ -480,8 +509,8 @@ export default function HomePage() {
             {currentProducts.map(product => (
               <div key={product.id} className="bg-[#121824] border border-[#1E293B] rounded-2xl overflow-hidden flex flex-col group hover:border-[#04D9FF]/50 transition-colors">
                 {/* Image Area */}
-                <div className="w-full aspect-[16/10] bg-[#0a0d14] relative overflow-hidden">
-                  <img src={centerMountImg} alt={product.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                <div className="w-full aspect-[16/10] bg-[#0a0d14] relative overflow-hidden flex items-center justify-center p-4">
+                  <img src={product.image} alt={product.title} className="max-w-full max-h-full object-contain opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" />
                   <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-[#04D9FF] text-[#0a0d14] text-[7px] md:text-[9px] font-bold px-1.5 md:px-2 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider shadow-lg">
                     <Check className="w-2 h-2 md:w-3 md:h-3" /> 100% Fit Guarantee
                   </div>

@@ -108,7 +108,7 @@ export default function CategoriesPage() {
             <Link 
               to={cat.link} 
               key={idx} 
-              className="bg-[#0c0c0c] border border-[#222] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative group hover:border-[#04D9FF]/70 transition-all duration-300 flex flex-col justify-between p-3.5 sm:p-6 md:p-8 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(4,217,255,0.12)]"
+              className="bg-[#0c0c0c] border border-white/20 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative group hover:border-[#04D9FF]/70 transition-all duration-300 flex flex-col justify-between p-3.5 sm:p-6 md:p-8 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(4,217,255,0.12)]"
             >
               {/* Background Glow on hover */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-[#04D9FF]/5 rounded-full blur-3xl group-hover:bg-[#04D9FF]/15 transition-all pointer-events-none"></div>
