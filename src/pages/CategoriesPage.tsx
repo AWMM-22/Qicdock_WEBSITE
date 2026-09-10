@@ -45,7 +45,7 @@ const categoriesData = [
     badgeIcon: Magnet,
     title: "INDIVIDUAL CHARGERS",
     subtitle: "Single Environment Setups",
-    description: "Select your dedicated 15W Qi2 charger pre-bundled with your preferred mounting base for car, table, or wall.",
+    description: "Select your dedicated 25W Qi2 charger pre-bundled with your preferred mounting base for car, table, or wall.",
     price: "From ₹2,098",
     savings: "Special Pricing",
     image: leftMountImg,
@@ -67,7 +67,7 @@ const categoriesData = [
     badgeIcon: Wrench,
     title: "STAND-ALONE MOUNTS",
     subtitle: "Bases & Additional Brackets",
-    description: "Already own a Qicdock 15W magnetic core module? Expand your setup with standalone brackets and mounting bases.",
+    description: "Already own a Qicdock 25W magnetic core module? Expand your setup with standalone brackets and mounting bases.",
     price: "From ₹299",
     savings: "Add-on Pricing",
     image: rightMountImg,
@@ -77,84 +77,97 @@ const categoriesData = [
 
 export default function CategoriesPage() {
   return (
-    <div className="w-full py-12 md:py-20 px-4 sm:px-6 lg:px-10 bg-[#080808] min-h-screen">
+    <div className="w-full py-12 md:py-20 px-4 sm:px-6 lg:px-10 bg-[#F4F0E6] min-h-screen">
       <div className="max-w-[1400px] mx-auto">
         
         {/* Navigation Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-400">
-          <Link to="/" className="hover:text-[#04D9FF] flex items-center gap-1 transition-colors">
+        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-600">
+          <Link to="/" className="hover:text-[#0A1E3F] flex items-center gap-1 transition-colors">
             <ArrowLeft className="w-3.5 h-3.5" /> Home
           </Link>
           <span className="text-gray-600">/</span>
-          <span className="text-[#04D9FF] font-semibold">Categories</span>
+          <span className="text-[#0A1E3F] font-semibold">Categories</span>
         </div>
 
         {/* Header */}
         <div className="text-center space-y-4 mb-14 md:mb-16">
-          <span className="text-[#04D9FF] text-xs md:text-sm font-bold tracking-[0.2em] uppercase block">
+          <span className="text-[#0A1E3F] text-xs md:text-sm font-bold tracking-[0.2em] uppercase block">
             Automotive & Desk Charging Architecture
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-['Anton'] tracking-wide text-white uppercase">
-            Shop By <span className="text-[#04D9FF]">Categories</span>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
+            Shop By <span className="text-[#0A1E3F]">Categories</span>
           </h1>
-          <p className="text-gray-400 text-sm md:text-base font-normal max-w-2xl mx-auto leading-relaxed">
-            Choose from all-in-one multi-environment bundles, car-specific docks, or modular mounting accessories engineered with 15W fast wireless charging.
+          <p className="text-gray-600 text-sm md:text-base font-normal max-w-2xl mx-auto leading-relaxed">
+            Choose from all-in-one multi-environment bundles, car-specific docks, or modular mounting accessories engineered with 25W fast wireless charging.
           </p>
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
           {categoriesData.map((cat, idx) => (
             <Link 
               to={cat.link} 
               key={idx} 
-              className="bg-[#0c0c0c] border border-white/20 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative group hover:border-[#04D9FF]/70 transition-all duration-300 flex flex-col justify-between p-3.5 sm:p-6 md:p-8 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(4,217,255,0.12)]"
+              className="bg-[#FAF7F0] border border-[#0A1E3F]/30 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative group hover:border-[#0A1E3F]/70 transition-all duration-300 flex flex-row lg:flex-col justify-between p-3 sm:p-6 md:p-8 hover:-translate-y-1 hover:shadow-md gap-3 sm:gap-0"
             >
               {/* Background Glow on hover */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#04D9FF]/5 rounded-full blur-3xl group-hover:bg-[#04D9FF]/15 transition-all pointer-events-none"></div>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#0A1E3F]/5 rounded-full blur-3xl group-hover:bg-[#0A1E3F]/15 transition-all pointer-events-none"></div>
 
-              {/* Top Row: Badge & Image Preview */}
-              <div className="relative z-10">
-                <div className="flex items-center justify-between gap-2 mb-6">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#04D9FF]/30 bg-[#04D9FF]/10 text-[#04D9FF] text-[11px] font-bold tracking-wider uppercase">
+              {/* Left/Top Row: Badge & Image Preview */}
+              <div className="relative z-10 w-2/5 lg:w-full flex flex-col">
+                <div className="flex flex-col sm:flex-row sm:items-center items-start justify-between gap-1 sm:gap-2 mb-2 sm:mb-6 hidden lg:flex">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[11px] font-bold tracking-wider uppercase">
                     <cat.badgeIcon className="w-3.5 h-3.5" />
                     {cat.badgeText}
                   </span>
-                  <span className="text-[11px] font-bold tracking-wider uppercase text-gray-400 group-hover:text-[#04D9FF] transition-colors">
+                  <span className="text-[11px] font-bold tracking-wider uppercase text-gray-600 group-hover:text-[#0A1E3F] transition-colors self-end sm:self-auto">
                     {cat.savings}
                   </span>
                 </div>
 
+                {/* Mobile-only badges (above image) */}
+                <div className="flex lg:hidden flex-col gap-1 mb-2">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[9px] font-bold tracking-wider uppercase self-start">
+                    <cat.badgeIcon className="w-2.5 h-2.5" />
+                    {cat.badgeText}
+                  </span>
+                </div>
+
                 {/* Product Image Stage */}
-                <div className="w-full h-44 sm:h-52 bg-[#080808]/80 rounded-xl border border-[#1a1a1a] p-4 flex items-center justify-center mb-6 overflow-hidden">
+                <div className="w-full h-full lg:h-52 min-h-[110px] bg-[#F4F0E6]/80 rounded-xl border border-[#E2DAC8] p-0 flex items-center justify-center lg:mb-6 overflow-hidden flex-1 lg:flex-none">
                   <img 
                     src={cat.image} 
                     alt={cat.title} 
-                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
                   />
                 </div>
               </div>
 
-              {/* Bottom Content */}
-              <div className="relative z-10 flex flex-col flex-1 justify-between pt-2 border-t border-[#1a1a1a]">
+              {/* Right/Bottom Content */}
+              <div className="relative z-10 flex flex-col flex-1 justify-between pt-0 lg:pt-2 border-t-0 lg:border-t border-[#E2DAC8]">
                 <div>
-                  <p className="text-[#04D9FF] text-xs font-semibold tracking-wider uppercase mb-1">
-                    {cat.subtitle}
-                  </p>
-                  <h2 className="text-2xl font-['Anton'] text-white uppercase tracking-wide group-hover:text-[#04D9FF] transition-colors mb-2">
+                  <div className="flex justify-between items-start mb-0.5">
+                    <p className="text-[#0A1E3F] text-[9px] lg:text-xs font-semibold tracking-wider uppercase">
+                      {cat.subtitle}
+                    </p>
+                    <span className="lg:hidden text-[9px] font-bold tracking-wider uppercase text-[#22C55E] self-start mt-0.5">
+                      {cat.savings}
+                    </span>
+                  </div>
+                  <h2 className="text-sm lg:text-2xl font-['Anton'] text-[#0A1E3F] uppercase tracking-wide group-hover:text-[#0A1E3F] transition-colors mb-1 lg:mb-2 leading-tight">
                     {cat.title}
                   </h2>
-                  <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 line-clamp-2">
+                  <p className="text-gray-600 text-[10px] lg:text-sm leading-relaxed mb-2 lg:mb-6 line-clamp-2">
                     {cat.description}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#1a1a1a] mt-auto flex flex-col gap-3">
-                  <div>
-                    <span className="text-[11px] text-gray-400 uppercase tracking-wider block">Starting at</span>
-                    <span className="text-lg font-bold text-white tracking-wide">{cat.price}</span>
+                <div className="pt-2 lg:pt-4 border-t border-[#E2DAC8] mt-auto flex flex-col gap-1.5 lg:gap-3">
+                  <div className="flex flex-row lg:flex-col justify-between lg:justify-start items-center lg:items-start">
+                    <span className="text-[9px] lg:text-[11px] text-gray-600 uppercase tracking-wider block">Starting at</span>
+                    <span className="text-[11px] lg:text-lg font-bold text-[#0A1E3F] tracking-wide">{cat.price}</span>
                   </div>
-                  <span className="w-full text-center py-2.5 px-4 rounded-xl bg-[#04D9FF] hover:bg-[#3bf0ff] text-black font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(4,217,255,0.3)]">
+                  <span className="w-full text-center py-1.5 lg:py-2.5 px-2 lg:px-4 rounded-lg lg:rounded-xl bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-[10px] lg:text-xs uppercase tracking-widest transition-all">
                     Explore
                   </span>
                 </div>
@@ -164,18 +177,18 @@ export default function CategoriesPage() {
         </div>
 
         {/* Bottom Guarantee Banner */}
-        <div className="mt-16 bg-[#0c0c0c] border border-[#222] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div className="mt-16 bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="space-y-1">
-            <h3 className="text-xl font-bold text-white uppercase tracking-wide">
+            <h3 className="text-xl font-bold text-[#0A1E3F] uppercase tracking-wide">
               Not sure which setup fits your vehicle?
             </h3>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-600 text-sm">
               Use our interactive Vehicle Compatibility Engine to filter by your exact car make, model, and year.
             </p>
           </div>
           <Link
             to="/#compatibility"
-            className="whitespace-nowrap px-6 py-3.5 rounded-xl bg-[#04D9FF] hover:bg-white text-[#080808] font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(4,217,255,0.3)]"
+            className="whitespace-nowrap px-6 py-3.5 rounded-xl bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(4,217,255,0.3)]"
           >
             Launch Vehicle Engine
           </Link>

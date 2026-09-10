@@ -64,20 +64,20 @@ export default function AllInOneCombo() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080808] text-white py-10 md:py-16 px-4 sm:px-6 lg:px-10">
+    <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] py-10 md:py-16 px-4 sm:px-6 lg:px-10">
       <div className="max-w-[1320px] mx-auto">
         
         {/* Breadcrumbs */}
-        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-400">
-          <Link to="/" className="hover:text-[#04D9FF] flex items-center gap-1 transition-colors">
+        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-600">
+          <Link to="/" className="hover:text-[#0A1E3F] flex items-center gap-1 transition-colors">
             Home
           </Link>
           <span className="text-gray-600">/</span>
-          <Link to="/categories" className="hover:text-[#04D9FF] transition-colors">
+          <Link to="/categories" className="hover:text-[#0A1E3F] transition-colors">
             Categories
           </Link>
           <span className="text-gray-600">/</span>
-          <span className="text-[#04D9FF] font-semibold">All In One Combo</span>
+          <span className="text-[#0A1E3F] font-semibold">All In One Combo</span>
         </div>
 
         {/* Product Configurator Grid */}
@@ -85,9 +85,9 @@ export default function AllInOneCombo() {
           
           {/* Left Column: Visual Showcase & Specifications (5 cols) */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
-            <div className="bg-[#0c0c0c] border border-[#222] rounded-3xl p-8 sm:p-10 relative overflow-hidden group">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-8 sm:p-10 relative overflow-hidden group">
               <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-                <span className="px-3 py-1 rounded-full bg-[#04D9FF]/15 border border-[#04D9FF]/40 text-[#04D9FF] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
+                <span className="px-3 py-1 rounded-full bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3" /> Ultimate Bundle
                 </span>
                 <span className="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold tracking-widest uppercase">
@@ -105,40 +105,40 @@ export default function AllInOneCombo() {
               </div>
 
               {/* Badges footer */}
-              <div className="grid grid-cols-3 gap-2 pt-6 border-t border-[#1a1a1a] text-center">
-                <div className="p-2 rounded-xl bg-white/[0.02]">
-                  <span className="text-xs font-bold text-white block">15W Qi2</span>
-                  <span className="text-[10px] text-gray-400 uppercase tracking-wider">Fast Wireless</span>
+              <div className="grid grid-cols-3 gap-2 pt-6 border-t border-[#E2DAC8] text-center">
+                <div className="p-2 rounded-xl bg-[#152B52]/[0.02]">
+                  <span className="text-xs font-bold text-[#0A1E3F] block">25W Qi2</span>
+                  <span className="text-[10px] text-gray-600 uppercase tracking-wider">Fast Wireless</span>
                 </div>
-                <div className="p-2 rounded-xl bg-white/[0.02]">
-                  <span className="text-xs font-bold text-white block">5 Mounts</span>
-                  <span className="text-[10px] text-gray-400 uppercase tracking-wider">Car / Desk / Wall</span>
+                <div className="p-2 rounded-xl bg-[#152B52]/[0.02]">
+                  <span className="text-xs font-bold text-[#0A1E3F] block">5 Mounts</span>
+                  <span className="text-[10px] text-gray-600 uppercase tracking-wider">Car / Desk / Wall</span>
                 </div>
-                <div className="p-2 rounded-xl bg-white/[0.02]">
-                  <span className="text-xs font-bold text-white block">1-Yr Repl.</span>
-                  <span className="text-[10px] text-gray-400 uppercase tracking-wider">Full Warranty</span>
+                <div className="p-2 rounded-xl bg-[#152B52]/[0.02]">
+                  <span className="text-xs font-bold text-[#0A1E3F] block">1-Yr Repl.</span>
+                  <span className="text-[10px] text-gray-600 uppercase tracking-wider">Full Warranty</span>
                 </div>
               </div>
             </div>
 
             {/* In-the-box summary */}
-            <div className="bg-[#0c0c0c] border border-[#222] rounded-2xl p-5 text-xs text-gray-400 space-y-2.5">
-              <div className="flex items-center justify-between text-white font-bold pb-2 border-b border-[#1f1f1f]">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-5 text-xs text-gray-600 space-y-2.5">
+              <div className="flex items-center justify-between text-[#0A1E3F] font-bold pb-2 border-b border-[#E2DAC8]">
                 <span>PACKAGE CONTENTS</span>
-                <span className="text-[#04D9FF]">{selectedAddons.length + 1} ITEMS INCLUDED</span>
+                <span className="text-[#0A1E3F]">{selectedAddons.length + 1} ITEMS INCLUDED</span>
               </div>
               <p className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#04D9FF] flex-shrink-0" />
-                <span>1x Qicdock 15W Qi2 Universal Magnetic Core Module</span>
+                <CheckCircle2 className="w-4 h-4 text-[#0A1E3F] flex-shrink-0" />
+                <span>1x Qicdock 25W Qi2 Universal Magnetic Core Module</span>
               </p>
               {initialAddons.filter(a => selectedAddons.includes(a.id)).map(addon => (
-                <p key={addon.id} className="flex items-center gap-2 text-gray-300">
+                <p key={addon.id} className="flex items-center gap-2 text-gray-700">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                   <span>1x {addon.name}</span>
                 </p>
               ))}
-              <div className="pt-2 flex items-center justify-between text-[11px] text-gray-400 border-t border-[#1a1a1a]">
-                <span className="flex items-center gap-1"><Truck className="w-3.5 h-3.5 text-[#04D9FF]" /> Free Express Shipping Across India</span>
+              <div className="pt-2 flex items-center justify-between text-[11px] text-gray-600 border-t border-[#E2DAC8]">
+                <span className="flex items-center gap-1"><Truck className="w-3.5 h-3.5 text-[#0A1E3F]" /> Free Express Shipping Across India</span>
               </div>
             </div>
           </div>
@@ -149,34 +149,34 @@ export default function AllInOneCombo() {
             {/* Header / Value Proposition */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[#04D9FF] text-xs font-bold tracking-[0.2em] uppercase">
+                <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase">
                   Modular Charging Architecture
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-['Anton'] tracking-wide text-white uppercase mb-3">
-                All in One <span className="text-[#04D9FF]">Combo</span>
+              <h1 className="text-3xl sm:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mb-3">
+                All in One <span className="text-[#0A1E3F]">Combo</span>
               </h1>
-              <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                All in one charger solution for seamless transition between Car, Desk, and Wall environments. Detach your 15W core puck with a click and mount it anywhere instantly.
+              <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
+                All in one charger solution for seamless transition between Car, Desk, and Wall environments. Detach your 25W core puck with a click and mount it anywhere instantly.
               </p>
             </div>
 
             {/* Core Product Box */}
-            <div className="bg-[#0c0c0c] border border-[#222] rounded-2xl p-4 sm:p-5 flex items-center justify-between">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-4 sm:p-5 flex items-center justify-between">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#04D9FF]/10 text-[#04D9FF] border border-[#04D9FF]/30">
+                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
                     CORE PRODUCT (REQUIRED)
                   </span>
                 </div>
-                <h2 className="font-bold text-base text-white">15W Qi2 Core Module</h2>
-                <p className="text-gray-400 text-[11px]">
-                  15W Qi2 Certified Core + braided USB-C power lead
+                <h2 className="font-bold text-base text-[#0A1E3F]">25W Qi2 Core Module</h2>
+                <p className="text-gray-600 text-[11px]">
+                  25W Qi2 Certified Core + braided USB-C power lead
                 </p>
               </div>
               <div className="text-right pl-4">
-                <span className="text-xl font-bold text-white tracking-wide">₹1,999</span>
-                <span className="block text-[11px] text-gray-400">Base Unit</span>
+                <span className="text-xl font-bold text-[#0A1E3F] tracking-wide">₹1,999</span>
+                <span className="block text-[11px] text-gray-600">Base Unit</span>
               </div>
             </div>
 
@@ -184,10 +184,10 @@ export default function AllInOneCombo() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-300">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-700">
                     Add-On Modules ({selectedAddons.length}/{initialAddons.length})
                   </h3>
-                  <p className="text-[11px] text-gray-400">
+                  <p className="text-[11px] text-gray-600">
                     Add or remove stands to build your custom bundle
                   </p>
                 </div>
@@ -202,19 +202,19 @@ export default function AllInOneCombo() {
                       key={addon.id}
                       className={`flex items-center gap-4 p-3 rounded-xl border transition-all ${
                         isSelected 
-                          ? 'bg-[#1a1a1a] border-[#333]' 
-                          : 'bg-[#0c0c0c] border-[#222] opacity-70'
+                          ? 'bg-[#E2DAC8] border-[#D6CDB8]' 
+                          : 'bg-[#FAF7F0] border-[#E2DAC8] opacity-70'
                       }`}
                     >
-                      <div className="w-16 h-16 rounded-lg bg-[#050505] border border-[#222] p-2 flex shrink-0">
+                      <div className="w-16 h-16 rounded-lg bg-[#EBE5D9] border border-[#E2DAC8] p-2 flex shrink-0">
                          <img src={addon.image} alt={addon.name} className="w-full h-full object-contain" />
                       </div>
                       <div className="flex-1">
-                         <h4 className="text-sm font-bold text-white leading-tight">{addon.name}</h4>
-                         <p className="text-[11px] text-gray-400 leading-tight mt-1 line-clamp-1">{addon.description}</p>
+                         <h4 className="text-sm font-bold text-[#0A1E3F] leading-tight">{addon.name}</h4>
+                         <p className="text-[11px] text-gray-600 leading-tight mt-1 line-clamp-1">{addon.description}</p>
                          <div className="flex items-center gap-2 mt-1">
-                           <span className={`text-[12px] font-bold ${isSelected ? 'text-[#04D9FF]' : 'text-gray-400'}`}>+₹{addon.addonPrice}</span>
-                           <span className="text-[10px] text-gray-500 line-through">₹{addon.mrp}</span>
+                           <span className={`text-[12px] font-bold ${isSelected ? 'text-[#0A1E3F]' : 'text-gray-600'}`}>+₹{addon.addonPrice}</span>
+                           <span className="text-[10px] text-gray-600 line-through">₹{addon.mrp}</span>
                          </div>
                       </div>
                       <button 
@@ -222,7 +222,7 @@ export default function AllInOneCombo() {
                         className={`w-9 h-9 rounded-full flex items-center justify-center border transition-colors shrink-0 ${
                           isSelected 
                             ? 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20' 
-                            : 'bg-[#04D9FF]/10 border-[#04D9FF]/30 text-[#04D9FF] hover:bg-[#04D9FF]/20'
+                            : 'bg-[#0A1E3F]/10 border-[#0A1E3F]/30 text-[#0A1E3F] hover:bg-[#0A1E3F]/20'
                         }`}
                       >
                          {isSelected ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
@@ -234,15 +234,15 @@ export default function AllInOneCombo() {
             </div>
 
             {/* Total Bundle Price Box */}
-            <div className="bg-[#0c0c0c] border border-[#262626] rounded-2xl p-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-[#04D9FF]/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-48 h-48 bg-[#0A1E3F]/10 rounded-full blur-2xl pointer-events-none"></div>
 
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-6 border-b border-[#222]">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-6 border-b border-[#E2DAC8]">
                 <div>
-                  <p className="text-gray-400 text-xs font-medium uppercase tracking-wider mb-1">
+                  <p className="text-gray-600 text-xs font-medium uppercase tracking-wider mb-1">
                     Original Combined Total
                   </p>
-                  <p className="text-gray-400 line-through text-lg font-bold">
+                  <p className="text-gray-600 line-through text-lg font-bold">
                     ₹{totalMrp.toLocaleString('en-IN')}
                   </p>
                   <span className="inline-block mt-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
@@ -251,13 +251,13 @@ export default function AllInOneCombo() {
                 </div>
 
                 <div className="text-left sm:text-right">
-                  <p className="text-[#04D9FF] text-xs font-bold tracking-widest uppercase mb-1 flex items-center sm:justify-end gap-1">
+                  <p className="text-[#0A1E3F] text-xs font-bold tracking-widest uppercase mb-1 flex items-center sm:justify-end gap-1">
                     <Sparkles className="w-3.5 h-3.5" /> Special Bundle Price
                   </p>
-                  <p className="text-3xl sm:text-4xl font-['Anton'] text-white tracking-wide">
+                  <p className="text-3xl sm:text-4xl font-['Anton'] text-[#0A1E3F] tracking-wide">
                     ₹{totalBundlePrice.toLocaleString('en-IN')}
                   </p>
-                  <span className="text-[11px] text-gray-400 block mt-0.5">
+                  <span className="text-[11px] text-gray-600 block mt-0.5">
                     Inclusive of all taxes & doorstep delivery
                   </span>
                 </div>
@@ -266,11 +266,11 @@ export default function AllInOneCombo() {
               {/* Action Button */}
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-[#04D9FF] hover:bg-white text-[#080808] font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(4,217,255,0.3)] flex items-center justify-center gap-2 group cursor-pointer"
+                className="w-full bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(4,217,255,0.3)] flex items-center justify-center gap-2 group cursor-pointer"
               >
                 {addedToCart ? (
                   <>
-                    <CheckCircle2 className="w-5 h-5 text-[#080808]" />
+                    <CheckCircle2 className="w-5 h-5 text-[#F4F0E6]" />
                     <span>Added To Cart Successfully!</span>
                   </>
                 ) : (
@@ -283,21 +283,21 @@ export default function AllInOneCombo() {
             </div>
 
             {/* Guarantee footer */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px] text-gray-400 pt-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px] text-gray-600 pt-2">
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-[#04D9FF]" />
+                <Shield className="w-4 h-4 text-[#0A1E3F]" />
                 <span>1-Year Replacement</span>
               </div>
               <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-[#04D9FF]" />
+                <Zap className="w-4 h-4 text-[#0A1E3F]" />
                 <span>Zero Wire Cutting</span>
               </div>
               <div className="flex items-center gap-2">
-                <Truck className="w-4 h-4 text-[#04D9FF]" />
+                <Truck className="w-4 h-4 text-[#0A1E3F]" />
                 <span>Dispatches in 24h</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#04D9FF]" />
+                <CheckCircle2 className="w-4 h-4 text-[#0A1E3F]" />
                 <span>100% Fit Guarantee</span>
               </div>
             </div>

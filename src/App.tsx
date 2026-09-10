@@ -34,7 +34,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="min-h-screen bg-[#080808] text-white flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#04D9FF] selection:text-[#080808]">
+      <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#0A1E3F] selection:text-[#F4F0E6]">
         <Header />
         <main className="flex-1">
           <Routes>

@@ -25,38 +25,38 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#050505] pt-14 pb-24 md:pb-12 px-4 sm:px-6 lg:px-10 border-t border-[#1a1a1a] text-white">
+    <footer className="bg-[#EBE5D9] pt-14 pb-24 md:pb-12 px-4 sm:px-6 lg:px-10 border-t border-[#E2DAC8] text-[#0A1E3F]">
       <div className="max-w-[1400px] mx-auto">
         
         {/* Top Brand & Newsletter (Desktop & Mobile) */}
-        <div className="mb-10 pb-10 border-b border-[#1f1f1f] flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+        <div className="mb-10 pb-10 border-b border-[#E2DAC8] flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
           <div className="max-w-md space-y-4">
             <Link to="/" className="inline-block">
               <img 
                 src={brandLogo} 
                 alt="QicDock" 
-                className="h-10 sm:h-12 w-auto object-contain rounded-lg border border-[#04D9FF]/30 shadow-[0_0_15px_rgba(4,217,255,0.2)]" 
+                className="h-10 sm:h-12 w-auto object-contain rounded-lg border border-[#0A1E3F]/30 shadow-[0_0_15px_rgba(4,217,255,0.2)]" 
               />
             </Link>
-            <p className="text-gray-400 text-xs sm:text-sm leading-relaxed">
-              High-output 15W Qi2 wireless charging solutions precision-tailored for modern automobile cabins, home workstations, and bedside spaces.
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+              High-output 25W Qi2 wireless charging solutions precision-tailored for modern automobile cabins, home workstations, and bedside spaces.
             </p>
           </div>
 
           <div className="w-full lg:w-auto flex-1 max-w-md">
-            <span className="text-white font-bold text-xs uppercase tracking-widest block mb-2.5 flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-[#04D9FF]" />
+            <span className="text-[#0A1E3F] font-bold text-xs uppercase tracking-widest block mb-2.5 flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-[#0A1E3F]" />
               Subscribe for New Vehicle Releases
             </span>
             <div className="flex relative">
               <input 
                 type="email" 
                 placeholder="Enter email or car model..." 
-                className="w-full bg-[#0c0c0c] border border-[#333] rounded-xl py-3 px-4 text-xs sm:text-sm text-white focus:outline-none focus:border-[#04D9FF] pr-12 transition-colors placeholder-gray-500"
+                className="w-full bg-[#FAF7F0] border border-[#D6CDB8] rounded-xl py-3 px-4 text-xs sm:text-sm text-[#0A1E3F] focus:outline-none focus:border-[#0A1E3F] pr-12 transition-colors placeholder-gray-500"
               />
               <button 
                 aria-label="Subscribe"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#04D9FF] hover:bg-white text-[#080808] rounded-lg flex items-center justify-center transition-colors cursor-pointer"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] rounded-lg flex items-center justify-center transition-colors cursor-pointer"
               >
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -65,17 +65,17 @@ export default function Footer() {
         </div>
 
         {/* Let's Get Social Section */}
-        <div className="pt-8 pb-6 text-center border-t border-[#1a1a1a]">
-          <h4 className="text-sm sm:text-base font-medium text-gray-300 mb-4 tracking-wide">
+        <div className="pt-8 pb-6 text-center border-t border-[#E2DAC8]">
+          <h4 className="text-sm sm:text-base font-medium text-gray-700 mb-4 tracking-wide">
             Let's get social
           </h4>
-          <div className="flex items-center justify-center gap-7 sm:gap-8 text-gray-400 mb-6">
+          <div className="flex items-center justify-center gap-7 sm:gap-8 text-gray-600 mb-6">
             <a 
               href="https://facebook.com" 
               target="_blank" 
               rel="noreferrer"
               aria-label="Facebook"
-              className="hover:text-[#04D9FF] transition-colors hover:scale-110 transform duration-200"
+              className="hover:text-[#0A1E3F] transition-colors hover:scale-110 transform duration-200"
             >
               <Facebook className="w-5 h-5 fill-current" />
             </a>
@@ -84,7 +84,7 @@ export default function Footer() {
               target="_blank" 
               rel="noreferrer"
               aria-label="X (Twitter)"
-              className="hover:text-[#04D9FF] transition-colors hover:scale-110 transform duration-200"
+              className="hover:text-[#0A1E3F] transition-colors hover:scale-110 transform duration-200"
             >
               <Twitter className="w-5 h-5 fill-current" />
             </a>
@@ -93,7 +93,7 @@ export default function Footer() {
               target="_blank" 
               rel="noreferrer"
               aria-label="Instagram"
-              className="hover:text-[#04D9FF] transition-colors hover:scale-110 transform duration-200"
+              className="hover:text-[#0A1E3F] transition-colors hover:scale-110 transform duration-200"
             >
               <Instagram className="w-5 h-5" />
             </a>
@@ -102,7 +102,7 @@ export default function Footer() {
               target="_blank" 
               rel="noreferrer"
               aria-label="YouTube"
-              className="hover:text-[#04D9FF] transition-colors hover:scale-110 transform duration-200"
+              className="hover:text-[#0A1E3F] transition-colors hover:scale-110 transform duration-200"
             >
               <Youtube className="w-5 h-5" />
             </a>
@@ -111,34 +111,34 @@ export default function Footer() {
               target="_blank" 
               rel="noreferrer"
               aria-label="LinkedIn"
-              className="hover:text-[#04D9FF] transition-colors hover:scale-110 transform duration-200"
+              className="hover:text-[#0A1E3F] transition-colors hover:scale-110 transform duration-200"
             >
               <Linkedin className="w-5 h-5 fill-current" />
             </a>
           </div>
 
           {/* Horizontal Policies Row */}
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-gray-400 mb-4 px-4">
-            <Link to="/about" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <span className="text-gray-400 select-none">•</span>
-            <Link to="/about" className="hover:text-white transition-colors">Terms of Use</Link>
-            <span className="text-gray-400 select-none">•</span>
-            <Link to="/about" className="hover:text-white transition-colors">Warranty Policy</Link>
-            <span className="text-gray-400 select-none">•</span>
-            <Link to="/about" className="hover:text-white transition-colors">D2D Replacement Service Policy</Link>
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-xs text-gray-600 mb-4 px-4">
+            <Link to="/about" className="hover:text-[#0A1E3F] transition-colors">Privacy Policy</Link>
+            <span className="text-gray-600 select-none">•</span>
+            <Link to="/about" className="hover:text-[#0A1E3F] transition-colors">Terms of Use</Link>
+            <span className="text-gray-600 select-none">•</span>
+            <Link to="/about" className="hover:text-[#0A1E3F] transition-colors">Warranty Policy</Link>
+            <span className="text-gray-600 select-none">•</span>
+            <Link to="/about" className="hover:text-[#0A1E3F] transition-colors">D2D Replacement Service Policy</Link>
           </div>
 
           {/* Copyright notice */}
-          <p className="text-[11px] sm:text-xs text-gray-400 mb-3 tracking-wide">
+          <p className="text-[11px] sm:text-xs text-gray-600 mb-3 tracking-wide">
             &copy; 2026 QICDOCK Technologies India Limited. All Rights Reserved.
           </p>
 
           {/* Company address block */}
-          <p className="text-[10px] sm:text-[11px] text-gray-400 max-w-2xl mx-auto leading-relaxed px-4 mb-2">
+          <p className="text-[10px] sm:text-[11px] text-gray-600 max-w-2xl mx-auto leading-relaxed px-4 mb-2">
             For queries contact us: QICDOCK Automotive Labs, Unit no. 204 & 205, 2nd Floor, Signature Park, Electronic City, Bengaluru, Karnataka-560100, India
           </p>
-          <p className="text-[11px] sm:text-xs text-gray-400 font-medium">
-            Support: <a href="mailto:support@qicdock.com" className="text-[#04D9FF] hover:text-white transition-colors">support@qicdock.com</a>
+          <p className="text-[11px] sm:text-xs text-gray-600 font-medium">
+            Support: <a href="mailto:support@qicdock.com" className="text-[#0A1E3F] hover:text-[#0A1E3F] transition-colors">support@qicdock.com</a>
           </p>
         </div>
 
