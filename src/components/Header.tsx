@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, User, ShoppingBag, Menu, X, ChevronRight, Zap, Shield, Sparkles, LogOut } from 'lucide-react';
+import { Search, User, ShoppingBag, Menu, X, ChevronRight, Zap, Shield, Sparkles, LogOut, Package } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.jpg';
@@ -123,14 +123,23 @@ export default function Header() {
           </div>
 
           {user ? (
-            <button 
-              onClick={() => signOut()}
-              aria-label="Sign Out"
-              className="hidden sm:flex items-center gap-2 text-xs font-bold tracking-widest hover:text-[#0A1E3F] py-2 px-3 rounded-lg hover:bg-[#152B52]/5 transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              <span className="hidden lg:inline">SIGN OUT</span>
-            </button>
+            <div className="hidden sm:flex items-center gap-1">
+              <Link 
+                to="/orders"
+                className="flex items-center gap-2 text-xs font-bold tracking-widest hover:text-[#0A1E3F] py-2 px-3 rounded-lg hover:bg-[#152B52]/5 transition-colors"
+              >
+                <Package className="w-4 h-4" />
+                <span className="hidden lg:inline">ORDERS</span>
+              </Link>
+              <button 
+                onClick={() => signOut()}
+                aria-label="Sign Out"
+                className="flex items-center gap-2 text-xs font-bold tracking-widest hover:text-[#0A1E3F] py-2 px-3 rounded-lg hover:bg-[#152B52]/5 transition-colors text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="hidden lg:inline">SIGN OUT</span>
+              </button>
+            </div>
           ) : (
             <Link 
               to="/login"
@@ -270,16 +279,26 @@ export default function Header() {
           <div className="pt-5 mt-3 border-t border-[#E2DAC8]">
             <div className="flex flex-col gap-3 mb-4 px-2">
               {user ? (
-                <button
-                  onClick={() => {
-                    signOut();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 bg-[#152B52]/10 hover:bg-[#152B52]/20 border border-[#0A1E3F]/30 text-[#0A1E3F] py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sign Out
-                </button>
+                <div className="space-y-3">
+                  <Link
+                    to="/orders"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full flex items-center justify-center gap-2 bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors shadow-md"
+                  >
+                    <Package className="w-4 h-4" />
+                    My Orders
+                  </Link>
+                  <button
+                    onClick={() => {
+                      signOut();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                </div>
               ) : (
                 <Link
                   to="/login"

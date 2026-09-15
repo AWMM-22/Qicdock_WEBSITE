@@ -15,6 +15,7 @@ import CartPage from './pages/CartPage';
 import AboutPage from './pages/AboutPage';
 import SupportPage from './pages/SupportPage';
 import LoginPage from './pages/LoginPage';
+import OrdersPage from "./pages/OrdersPage";
 import AdminPage from './pages/AdminPage';
 import { AuthProvider } from './context/AuthContext';
 import { InventoryProvider } from './context/InventoryContext';
@@ -56,6 +57,7 @@ export default function App() {
               <Route path="/category/stand-alone" element={<StandAloneMounts />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/support" element={<SupportPage />} />
+              <Route path="/orders" element={<OrdersPage />} />
               <Route path="/admin_quickdoc" element={<AdminPage />} />
             </Routes>
           </main>

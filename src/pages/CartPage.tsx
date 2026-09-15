@@ -173,6 +173,19 @@ export default function CartPage() {
           } catch (e) {
             console.error("Failed to send email confirmation", e);
           }
+          // Save order locally for user history
+          const orderRecord = {
+            id: `ord_${Date.now()}`,
+            date: new Date().toISOString(),
+            items: cartItems,
+            total: total,
+            status: "Processing",
+            paymentId: response.razorpay_payment_id
+          };
+          const existingOrders = JSON.parse(localStorage.getItem("quickdoc_orders") || "[]");
+          existingOrders.unshift(orderRecord);
+          localStorage.setItem("quickdoc_orders", JSON.stringify(existingOrders));
+
           
           setCheckoutStep('SUCCESS');
           setCartItems([]);
