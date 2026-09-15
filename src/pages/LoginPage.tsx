@@ -71,6 +71,7 @@ export default function LoginPage() {
         email,
         options: {
           shouldCreateUser: true, // Allow creating account via OTP
+          emailRedirectTo: window.location.origin, // In case they click the magic link instead of entering the code
         }
       });
       if (error) throw error;
