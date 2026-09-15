@@ -223,17 +223,17 @@ export default function LoginPage() {
 
             {otpSent && (
               <div className="space-y-1.5 animate-fadeIn">
-                <label className="text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1">6-Digit Code</label>
+                <label className="text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1">Verification Code</label>
                 <div className="relative">
                   <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
                     required
-                    maxLength={6}
+                    maxLength={8}
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
-                    className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl pl-12 pr-4 py-3.5 text-sm font-medium text-[#0A1E3F] focus:outline-none focus:border-[#0A1E3F] transition-colors placeholder:text-gray-500 tracking-[0.5em] text-center"
-                    placeholder="000000"
+                    className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl pl-12 pr-4 py-3.5 text-sm font-medium text-[#0A1E3F] focus:outline-none focus:border-[#0A1E3F] transition-colors placeholder:text-gray-500 tracking-[0.3em] text-center"
+                    placeholder="Enter OTP"
                   />
                 </div>
               </div>
