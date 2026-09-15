@@ -4,10 +4,11 @@ const supabaseUrl =
   import.meta.env.VITE_SUPABASE_URL || 
   'https://sqkdwltnkgjbylwykbsb.supabase.co';
 
-const supabasePublishableKey = 
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 
+const supabaseAnonKey = 
   import.meta.env.VITE_SUPABASE_ANON_KEY || 
-  'sb_publishable_jl8OzYbRU83RxUNIsoiHbQ_ubMkBMmO';
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNxa2R3bHRua2dqYnlsd3lrYnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwMzg4MTEsImV4cCI6MjEwNDYxNDgxMX0.8uYJ8KDXN1wikXv2oOwMcgEUI4LcVjRjiVeN2Bxnasc';
 
-export const supabase = createClient(supabaseUrl, supabasePublishableKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
