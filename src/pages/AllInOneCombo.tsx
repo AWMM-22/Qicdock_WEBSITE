@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, RotateCcw, Truck, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useInventory } from '../context/InventoryContext';
 import combinedImg from '../assets/images/3in1 copy.png';
 import carPadImg from '../assets/images/center_mount_1788721138616.jpg';
 import airVentImg from '../assets/images/center-mount-transparent.png';
@@ -27,6 +28,9 @@ const initialAddons: Addon[] = [
 ];
 
 export default function AllInOneCombo() {
+  const { isSoldOut } = useInventory();
+  const comboSoldOut = isSoldOut('ultimate-kit');
+  
   const [selectedAddons, setSelectedAddons] = useState<string[]>(
     initialAddons.map(a => a.id)
   );
@@ -266,9 +270,12 @@ export default function AllInOneCombo() {
               {/* Action Button */}
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(4,217,255,0.3)] flex items-center justify-center gap-2 group cursor-pointer"
+                disabled={addedToCart || comboSoldOut}
+                className={`w-full ${comboSoldOut ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0A1E3F] hover:bg-[#152B52] shadow-[0_0_25px_rgba(4,217,255,0.3)]'} text-[#F4F0E6] font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-80`}
               >
-                {addedToCart ? (
+                {comboSoldOut ? (
+                  <span>Currently Sold Out</span>
+                ) : addedToCart ? (
                   <>
                     <CheckCircle2 className="w-5 h-5 text-[#F4F0E6]" />
                     <span>Added To Cart Successfully!</span>

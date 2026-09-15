@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useInventory } from '../context/InventoryContext';
 import leftMountImg from '../assets/images/m1.png';
 import rightMountImg from '../assets/images/m3.png';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
@@ -78,6 +79,7 @@ const individualSetups: ProductSetup[] = [
 ];
 
 export default function IndividualChargers() {
+  const { isSoldOut } = useInventory();
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [addedItems, setAddedItems] = useState<{ [key: string]: boolean }>({});
 
@@ -209,9 +211,12 @@ export default function IndividualChargers() {
 
                   <button
                     onClick={() => handleAddToCart(product.id)}
-                    className="w-full bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                    disabled={isAdded || isSoldOut(product.id)}
+                    className={`w-full ${isSoldOut(product.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0A1E3F] hover:bg-[#152B52]'} text-[#F4F0E6] border border-transparent font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-80`}
                   >
-                    {isAdded ? (
+                    {isSoldOut(product.id) ? (
+                      <span>Sold Out</span>
+                    ) : isAdded ? (
                       <>
                         <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                         <span>Added to Cart!</span>

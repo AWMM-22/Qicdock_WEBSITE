@@ -1,11 +1,17 @@
-import { useState } from 'react';
-import { Search, User, ShoppingBag, Menu, X, ChevronRight, Zap, Shield, Sparkles } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Search, User, ShoppingBag, Menu, X, ChevronRight, Zap, Shield, Sparkles, LogOut } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.jpg';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   const navLinks = [
     { name: 'Categories', path: '/categories' },
@@ -22,6 +28,35 @@ export default function Header() {
     { name: 'Individual Setups', path: '/category/individual', tag: 'Modular' },
     { name: 'Stand-Alone Bases', path: '/category/stand-alone', tag: 'Mounts' },
   ];
+
+  // Searchable items combining categories and generic terms
+  const searchableItems = [
+    ...categoryQuickLinks,
+    { name: 'Fronx Wireless Charger', path: '/category/vehicle-specific', tag: 'Product' },
+    { name: 'Baleno Wireless Charger', path: '/category/vehicle-specific', tag: 'Product' },
+    { name: 'Swift Wireless Charger', path: '/category/vehicle-specific', tag: 'Product' },
+    { name: 'Ertiga Wireless Charger', path: '/category/vehicle-specific', tag: 'Product' },
+    { name: 'Glanza Wireless Charger', path: '/category/vehicle-specific', tag: 'Product' },
+    { name: 'Magnetic Core Charger', path: '/category/individual', tag: 'Module' },
+    { name: 'Dashboard Mount', path: '/category/stand-alone', tag: 'Accessory' },
+    { name: 'AC Vent Clip', path: '/category/stand-alone', tag: 'Accessory' },
+  ];
+
+  const searchResults = searchQuery.trim() === '' 
+    ? [] 
+    : searchableItems.filter(item => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
+
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
+  // Close search when route changes
+  useEffect(() => {
+    setIsSearchOpen(false);
+    setSearchQuery('');
+  }, [location.pathname]);
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#F4F0E6]/95 backdrop-blur-md border-b border-[#E2DAC8]">
@@ -42,8 +77,8 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-10 text-[12px] font-bold tracking-[0.16em] uppercase text-gray-700">
+        {/* Desktop Navigation Links (Hidden when search is open on small desktops) */}
+        <nav className={`hidden md:flex items-center justify-center gap-8 lg:gap-10 text-[12px] font-bold tracking-[0.16em] uppercase text-gray-700 ${isSearchOpen ? 'md:hidden lg:flex' : ''}`}>
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
@@ -77,20 +112,35 @@ export default function Header() {
 
         {/* Right Actions (Search, Account, Cart + Mobile Hamburger) */}
         <div className="flex items-center gap-3 sm:gap-5 text-gray-700">
-          <button 
-            aria-label="Search chargers"
-            className="w-10 h-10 rounded-full flex items-center justify-center hover:text-[#0A1E3F] hover:bg-[#152B52]/5 transition-colors"
-          >
-            <Search className="w-5 h-5" />
-          </button>
+          <div className="relative">
+            <button 
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              aria-label="Search chargers"
+              className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isSearchOpen ? 'bg-[#0A1E3F] text-white' : 'hover:text-[#0A1E3F] hover:bg-[#152B52]/5'}`}
+            >
+              {isSearchOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+            </button>
+          </div>
 
-          <button 
-            aria-label="Account"
-            className="hidden sm:flex items-center gap-2 text-xs font-bold tracking-widest hover:text-[#0A1E3F] py-2 px-3 rounded-lg hover:bg-[#152B52]/5 transition-colors"
-          >
-            <User className="w-4 h-4" />
-            <span className="hidden lg:inline">ACCOUNT</span>
-          </button>
+          {user ? (
+            <button 
+              onClick={() => signOut()}
+              aria-label="Sign Out"
+              className="hidden sm:flex items-center gap-2 text-xs font-bold tracking-widest hover:text-[#0A1E3F] py-2 px-3 rounded-lg hover:bg-[#152B52]/5 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden lg:inline">SIGN OUT</span>
+            </button>
+          ) : (
+            <Link 
+              to="/login"
+              aria-label="Account"
+              className="hidden sm:flex items-center gap-2 text-xs font-bold tracking-widest hover:text-[#0A1E3F] py-2 px-3 rounded-lg hover:bg-[#152B52]/5 transition-colors"
+            >
+              <User className="w-4 h-4" />
+              <span className="hidden lg:inline">ACCOUNT</span>
+            </Link>
+          )}
 
           <Link 
             to="/cart"
@@ -113,6 +163,51 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {/* Search Overlay */}
+      {isSearchOpen && (
+        <div className="absolute top-full left-0 w-full bg-[#FAF7F0] border-b border-[#E2DAC8] shadow-lg overflow-hidden animate-fadeIn pb-4 z-40">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 py-4">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for cars, chargers, or mounts..."
+                className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl pl-12 pr-4 py-4 text-sm font-medium text-[#0A1E3F] focus:outline-none focus:border-[#0A1E3F] transition-colors placeholder:text-gray-500"
+              />
+            </div>
+
+            {searchQuery.trim() !== '' && (
+              <div className="mt-4 max-h-[60vh] overflow-y-auto">
+                {searchResults.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {searchResults.map((item, idx) => (
+                      <Link
+                        key={idx}
+                        to={item.path}
+                        onClick={() => setIsSearchOpen(false)}
+                        className="flex items-center justify-between p-3 rounded-lg hover:bg-[#EBE5D9] transition-colors border border-transparent hover:border-[#D6CDB8]"
+                      >
+                        <span className="font-medium text-[#0A1E3F] text-sm">{item.name}</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0A1E3F]/10 text-[#0A1E3F] uppercase tracking-wider">
+                          {item.tag}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="py-8 text-center text-gray-500 text-sm">
+                    No results found for "{searchQuery}"
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
@@ -172,18 +267,44 @@ export default function Header() {
           </div>
 
           {/* Mobile Footer info */}
-          <div className="pt-4 mt-3 border-t border-[#E2DAC8] flex items-center justify-between text-xs text-gray-600 px-2">
-            <div className="flex items-center gap-1.5">
-              <Shield className="w-4 h-4 text-[#0A1E3F]" />
-              <span>1-Year Replacement Warranty</span>
+          <div className="pt-5 mt-3 border-t border-[#E2DAC8]">
+            <div className="flex flex-col gap-3 mb-4 px-2">
+              {user ? (
+                <button
+                  onClick={() => {
+                    signOut();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 bg-[#152B52]/10 hover:bg-[#152B52]/20 border border-[#0A1E3F]/30 text-[#0A1E3F] py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center gap-2 bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors shadow-md"
+                >
+                  <User className="w-4 h-4" />
+                  Sign In / Register
+                </Link>
+              )}
             </div>
-            <Link 
-              to="/#compatibility" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-[#0A1E3F] font-semibold hover:underline"
-            >
-              Fit Check →
-            </Link>
+            
+            <div className="flex items-center justify-between text-xs text-gray-600 px-2">
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-[#0A1E3F]" />
+                <span>1-Year Replacement Warranty</span>
+              </div>
+              <Link 
+                to="/#compatibility" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[#0A1E3F] font-semibold hover:underline"
+              >
+                Fit Check →
+              </Link>
+            </div>
           </div>
         </div>
       )}

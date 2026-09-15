@@ -14,6 +14,10 @@ import StandAloneMounts from './pages/StandAloneMounts';
 import CartPage from './pages/CartPage';
 import AboutPage from './pages/AboutPage';
 import SupportPage from './pages/SupportPage';
+import LoginPage from './pages/LoginPage';
+import AdminPage from './pages/AdminPage';
+import { AuthProvider } from './context/AuthContext';
+import { InventoryProvider } from './context/InventoryContext';
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -32,28 +36,34 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#0A1E3F] selection:text-[#F4F0E6]">
-        <Header />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/category/all-in-one" element={<AllInOneCombo />} />
-            <Route path="/category/car-combo" element={<CarCombo />} />
-            <Route path="/category/home-office" element={<HomeOfficeCombo />} />
-            <Route path="/category/individual" element={<IndividualChargers />} />
-            <Route path="/category/vehicle-specific" element={<VehicleSpecific />} />
-            <Route path="/category/stand-alone" element={<StandAloneMounts />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/support" element={<SupportPage />} />
-          </Routes>
-        </main>
-        <Footer />
-        <BottomNav />
-      </div>
-    </BrowserRouter>
+    <AuthProvider>
+      <InventoryProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#0A1E3F] selection:text-[#F4F0E6]">
+          <Header />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/category/all-in-one" element={<AllInOneCombo />} />
+              <Route path="/category/car-combo" element={<CarCombo />} />
+              <Route path="/category/home-office" element={<HomeOfficeCombo />} />
+              <Route path="/category/individual" element={<IndividualChargers />} />
+              <Route path="/category/vehicle-specific" element={<VehicleSpecific />} />
+              <Route path="/category/stand-alone" element={<StandAloneMounts />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/support" element={<SupportPage />} />
+              <Route path="/admin_quickdoc" element={<AdminPage />} />
+            </Routes>
+          </main>
+          <Footer />
+          <BottomNav />
+        </div>
+      </BrowserRouter>
+      </InventoryProvider>
+    </AuthProvider>
   );
 }

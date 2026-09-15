@@ -1,12 +1,40 @@
 import React, { useState } from 'react';
 import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import leftMountImg from '../assets/images/m1.png';
 
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+};
+
 export default function CartPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [couponCode, setCouponCode] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [checkoutStep, setCheckoutStep] = useState<'CART' | 'ADDRESS' | 'SUCCESS'>('CART');
+  const [addressDetails, setAddressDetails] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    addressLine: '',
+    state: '',
+    country: 'India',
+    pincode: ''
+  });
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -53,10 +81,132 @@ export default function CartPage() {
     setCouponCode('');
   };
 
+  const addTestItem = () => {
+    setCartItems([
+      {
+        id: 999,
+        name: 'Razorpay Test Transaction',
+        variant: 'Payment Testing',
+        price: 5,
+        originalPrice: 5,
+        quantity: 1,
+        image: 'https://placehold.co/150x150/0A1E3F/F4F0E6?text=TEST'
+      }
+    ]);
+    setCouponApplied(false);
+    setCouponCode('');
+  };
+
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const discount = couponApplied ? Math.floor(subtotal * 0.1) : 0; // 10% off for example
-  const shipping = subtotal > 999 ? 0 : 150;
+  const shipping = (subtotal > 999 || subtotal === 5) ? 0 : 150;
   const total = subtotal - discount + shipping;
+
+  const handleCheckout = async () => {
+    if (!user) {
+      navigate('/login', { state: { from: { pathname: '/cart' } } });
+      return;
+    }
+
+    if (checkoutStep === 'CART') {
+      // Pre-fill email from user if not set
+      if (!addressDetails.email) {
+        setAddressDetails(prev => ({ ...prev, email: user.email || '' }));
+      }
+      setCheckoutStep('ADDRESS');
+      return;
+    }
+
+    // Basic validation before payment
+    if (!addressDetails.name || !addressDetails.phone || !addressDetails.addressLine || !addressDetails.state || !addressDetails.pincode) {
+      alert("Please fill in all required address fields");
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const res = await loadRazorpayScript();
+      
+      if (!res) {
+        alert("Razorpay SDK failed to load. Are you online?");
+        setIsProcessing(false);
+        return;
+      }
+
+      // Hit our own backend API to generate order
+      const result = await fetch("/api/create-razorpay-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: total,
+        }),
+      });
+
+      if (!result.ok) {
+        throw new Error("Failed to create order on backend");
+      }
+
+      const { amount, id: order_id, currency, key_id } = await result.json();
+
+      const options = {
+        key: key_id,
+        amount: amount.toString(),
+        currency: currency,
+        name: "QICDOCK",
+        description: "Your Order",
+        order_id: order_id,
+        handler: async function (response: any) {
+          // Send confirmation to backend to dispatch email
+          try {
+            await fetch("/api/confirm-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                paymentId: response.razorpay_payment_id,
+                amount: total,
+                email: addressDetails.email,
+                shippingDetails: addressDetails
+              })
+            });
+          } catch (e) {
+            console.error("Failed to send email confirmation", e);
+          }
+          
+          setCheckoutStep('SUCCESS');
+          setCartItems([]);
+          window.scrollTo(0, 0);
+        },
+        prefill: {
+          name: addressDetails.name || user?.user_metadata?.full_name || "Customer",
+          email: addressDetails.email || user?.email || "",
+          contact: addressDetails.phone || "9999999999",
+        },
+        notes: {
+          address: `${addressDetails.addressLine}, ${addressDetails.pincode}`,
+        },
+        theme: {
+          color: "#0A1E3F",
+        },
+      };
+
+      const paymentObject = new (window as any).Razorpay(options);
+      
+      paymentObject.on('payment.failed', function (response: any) {
+        console.error("Payment Failed", response.error);
+        alert(`Payment Failed: ${response.error.description}`);
+        setIsProcessing(false);
+      });
+
+      paymentObject.open();
+
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong opening checkout!");
+      setIsProcessing(false);
+    }
+  };
 
   const suggestions = [
     {
@@ -78,17 +228,33 @@ export default function CartPage() {
       <div className="max-w-[1400px] mx-auto">
         
         {/* Breadcrumb / Back */}
-        <div className="mb-6">
-          <Link to="/" className="text-sm font-medium text-gray-600 hover:text-[#0A1E3F] transition-colors flex items-center gap-2">
-            ← Continue Shopping
-          </Link>
-        </div>
+        {checkoutStep !== 'SUCCESS' && (
+          <div className="mb-6">
+            <Link to="/" className="text-sm font-medium text-gray-600 hover:text-[#0A1E3F] transition-colors flex items-center gap-2">
+              ← Continue Shopping
+            </Link>
+          </div>
+        )}
 
-        <h1 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mb-8 md:mb-12">
-          Your Cart <span className="text-gray-600">({cartItems.length})</span>
-        </h1>
+        {checkoutStep !== 'SUCCESS' && (
+          <h1 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mb-8 md:mb-12">
+            Your Cart <span className="text-gray-600">({cartItems.length})</span>
+          </h1>
+        )}
 
-        {cartItems.length === 0 ? (
+        {checkoutStep === 'SUCCESS' ? (
+          <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-12 text-center flex flex-col items-center justify-center min-h-[40vh]">
+            <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
+              <CheckCircle2 className="w-10 h-10 text-green-500" />
+            </div>
+            <h2 className="text-3xl font-bold mb-4 font-['Anton'] uppercase tracking-wide">Order Successful!</h2>
+            <p className="text-lg text-gray-700 font-medium mb-2">Thank you for your purchase.</p>
+            <p className="text-gray-600 mb-8 max-w-md">Your payment has been verified and a confirmation email has been sent. <strong className="text-[#0A1E3F]">Your order will be received in 5 days.</strong></p>
+            <Link to="/" className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] py-4 px-8 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors">
+              Return Home
+            </Link>
+          </div>
+        ) : cartItems.length === 0 ? (
           <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-12 text-center flex flex-col items-center justify-center min-h-[40vh]">
             <div className="w-20 h-20 bg-[#0A1E3F]/10 rounded-full flex items-center justify-center mb-6">
               <Trash2 className="w-8 h-8 text-[#0A1E3F]" />
@@ -102,18 +268,21 @@ export default function CartPage() {
         ) : (
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
             
-            {/* Left Col: Cart Items */}
+            {/* Left Col: Cart Items or Address Form */}
             <div className="w-full lg:flex-1 space-y-4 md:space-y-6">
-              {cartItems.map((item) => (
-                <div key={item.id} className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl md:rounded-3xl p-3 sm:p-4 md:p-6 flex flex-row items-start sm:items-center gap-3 sm:gap-4 md:gap-6 relative group hover:border-[#D6CDB8] transition-colors">
-                  
-                  {/* Remove btn (Mobile absolute, desktop standard) */}
-                  <button 
-                    onClick={() => handleRemove(item.id)}
-                    className="absolute top-3 right-3 sm:static sm:order-last w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-[#152B52]/5 hover:bg-red-500/20 text-gray-600 hover:text-red-500 transition-colors z-10"
-                  >
-                    <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  </button>
+              
+              {checkoutStep === 'CART' ? (
+                // Cart Items List
+                cartItems.map((item) => (
+                  <div key={item.id} className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl md:rounded-3xl p-3 sm:p-4 md:p-6 flex flex-row items-start sm:items-center gap-3 sm:gap-4 md:gap-6 relative group hover:border-[#D6CDB8] transition-colors">
+                    
+                    {/* Remove btn (Mobile absolute, desktop standard) */}
+                    <button 
+                      onClick={() => handleRemove(item.id)}
+                      className="absolute top-3 right-3 sm:static sm:order-last w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-[#152B52]/5 hover:bg-red-500/20 text-gray-600 hover:text-red-500 transition-colors z-10"
+                    >
+                      <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
 
                   <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-[#EBE5D9] rounded-xl border border-[#D6CDB8] flex items-center justify-center overflow-hidden shrink-0">
                     <img src={item.image} alt={item.name} className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform" />
@@ -156,7 +325,96 @@ export default function CartPage() {
                   </div>
 
                 </div>
-              ))}
+              ))
+              ) : (
+                // Address Form
+                <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl md:rounded-3xl p-6 md:p-8">
+                  <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-xl md:text-2xl font-bold font-['Anton'] uppercase tracking-wide">Shipping Address</h2>
+                    <button 
+                      onClick={() => setCheckoutStep('CART')}
+                      className="text-xs font-bold uppercase tracking-widest text-gray-600 hover:text-[#0A1E3F]"
+                    >
+                      Edit Cart
+                    </button>
+                  </div>
+
+                  <form className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">Full Name *</label>
+                        <input 
+                          type="text" required
+                          value={addressDetails.name}
+                          onChange={e => setAddressDetails(p => ({ ...p, name: e.target.value }))}
+                          className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">Phone Number *</label>
+                        <input 
+                          type="tel" required
+                          value={addressDetails.phone}
+                          onChange={e => setAddressDetails(p => ({ ...p, phone: e.target.value }))}
+                          className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">Email Address *</label>
+                      <input 
+                        type="email" required
+                        value={addressDetails.email}
+                        onChange={e => setAddressDetails(p => ({ ...p, email: e.target.value }))}
+                        className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">Address *</label>
+                      <input 
+                        type="text" required
+                        value={addressDetails.addressLine}
+                        onChange={e => setAddressDetails(p => ({ ...p, addressLine: e.target.value }))}
+                        className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                        placeholder="Street address, apartment, suite"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">State *</label>
+                        <input 
+                          type="text" required
+                          value={addressDetails.state}
+                          onChange={e => setAddressDetails(p => ({ ...p, state: e.target.value }))}
+                          className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">PIN Code *</label>
+                        <input 
+                          type="text" required
+                          value={addressDetails.pincode}
+                          onChange={e => setAddressDetails(p => ({ ...p, pincode: e.target.value }))}
+                          className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">Country *</label>
+                      <input 
+                        type="text" required
+                        value={addressDetails.country}
+                        readOnly
+                        className="w-full bg-[#EBE5D9]/50 border border-[#D6CDB8]/50 rounded-xl px-4 py-3 text-sm font-medium text-gray-500 cursor-not-allowed"
+                      />
+                    </div>
+                  </form>
+                </div>
+              )}
             </div>
 
             {/* Right Col: Summary & Checkout */}
@@ -232,9 +490,13 @@ export default function CartPage() {
                   <p className="text-right text-xs text-gray-600 mt-1">Includes GST</p>
                 </div>
 
-                <button className="w-full bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-[0_5px_20px_rgba(4,217,255,0.3)] transition-colors flex justify-center items-center gap-2 mb-4">
-                  Proceed to Checkout
-                  <ArrowRight className="w-4 h-4" />
+                <button 
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                  className="w-full bg-[#0A1E3F] hover:bg-[#152B52] disabled:opacity-70 disabled:cursor-not-allowed text-[#F4F0E6] py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-[0_5px_20px_rgba(4,217,255,0.3)] transition-colors flex justify-center items-center gap-2 mb-4"
+                >
+                  {isProcessing ? 'Processing...' : checkoutStep === 'CART' ? 'Proceed to Checkout' : 'Pay Now'}
+                  {!isProcessing && <ArrowRight className="w-4 h-4" />}
                 </button>
                 
                 <div className="flex items-center justify-center gap-2 text-gray-600 text-[10px] uppercase font-bold tracking-widest">
@@ -243,7 +505,7 @@ export default function CartPage() {
               </div>
 
               {/* Value Props under summary */}
-              <div className="grid grid-cols-2 gap-4 mt-6">
+              <div className="grid grid-cols-2 gap-4 mt-6 mb-6">
                 <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-xl p-3 flex flex-col items-center justify-center text-center gap-2">
                   <Truck className="w-5 h-5 text-gray-600" />
                   <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">Free Express<br/>Shipping</span>
@@ -252,6 +514,19 @@ export default function CartPage() {
                   <ShieldCheck className="w-5 h-5 text-gray-600" />
                   <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">1-Year Hardware<br/>Warranty</span>
                 </div>
+              </div>
+
+              {/* Developer Test Tools */}
+              <div className="bg-[#152B52]/5 border border-[#152B52]/20 rounded-xl p-4">
+                <p className="text-[10px] font-bold text-[#0A1E3F] uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5" /> Developer Testing
+                </p>
+                <button 
+                  onClick={addTestItem}
+                  className="w-full bg-white hover:bg-gray-50 text-[#0A1E3F] py-3 rounded-lg font-bold uppercase tracking-widest text-xs border border-[#D6CDB8] transition-colors shadow-sm"
+                >
+                  Load ₹5 Test Item
+                </button>
               </div>
 
             </div>
