@@ -73,8 +73,11 @@ export default function OrdersPage() {
                 </div>
               </div>
               
-              <div className="bg-gray-50 p-4 border-t border-[#EBE5D9] flex justify-end">
-                <span className="text-xs text-gray-400 font-medium flex items-center gap-1">
+              <div className="bg-gray-50 p-4 border-t border-[#EBE5D9] flex justify-between items-center text-xs text-gray-500">
+                <span className="font-medium">
+                  Payment Method: <strong className="text-[#0A1E3F]">{order.paymentGateway || 'Razorpay'}</strong>
+                </span>
+                <span className="font-medium">
                   Payment ID: {order.paymentId || 'N/A'}
                 </span>
               </div>

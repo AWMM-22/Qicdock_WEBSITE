@@ -74,16 +74,82 @@ async function startServer() {
     }
   });
 
+  // Cashfree API Routes
+  app.post("/api/create-cashfree-order", async (req, res) => {
+    try {
+      const { amount, customerName, customerEmail, customerPhone } = req.body;
+      const appId = process.env.CASHFREE_APP_ID;
+      const secretKey = process.env.CASHFREE_SECRET_KEY;
+      const env = process.env.CASHFREE_ENV || "TEST";
+
+      if (!appId || !secretKey) {
+        return res.status(500).json({ 
+          error: "Cashfree credentials are not configured. Please add CASHFREE_APP_ID and CASHFREE_SECRET_KEY in .env." 
+        });
+      }
+
+      const isProduction = env.toUpperCase() === "PRODUCTION" || env.toUpperCase() === "PROD";
+      const baseUrl = isProduction
+        ? "https://api.cashfree.com/pg/orders"
+        : "https://sandbox.cashfree.com/pg/orders";
+
+      let phone = (customerPhone || "9999999999").replace(/\D/g, "");
+      if (phone.length < 10) phone = "9999999999";
+      if (phone.length > 10) phone = phone.slice(-10);
+
+      const orderId = `order_${Date.now()}`;
+      const payload = {
+        order_id: orderId,
+        order_amount: Number(amount),
+        order_currency: "INR",
+        customer_details: {
+          customer_id: `cust_${Date.now()}`,
+          customer_name: customerName || "Customer",
+          customer_email: customerEmail || "customer@example.com",
+          customer_phone: phone
+        }
+      };
+
+      const response = await fetch(baseUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-client-id": appId,
+          "x-client-secret": secretKey,
+          "x-api-version": "2023-08-01"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data: any = await response.json();
+
+      if (!response.ok) {
+        console.error("Cashfree Order Creation Failed:", data);
+        return res.status(response.status).json({ 
+          error: data.message || "Failed to create Cashfree order" 
+        });
+      }
+
+      res.json({
+        payment_session_id: data.payment_session_id,
+        order_id: data.order_id,
+        environment: isProduction ? "production" : "sandbox"
+      });
+    } catch (error: any) {
+      console.error("Cashfree Error:", error);
+      res.status(500).json({ error: error.message || "Failed to create Cashfree order" });
+    }
+  });
+
   app.post("/api/confirm-payment", async (req, res) => {
     try {
-      const { paymentId, shippingDetails, amount, email } = req.body;
-
-      // In a real app, verify the Razorpay signature here using crypto
+      const { paymentId, paymentGateway = "Razorpay", shippingDetails, amount, email } = req.body;
 
       // Save order to in-memory array
       const newOrder = {
         id: `ord_${Date.now()}`,
         paymentId,
+        paymentGateway,
         amount,
         email,
         shippingDetails,
@@ -116,6 +182,7 @@ async function startServer() {
               
               <div style="background: #FAF7F0; padding: 15px; border-radius: 8px; margin: 20px 0;">
                 <h3 style="margin-top: 0;">Order Details</h3>
+                <p><strong>Payment Method:</strong> ${paymentGateway}</p>
                 <p><strong>Payment ID:</strong> ${paymentId}</p>
                 <p><strong>Amount Paid:</strong> ₹${amount}</p>
               </div>
@@ -139,7 +206,7 @@ async function startServer() {
         console.warn("SMTP credentials not found, skipping confirmation email.");
       }
 
-      res.json({ success: true });
+      res.json({ success: true, order: newOrder });
     } catch (error: any) {
       console.error("Confirmation Error:", error);
       res.status(500).json({ error: error.message || "Failed to confirm payment" });

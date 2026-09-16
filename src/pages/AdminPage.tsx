@@ -145,7 +145,9 @@ export default function AdminPage() {
                       <p className="text-lg font-bold text-green-600">₹{order.amount}</p>
                     </div>
                   </div>
-                  <div className="border-t border-[#EBE5D9] my-2 pt-2">
+                  <div className="border-t border-[#EBE5D9] my-2 pt-2 space-y-1">
+                    <p className="text-sm"><strong>Gateway:</strong> <span className="bg-blue-50 text-blue-800 text-xs px-2 py-0.5 rounded font-bold">{order.paymentGateway || 'Razorpay'}</span></p>
+                    <p className="text-sm"><strong>Payment ID:</strong> {order.paymentId || 'N/A'}</p>
                     <p className="text-sm"><strong>Email:</strong> {order.email}</p>
                     <p className="text-sm"><strong>Name:</strong> {order.shippingDetails?.name}</p>
                     <p className="text-xs text-gray-600 mt-1">{order.shippingDetails?.addressLine}, {order.shippingDetails?.state} {order.shippingDetails?.pincode}</p>

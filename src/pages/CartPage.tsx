@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2 } from 'lucide-react';
+import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2, CreditCard } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
@@ -7,8 +7,30 @@ import leftMountImg from '../assets/images/m1.png';
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
+    if ((window as any).Razorpay) {
+      resolve(true);
+      return;
+    }
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+};
+
+const loadCashfreeScript = () => {
+  return new Promise((resolve) => {
+    if ((window as any).Cashfree) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
     script.onload = () => {
       resolve(true);
     };
@@ -26,6 +48,7 @@ export default function CartPage() {
   const [couponApplied, setCouponApplied] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState<'CART' | 'ADDRESS' | 'SUCCESS'>('CART');
+  const [paymentGateway, setPaymentGateway] = useState<'razorpay' | 'cashfree'>('razorpay');
   const [addressDetails, setAddressDetails] = useState({
     name: '',
     email: '',
@@ -85,7 +108,7 @@ export default function CartPage() {
     setCartItems([
       {
         id: 999,
-        name: 'Razorpay Test Transaction',
+        name: 'Payment Test Transaction',
         variant: 'Payment Testing',
         price: 5,
         originalPrice: 5,
@@ -101,6 +124,42 @@ export default function CartPage() {
   const discount = couponApplied ? Math.floor(subtotal * 0.1) : 0; // 10% off for example
   const shipping = (subtotal > 999 || subtotal === 5) ? 0 : 150;
   const total = subtotal - discount + shipping;
+
+  const processOrderSuccess = async (gateway: string, payId: string) => {
+    try {
+      await fetch("/api/confirm-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentId: payId,
+          paymentGateway: gateway,
+          amount: total,
+          email: addressDetails.email,
+          shippingDetails: addressDetails
+        })
+      });
+    } catch (e) {
+      console.error("Failed to send email confirmation", e);
+    }
+
+    const orderRecord = {
+      id: `ord_${Date.now()}`,
+      date: new Date().toISOString(),
+      items: cartItems,
+      total: total,
+      status: "Processing",
+      paymentGateway: gateway,
+      paymentId: payId
+    };
+    const existingOrders = JSON.parse(localStorage.getItem("quickdoc_orders") || "[]");
+    existingOrders.unshift(orderRecord);
+    localStorage.setItem("quickdoc_orders", JSON.stringify(existingOrders));
+
+    setCheckoutStep('SUCCESS');
+    setCartItems([]);
+    setIsProcessing(false);
+    window.scrollTo(0, 0);
+  };
 
   const handleCheckout = async () => {
     if (!user) {
@@ -124,100 +183,130 @@ export default function CartPage() {
     }
 
     setIsProcessing(true);
-    try {
-      const res = await loadRazorpayScript();
-      
-      if (!res) {
-        alert("Razorpay SDK failed to load. Are you online?");
+
+    if (paymentGateway === 'razorpay') {
+      try {
+        const res = await loadRazorpayScript();
+        
+        if (!res) {
+          alert("Razorpay SDK failed to load. Are you online?");
+          setIsProcessing(false);
+          return;
+        }
+
+        // Hit our own backend API to generate order
+        const result = await fetch("/api/create-razorpay-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: total,
+          }),
+        });
+
+        if (!result.ok) {
+          const errData = await result.json();
+          throw new Error(errData.error || "Failed to create order on backend");
+        }
+
+        const { amount, id: order_id, currency, key_id } = await result.json();
+
+        const options = {
+          key: key_id,
+          amount: amount.toString(),
+          currency: currency,
+          name: "QICDOCK",
+          description: "Your Order",
+          order_id: order_id,
+          handler: function (response: any) {
+            processOrderSuccess('Razorpay', response.razorpay_payment_id);
+          },
+          prefill: {
+            name: addressDetails.name || user?.user_metadata?.full_name || "Customer",
+            email: addressDetails.email || user?.email || "",
+            contact: addressDetails.phone || "9999999999",
+          },
+          notes: {
+            address: `${addressDetails.addressLine}, ${addressDetails.pincode}`,
+          },
+          theme: {
+            color: "#0A1E3F",
+          },
+        };
+
+        const paymentObject = new (window as any).Razorpay(options);
+        
+        paymentObject.on('payment.failed', function (response: any) {
+          console.error("Payment Failed", response.error);
+          alert(`Payment Failed: ${response.error.description}`);
+          setIsProcessing(false);
+        });
+
+        paymentObject.open();
+
+      } catch (err: any) {
+        console.error(err);
+        alert(err.message || "Something went wrong opening checkout!");
         setIsProcessing(false);
-        return;
       }
+    } else if (paymentGateway === 'cashfree') {
+      try {
+        const res = await loadCashfreeScript();
+        
+        if (!res) {
+          alert("Cashfree SDK failed to load. Are you online?");
+          setIsProcessing(false);
+          return;
+        }
 
-      // Hit our own backend API to generate order
-      const result = await fetch("/api/create-razorpay-order", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: total,
-        }),
-      });
+        const result = await fetch("/api/create-cashfree-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: total,
+            customerName: addressDetails.name,
+            customerEmail: addressDetails.email,
+            customerPhone: addressDetails.phone
+          }),
+        });
 
-      if (!result.ok) {
-        throw new Error("Failed to create order on backend");
-      }
+        if (!result.ok) {
+          const errData = await result.json();
+          throw new Error(errData.error || "Failed to create Cashfree order on backend");
+        }
 
-      const { amount, id: order_id, currency, key_id } = await result.json();
+        const { payment_session_id, order_id, environment } = await result.json();
 
-      const options = {
-        key: key_id,
-        amount: amount.toString(),
-        currency: currency,
-        name: "QICDOCK",
-        description: "Your Order",
-        order_id: order_id,
-        handler: async function (response: any) {
-          // Send confirmation to backend to dispatch email
-          try {
-            await fetch("/api/confirm-payment", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                paymentId: response.razorpay_payment_id,
-                amount: total,
-                email: addressDetails.email,
-                shippingDetails: addressDetails
-              })
-            });
-          } catch (e) {
-            console.error("Failed to send email confirmation", e);
+        const cashfree = (window as any).Cashfree({ mode: environment || "sandbox" });
+        
+        cashfree.checkout({
+          paymentSessionId: payment_session_id,
+          redirectTarget: "_modal"
+        }).then((result: any) => {
+          if (result.error) {
+            console.error("Cashfree Payment Failed/Cancelled:", result.error);
+            alert(`Cashfree Payment: ${result.error.message || "Cancelled or failed"}`);
+            setIsProcessing(false);
+          } else if (result.paymentDetails) {
+            processOrderSuccess('Cashfree', order_id);
+          } else if (result.redirect) {
+            console.log("Cashfree redirecting...");
+          } else {
+            processOrderSuccess('Cashfree', order_id);
           }
-          // Save order locally for user history
-          const orderRecord = {
-            id: `ord_${Date.now()}`,
-            date: new Date().toISOString(),
-            items: cartItems,
-            total: total,
-            status: "Processing",
-            paymentId: response.razorpay_payment_id
-          };
-          const existingOrders = JSON.parse(localStorage.getItem("quickdoc_orders") || "[]");
-          existingOrders.unshift(orderRecord);
-          localStorage.setItem("quickdoc_orders", JSON.stringify(existingOrders));
+        }).catch((err: any) => {
+          console.error("Cashfree Checkout error:", err);
+          setIsProcessing(false);
+        });
 
-          
-          setCheckoutStep('SUCCESS');
-          setCartItems([]);
-          window.scrollTo(0, 0);
-        },
-        prefill: {
-          name: addressDetails.name || user?.user_metadata?.full_name || "Customer",
-          email: addressDetails.email || user?.email || "",
-          contact: addressDetails.phone || "9999999999",
-        },
-        notes: {
-          address: `${addressDetails.addressLine}, ${addressDetails.pincode}`,
-        },
-        theme: {
-          color: "#0A1E3F",
-        },
-      };
-
-      const paymentObject = new (window as any).Razorpay(options);
-      
-      paymentObject.on('payment.failed', function (response: any) {
-        console.error("Payment Failed", response.error);
-        alert(`Payment Failed: ${response.error.description}`);
+      } catch (err: any) {
+        console.error(err);
+        alert(err.message || "Something went wrong opening Cashfree checkout!");
         setIsProcessing(false);
-      });
-
-      paymentObject.open();
-
-    } catch (err) {
-      console.error(err);
-      alert("Something went wrong opening checkout!");
-      setIsProcessing(false);
+      }
     }
   };
 
@@ -425,6 +514,75 @@ export default function CartPage() {
                         className="w-full bg-[#EBE5D9]/50 border border-[#D6CDB8]/50 rounded-xl px-4 py-3 text-sm font-medium text-gray-500 cursor-not-allowed"
                       />
                     </div>
+
+                    {/* Payment Method Selector */}
+                    <div className="mt-8 pt-6 border-t border-[#D6CDB8]">
+                      <h3 className="text-sm font-bold text-[#0A1E3F] uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <CreditCard className="w-4 h-4 text-[#0A1E3F]" /> Select Payment Method
+                      </h3>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* Razorpay Option */}
+                        <div 
+                          onClick={() => setPaymentGateway('razorpay')}
+                          className={`cursor-pointer border-2 rounded-2xl p-4 flex flex-col justify-between transition-all ${
+                            paymentGateway === 'razorpay' 
+                              ? 'border-[#0A1E3F] bg-[#0A1E3F]/5 shadow-sm' 
+                              : 'border-[#D6CDB8] bg-[#EBE5D9]/40 hover:border-gray-400'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2.5 font-bold text-[#0A1E3F] text-sm sm:text-base">
+                              <input 
+                                type="radio" 
+                                name="paymentGateway" 
+                                value="razorpay" 
+                                checked={paymentGateway === 'razorpay'} 
+                                onChange={() => setPaymentGateway('razorpay')}
+                                className="accent-[#0A1E3F] w-4 h-4"
+                              />
+                              Razorpay
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                              UPI / Cards
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-600 pl-6">
+                            Pay securely using UPI (GPay, PhonePe), Credit/Debit Cards, Netbanking & Wallets.
+                          </p>
+                        </div>
+
+                        {/* Cashfree Option */}
+                        <div 
+                          onClick={() => setPaymentGateway('cashfree')}
+                          className={`cursor-pointer border-2 rounded-2xl p-4 flex flex-col justify-between transition-all ${
+                            paymentGateway === 'cashfree' 
+                              ? 'border-[#0A1E3F] bg-[#0A1E3F]/5 shadow-sm' 
+                              : 'border-[#D6CDB8] bg-[#EBE5D9]/40 hover:border-gray-400'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2.5 font-bold text-[#0A1E3F] text-sm sm:text-base">
+                              <input 
+                                type="radio" 
+                                name="paymentGateway" 
+                                value="cashfree" 
+                                checked={paymentGateway === 'cashfree'} 
+                                onChange={() => setPaymentGateway('cashfree')}
+                                className="accent-[#0A1E3F] w-4 h-4"
+                              />
+                              Cashfree
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-teal-100 text-teal-800">
+                              UPI / Pay Later
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-600 pl-6">
+                            Fast checkout via Cashfree Payments using UPI, Cards, Netbanking & Pay Later.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </form>
                 </div>
               )}
@@ -508,7 +666,7 @@ export default function CartPage() {
                   disabled={isProcessing}
                   className="w-full bg-[#0A1E3F] hover:bg-[#152B52] disabled:opacity-70 disabled:cursor-not-allowed text-[#F4F0E6] py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-[0_5px_20px_rgba(4,217,255,0.3)] transition-colors flex justify-center items-center gap-2 mb-4"
                 >
-                  {isProcessing ? 'Processing...' : checkoutStep === 'CART' ? 'Proceed to Checkout' : 'Pay Now'}
+                  {isProcessing ? 'Processing...' : checkoutStep === 'CART' ? 'Proceed to Checkout' : `Pay via ${paymentGateway === 'cashfree' ? 'Cashfree' : 'Razorpay'}`}
                   {!isProcessing && <ArrowRight className="w-4 h-4" />}
                 </button>
                 
