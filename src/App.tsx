@@ -58,6 +58,7 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/support" element={<SupportPage />} />
               <Route path="/orders" element={<OrdersPage />} />
+              <Route path="/admin_qicdock" element={<AdminPage />} />
               <Route path="/admin_quickdoc" element={<AdminPage />} />
             </Routes>
           </main>
