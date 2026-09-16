@@ -126,8 +126,9 @@ export default function CartPage() {
   const total = subtotal - discount + shipping;
 
   const processOrderSuccess = async (gateway: string, payId: string) => {
+    let confirmedOrder: any = null;
     try {
-      await fetch("/api/confirm-payment", {
+      const res = await fetch("/api/confirm-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -135,21 +136,31 @@ export default function CartPage() {
           paymentGateway: gateway,
           amount: total,
           email: addressDetails.email,
-          shippingDetails: addressDetails
+          shippingDetails: addressDetails,
+          items: cartItems
         })
       });
+      if (res.ok) {
+        const data = await res.json();
+        confirmedOrder = data.order;
+      }
     } catch (e) {
-      console.error("Failed to send email confirmation", e);
+      console.error("Failed to confirm payment / Shiprocket", e);
     }
 
     const orderRecord = {
-      id: `ord_${Date.now()}`,
-      date: new Date().toISOString(),
+      id: confirmedOrder?.id || `ord_${Date.now()}`,
+      date: confirmedOrder?.date || new Date().toISOString(),
       items: cartItems,
       total: total,
-      status: "Processing",
+      status: confirmedOrder?.status || "Processing",
       paymentGateway: gateway,
-      paymentId: payId
+      paymentId: payId,
+      awbCode: confirmedOrder?.awbCode || null,
+      courierName: confirmedOrder?.courierName || null,
+      trackingUrl: confirmedOrder?.trackingUrl || null,
+      shiprocketOrderId: confirmedOrder?.shiprocketOrderId || null,
+      shiprocketShipmentId: confirmedOrder?.shiprocketShipmentId || null
     };
     const existingOrders = JSON.parse(localStorage.getItem("quickdoc_orders") || "[]");
     existingOrders.unshift(orderRecord);
