@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useInventory } from '../context/InventoryContext';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import rightMountImg from '../assets/images/right_car_mount_1788721169113.jpg';
 import leftMountImg from '../assets/images/left_car_mount_1788721155876.jpg';
@@ -46,6 +47,9 @@ const carAddons: Addon[] = [
 ];
 
 export default function CarCombo() {
+  const { isSoldOut } = useInventory();
+  const comboSoldOut = isSoldOut('car-combo');
+
   const [selectedAddons, setSelectedAddons] = useState<string[]>(
     carAddons.map(a => a.id)
   );
@@ -304,9 +308,16 @@ export default function CarCombo() {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(4,217,255,0.3)] flex items-center justify-center gap-2 cursor-pointer"
+                disabled={comboSoldOut}
+                className={`w-full font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
+                  comboSoldOut
+                    ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed shadow-none'
+                    : 'bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] shadow-[0_0_25px_rgba(4,217,255,0.3)] cursor-pointer'
+                }`}
               >
-                {addedToCart ? (
+                {comboSoldOut ? (
+                  <span>Sold Out Currently</span>
+                ) : addedToCart ? (
                   <>
                     <CheckCircle2 className="w-5 h-5 text-[#F4F0E6]" />
                     <span>Added To Cart Successfully!</span>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Plus, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useInventory } from '../context/InventoryContext';
 import rightMountImg from '../assets/images/m3.png';
 import leftMountImg from '../assets/images/m1.png';
 import airVentImg from '../assets/images/right_car_mount_1788721169113.jpg';
@@ -81,6 +82,7 @@ const standaloneBases: MountItem[] = [
 ];
 
 export default function StandAloneMounts() {
+  const { isSoldOut } = useInventory();
   const [selectedFilter, setSelectedFilter] = useState<string>('All');
   const [addedItems, setAddedItems] = useState<{ [key: string]: boolean }>({});
 
@@ -198,16 +200,29 @@ export default function StandAloneMounts() {
                         ₹{item.price}
                       </span>
                     </div>
-                    <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                      Save ₹{item.originalPrice - item.price}
-                    </span>
+                    {isSoldOut(item.id) ? (
+                      <span className="text-[11px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+                        Sold Out
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                        Save ₹{item.originalPrice - item.price}
+                      </span>
+                    )}
                   </div>
 
                   <button
                     onClick={() => handleAddToCart(item.id)}
-                    className="w-full bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                    disabled={isSoldOut(item.id)}
+                    className={`w-full font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-sm ${
+                      isSoldOut(item.id)
+                        ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
+                        : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
+                    }`}
                   >
-                    {isAdded ? (
+                    {isSoldOut(item.id) ? (
+                      <span>Sold Out Currently</span>
+                    ) : isAdded ? (
                       <>
                         <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                         <span>Added to Cart!</span>

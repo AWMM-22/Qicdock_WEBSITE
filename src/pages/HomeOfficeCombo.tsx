@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, MonitorSmartphone, RotateCcw, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useInventory } from '../context/InventoryContext';
 import rightMountImg from '../assets/images/m3.png';
 import leftMountImg from '../assets/images/m1.png';
 import tableStandImg from '../assets/images/m3.png'; // Using available images
@@ -38,6 +39,9 @@ const workstationAddons: Addon[] = [
 ];
 
 export default function HomeOfficeCombo() {
+  const { isSoldOut } = useInventory();
+  const comboSoldOut = isSoldOut('home-office-combo');
+
   const [selectedAddons, setSelectedAddons] = useState<string[]>(
     workstationAddons.map(a => a.id)
   );
@@ -274,9 +278,16 @@ export default function HomeOfficeCombo() {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 shadow-[0_0_25px_rgba(4,217,255,0.3)] flex items-center justify-center gap-2 cursor-pointer"
+                disabled={comboSoldOut}
+                className={`w-full font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
+                  comboSoldOut
+                    ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed shadow-none'
+                    : 'bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] shadow-[0_0_25px_rgba(4,217,255,0.3)] cursor-pointer'
+                }`}
               >
-                {addedToCart ? (
+                {comboSoldOut ? (
+                  <span>Sold Out Currently</span>
+                ) : addedToCart ? (
                   <>
                     <CheckCircle2 className="w-5 h-5 text-[#F4F0E6]" />
                     <span>Added To Cart Successfully!</span>

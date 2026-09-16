@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Search, Car, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useInventory } from '../context/InventoryContext';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
@@ -33,6 +34,7 @@ const vehicleModels: CarModel[] = [
 ];
 
 export default function VehicleSpecific() {
+  const { isSoldOut } = useInventory();
   const [selectedBrand, setSelectedBrand] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [addedItems, setAddedItems] = useState<{ [key: string]: boolean }>({});
@@ -177,16 +179,23 @@ export default function VehicleSpecific() {
                           ₹{vehicle.price.toLocaleString('en-IN')}
                         </span>
                       </div>
-                      <span className="text-[11px] font-bold text-emerald-400">
-                        In Stock (Ships in 24h)
+                      <span className={`text-[11px] font-bold ${isSoldOut(vehicle.id) ? 'text-red-500' : 'text-emerald-700'}`}>
+                        {isSoldOut(vehicle.id) ? 'Sold Out' : 'In Stock (Ships in 24h)'}
                       </span>
                     </div>
 
                     <button
                       onClick={() => handleAddToCart(vehicle.id)}
-                      className="w-full bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      disabled={isSoldOut(vehicle.id)}
+                      className={`w-full font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 ${
+                        isSoldOut(vehicle.id)
+                          ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
+                          : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
+                      }`}
                     >
-                      {isAdded ? (
+                      {isSoldOut(vehicle.id) ? (
+                        <span>Sold Out</span>
+                      ) : isAdded ? (
                         <>
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                           <span>Added to Cart!</span>

@@ -1,5 +1,6 @@
 import { ShieldCheck, Wrench, Magnet, Layers, MonitorSmartphone, Car, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useInventory } from '../context/InventoryContext';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
 import leftMountImg from '../assets/images/m1.png';
@@ -8,6 +9,7 @@ import combinedImg from '../assets/images/3in1 copy.png';
 
 const categoriesData = [
   {
+    productId: "ultimate-kit",
     badgeText: "MOST POPULAR",
     badgeIcon: Layers,
     title: "ALL IN ONE COMBO",
@@ -19,6 +21,7 @@ const categoriesData = [
     link: "/category/all-in-one"
   },
   {
+    productId: "car-combo",
     badgeText: "COCKPIT READY",
     badgeIcon: Car,
     title: "CAR COMBO BUNDLE",
@@ -30,6 +33,7 @@ const categoriesData = [
     link: "/category/car-combo"
   },
   {
+    productId: "home-office-combo",
     badgeText: "WORKSTATION",
     badgeIcon: MonitorSmartphone,
     title: "HOME & OFFICE COMBO",
@@ -41,6 +45,7 @@ const categoriesData = [
     link: "/category/home-office"
   },
   {
+    productId: "individual",
     badgeText: "MODULAR SETUPS",
     badgeIcon: Magnet,
     title: "INDIVIDUAL CHARGERS",
@@ -52,6 +57,7 @@ const categoriesData = [
     link: "/category/individual"
   },
   {
+    productId: "vehicle-specific",
     badgeText: "OEM INTEGRATION",
     badgeIcon: ShieldCheck,
     title: "VEHICLE SPECIFIC DOCKS",
@@ -63,6 +69,7 @@ const categoriesData = [
     link: "/category/vehicle-specific"
   },
   {
+    productId: "stand-alone",
     badgeText: "MODULAR EXPANSION",
     badgeIcon: Wrench,
     title: "STAND-ALONE MOUNTS",
@@ -76,6 +83,7 @@ const categoriesData = [
 ];
 
 export default function CategoriesPage() {
+  const { isSoldOut } = useInventory();
   return (
     <div className="w-full py-12 md:py-20 px-4 sm:px-6 lg:px-10 bg-[#F4F0E6] min-h-screen">
       <div className="max-w-[1400px] mx-auto">
@@ -104,76 +112,91 @@ export default function CategoriesPage() {
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
-          {categoriesData.map((cat, idx) => (
-            <Link 
-              to={cat.link} 
-              key={idx} 
-              className="bg-[#FAF7F0] border border-[#0A1E3F]/30 rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative group hover:border-[#0A1E3F]/70 transition-all duration-300 flex flex-row lg:flex-col justify-between p-3 sm:p-6 md:p-8 hover:-translate-y-1 hover:shadow-md gap-3 sm:gap-0"
-            >
-              {/* Background Glow on hover */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#0A1E3F]/5 rounded-full blur-3xl group-hover:bg-[#0A1E3F]/15 transition-all pointer-events-none"></div>
+          {categoriesData.map((cat, idx) => {
+            const soldOut = cat.productId ? isSoldOut(cat.productId) : false;
+            return (
+              <Link 
+                to={cat.link} 
+                key={idx} 
+                className={`bg-[#FAF7F0] border rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative group transition-all duration-300 flex flex-row lg:flex-col justify-between p-3 sm:p-6 md:p-8 hover:-translate-y-1 hover:shadow-md gap-3 sm:gap-0 ${
+                  soldOut ? 'border-red-300 opacity-90' : 'border-[#0A1E3F]/30 hover:border-[#0A1E3F]/70'
+                }`}
+              >
+                {/* Background Glow on hover */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#0A1E3F]/5 rounded-full blur-3xl group-hover:bg-[#0A1E3F]/15 transition-all pointer-events-none"></div>
 
-              {/* Left/Top Row: Badge & Image Preview */}
-              <div className="relative z-10 w-2/5 lg:w-full flex flex-col">
-                <div className="flex flex-col sm:flex-row sm:items-center items-start justify-between gap-1 sm:gap-2 mb-2 sm:mb-6 hidden lg:flex">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[11px] font-bold tracking-wider uppercase">
-                    <cat.badgeIcon className="w-3.5 h-3.5" />
-                    {cat.badgeText}
-                  </span>
-                  <span className="text-[11px] font-bold tracking-wider uppercase text-gray-600 group-hover:text-[#0A1E3F] transition-colors self-end sm:self-auto">
-                    {cat.savings}
-                  </span>
-                </div>
+                {/* Left/Top Row: Badge & Image Preview */}
+                <div className="relative z-10 w-2/5 lg:w-full flex flex-col">
+                  <div className="flex flex-col sm:flex-row sm:items-center items-start justify-between gap-1 sm:gap-2 mb-2 sm:mb-6 hidden lg:flex">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[11px] font-bold tracking-wider uppercase">
+                      <cat.badgeIcon className="w-3.5 h-3.5" />
+                      {cat.badgeText}
+                    </span>
+                    {soldOut ? (
+                      <span className="text-[11px] font-bold tracking-wider uppercase text-red-600 bg-red-100 px-2 py-0.5 rounded border border-red-200">
+                        Sold Out
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-bold tracking-wider uppercase text-gray-600 group-hover:text-[#0A1E3F] transition-colors self-end sm:self-auto">
+                        {cat.savings}
+                      </span>
+                    )}
+                  </div>
 
-                {/* Mobile-only badges (above image) */}
-                <div className="flex lg:hidden flex-col gap-1 mb-2">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[9px] font-bold tracking-wider uppercase self-start">
-                    <cat.badgeIcon className="w-2.5 h-2.5" />
-                    {cat.badgeText}
-                  </span>
-                </div>
-
-                {/* Product Image Stage */}
-                <div className="w-full h-full lg:h-52 min-h-[110px] bg-[#F4F0E6]/80 rounded-xl border border-[#E2DAC8] p-0 flex items-center justify-center lg:mb-6 overflow-hidden flex-1 lg:flex-none">
-                  <img 
-                    src={cat.image} 
-                    alt={cat.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
-                  />
-                </div>
-              </div>
-
-              {/* Right/Bottom Content */}
-              <div className="relative z-10 flex flex-col flex-1 justify-between pt-0 lg:pt-2 border-t-0 lg:border-t border-[#E2DAC8]">
-                <div>
-                  <div className="flex justify-between items-start mb-0.5">
-                    <p className="text-[#0A1E3F] text-[9px] lg:text-xs font-semibold tracking-wider uppercase">
-                      {cat.subtitle}
-                    </p>
-                    <span className="lg:hidden text-[9px] font-bold tracking-wider uppercase text-[#22C55E] self-start mt-0.5">
-                      {cat.savings}
+                  {/* Mobile-only badges (above image) */}
+                  <div className="flex lg:hidden flex-col gap-1 mb-2">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[9px] font-bold tracking-wider uppercase self-start">
+                      <cat.badgeIcon className="w-2.5 h-2.5" />
+                      {cat.badgeText}
                     </span>
                   </div>
-                  <h2 className="text-sm lg:text-2xl font-['Anton'] text-[#0A1E3F] uppercase tracking-wide group-hover:text-[#0A1E3F] transition-colors mb-1 lg:mb-2 leading-tight">
-                    {cat.title}
-                  </h2>
-                  <p className="text-gray-600 text-[10px] lg:text-sm leading-relaxed mb-2 lg:mb-6 line-clamp-2">
-                    {cat.description}
-                  </p>
+
+                  {/* Product Image Stage */}
+                  <div className="w-full h-full lg:h-52 min-h-[110px] bg-[#F4F0E6]/80 rounded-xl border border-[#E2DAC8] p-0 flex items-center justify-center lg:mb-6 overflow-hidden flex-1 lg:flex-none">
+                    <img 
+                      src={cat.image} 
+                      alt={cat.title} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
+                    />
+                  </div>
                 </div>
 
-                <div className="pt-2 lg:pt-4 border-t border-[#E2DAC8] mt-auto flex flex-col gap-1.5 lg:gap-3">
-                  <div className="flex flex-row lg:flex-col justify-between lg:justify-start items-center lg:items-start">
-                    <span className="text-[9px] lg:text-[11px] text-gray-600 uppercase tracking-wider block">Starting at</span>
-                    <span className="text-[11px] lg:text-lg font-bold text-[#0A1E3F] tracking-wide">{cat.price}</span>
+                {/* Right/Bottom Content */}
+                <div className="relative z-10 flex flex-col flex-1 justify-between pt-0 lg:pt-2 border-t-0 lg:border-t border-[#E2DAC8]">
+                  <div>
+                    <div className="flex justify-between items-start mb-0.5">
+                      <p className="text-[#0A1E3F] text-[9px] lg:text-xs font-semibold tracking-wider uppercase">
+                        {cat.subtitle}
+                      </p>
+                      <span className="lg:hidden text-[9px] font-bold tracking-wider uppercase text-[#22C55E] self-start mt-0.5">
+                        {soldOut ? 'Sold Out' : cat.savings}
+                      </span>
+                    </div>
+                    <h2 className="text-sm lg:text-2xl font-['Anton'] text-[#0A1E3F] uppercase tracking-wide group-hover:text-[#0A1E3F] transition-colors mb-1 lg:mb-2 leading-tight">
+                      {cat.title}
+                    </h2>
+                    <p className="text-gray-600 text-[10px] lg:text-sm leading-relaxed mb-2 lg:mb-6 line-clamp-2">
+                      {cat.description}
+                    </p>
                   </div>
-                  <span className="w-full text-center py-1.5 lg:py-2.5 px-2 lg:px-4 rounded-lg lg:rounded-xl bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-[10px] lg:text-xs uppercase tracking-widest transition-all">
-                    Explore
-                  </span>
+
+                  <div className="pt-2 lg:pt-4 border-t border-[#E2DAC8] mt-auto flex flex-col gap-1.5 lg:gap-3">
+                    <div className="flex flex-row lg:flex-col justify-between lg:justify-start items-center lg:items-start">
+                      <span className="text-[9px] lg:text-[11px] text-gray-600 uppercase tracking-wider block">Starting at</span>
+                      <span className="text-[11px] lg:text-lg font-bold text-[#0A1E3F] tracking-wide">{cat.price}</span>
+                    </div>
+                    <span className={`w-full text-center py-1.5 lg:py-2.5 px-2 lg:px-4 rounded-lg lg:rounded-xl font-bold text-[10px] lg:text-xs uppercase tracking-widest transition-all ${
+                      soldOut 
+                        ? 'bg-red-100 text-red-700 hover:bg-red-200' 
+                        : 'bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6]'
+                    }`}>
+                      {soldOut ? 'View (Sold Out)' : 'Explore'}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Bottom Guarantee Banner */}

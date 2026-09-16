@@ -9,25 +9,31 @@ const ALL_PRODUCTS = [
   { id: 'car-combo', name: 'Car Essentials Combo', category: 'Combos' },
   { id: 'home-office-combo', name: 'Home & Office Combo', category: 'Combos' },
   
-  // Individual Chargers / Components
-  { id: 'core-charger', name: 'Magnetic Core Charger', category: 'Chargers' },
-  
-  // Stand-alone Mounts / Components
-  { id: 'car-pad', name: 'Car Console Pad', category: 'Mounts' },
-  { id: 'air-vent', name: 'Air Vent Clip', category: 'Mounts' },
-  { id: 'rear-seat', name: 'Headrest Mount', category: 'Mounts' },
-  { id: 'table-stand', name: 'Table Stand', category: 'Mounts' },
-  { id: 'wall-stand', name: 'Wall Bracket', category: 'Mounts' },
-  { id: 'car-vent', name: 'Car Air Vent Clip (Single)', category: 'Mounts' },
-  { id: 'car-rear', name: 'Car Rear Seat Mount (Single)', category: 'Mounts' },
-  { id: 'wall-charger', name: 'Wall Mount (Single)', category: 'Mounts' },
+  // Individual Chargers / Single Setups
+  { id: 'core-charger', name: 'Magnetic Core Charger', category: 'Individual Chargers' },
+  { id: 'car-pad', name: 'Car Charger + Center Console Pad', category: 'Individual Chargers' },
+  { id: 'car-vent', name: 'Car Air Vent 360° Magnetic Charger', category: 'Individual Chargers' },
+  { id: 'car-rear', name: 'Car Rear Passenger Headrest Charger', category: 'Individual Chargers' },
+  { id: 'table-stand', name: 'Aluminum Table Stand Charger', category: 'Individual Chargers' },
+  { id: 'wall-charger', name: 'Magnetic Wall Mount Charger', category: 'Individual Chargers' },
 
-  // Vehicle Specific
-  { id: 'fronx-charger', name: 'Fronx Wireless Charger', category: 'Vehicle Specific' },
-  { id: 'baleno-charger', name: 'Baleno Wireless Charger', category: 'Vehicle Specific' },
-  { id: 'swift-charger', name: 'Swift Wireless Charger', category: 'Vehicle Specific' },
-  { id: 'ertiga-charger', name: 'Ertiga Wireless Charger', category: 'Vehicle Specific' },
-  { id: 'glanza-charger', name: 'Glanza Wireless Charger', category: 'Vehicle Specific' },
+  // Stand-alone Mounts / Bases
+  { id: 'pad-base', name: 'Car Charging Pad Base', category: 'Mounts & Bases' },
+  { id: 'vent-base', name: 'Air Vent 360° Holder Base', category: 'Mounts & Bases' },
+  { id: 'rear-base', name: 'Rear Seat Headrest Clamp Base', category: 'Mounts & Bases' },
+  { id: 'table-base', name: 'Weighted Table Stand Base', category: 'Mounts & Bases' },
+  { id: 'wall-base', name: 'Magnetic Wall Bracket Base', category: 'Mounts & Bases' },
+
+  // Vehicle Specific Docks
+  { id: '3xo', name: 'Mahindra XUV 3XO Dock', category: 'Vehicle Specific' },
+  { id: 'fronx', name: 'Maruti Suzuki Fronx Dock', category: 'Vehicle Specific' },
+  { id: 'baleno', name: 'Maruti Suzuki Baleno Dock', category: 'Vehicle Specific' },
+  { id: 'taisor', name: 'Toyota Urban Cruiser Taisor Dock', category: 'Vehicle Specific' },
+  { id: 'glanza', name: 'Toyota Glanza Dock', category: 'Vehicle Specific' },
+  { id: 'ertiga', name: 'Maruti Suzuki Ertiga Dock', category: 'Vehicle Specific' },
+  { id: 'swift-2024', name: 'Maruti Suzuki Swift (4th Gen) Dock', category: 'Vehicle Specific' },
+  { id: 'dzire', name: 'Maruti Suzuki Swift Dzire Dock', category: 'Vehicle Specific' },
+  { id: 'universal', name: 'Universal Automotive Pad', category: 'Vehicle Specific' },
 ];
 
 export default function AdminPage() {
