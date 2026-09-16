@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
 import leftMountImg from '../assets/images/m1.png';
@@ -450,43 +450,62 @@ export default function HomePage() {
           
           {/* Header */}
           <div className="flex flex-col items-center text-center space-y-4 mb-10">
+            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 px-3.5 py-1 rounded-full">
+              INTERACTIVE CAR MATCHING ASSISTANT
+            </span>
             <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mt-2">
-              Find Your Car
+              Find Your Car Dock
             </h2>
             <p className="text-gray-600 text-sm md:text-base max-w-lg">
-              Select your vehicle make and model to see 100% fit-guaranteed QICDOCK chargers.
+              Click your car brand below to start the interactive Car Assistant or browse custom-fit models.
             </p>
+
+            {/* Quick Brand Triggers for Chatbot */}
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
+              {[
+                { name: '🏎️ Maruti Suzuki', brand: 'maruti' },
+                { name: '🚗 Toyota', brand: 'toyota' },
+                { name: '🚙 Mahindra', brand: 'mahindra' },
+                { name: '🌐 Universal (All Cars)', brand: 'universal' }
+              ].map((b, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('openCarFinderChatbot', { detail: { brand: b.brand } }));
+                  }}
+                  className="bg-[#FAF7F0] hover:bg-[#0A1E3F] text-[#0A1E3F] hover:text-white border border-[#D6CDB8] hover:border-[#0A1E3F] px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>{b.name}</span>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Selectors */}
-          <div className="bg-[#FAF7F0] rounded-2xl border border-[#E2DAC8] p-4 md:p-6 mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <div className="w-full space-y-2">
-              <label className="text-[10px] font-bold text-gray-600 tracking-wider uppercase px-1">1. Select Make</label>
-              <select 
-                value={selectedMake}
-                onChange={(e) => setSelectedMake(e.target.value)}
-                className="w-full bg-[#F4F0E6] border border-[#D6CDB8] text-[#0A1E3F] text-sm rounded-xl px-4 py-3.5 outline-none focus:border-[#0A1E3F] appearance-none cursor-pointer"
-              >
-                <option value="Maruti Suzuki & Toyota / Universal">Maruti Suzuki & Toyota / Universal</option>
-              </select>
+          {/* Interactive Assistant Launch Banner */}
+          <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-3xl p-6 md:p-8 mb-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+            <div className="space-y-2 text-center md:text-left z-10">
+              <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                AI-Guided Model Matcher
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-['Anton'] text-[#0A1E3F] uppercase">
+                Need Help Matching Your Car?
+              </h3>
+              <p className="text-gray-600 text-xs sm:text-sm max-w-xl">
+                Chat with our assistant to match your exact console cavity and add the 25W Qi2 wireless dock directly to cart in seconds!
+              </p>
             </div>
-            <div className="w-full space-y-2">
-              <label className="text-[10px] font-bold text-gray-600 tracking-wider uppercase px-1">2. Select Model</label>
-              <select 
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-                className="w-full bg-[#F4F0E6] border border-[#D6CDB8] text-[#0A1E3F] text-sm rounded-xl px-4 py-3.5 outline-none focus:border-[#0A1E3F] appearance-none cursor-pointer"
-              >
-                {availableModels.map(model => (
-                  <option key={model} value={model}>{model}</option>
-                ))}
-              </select>
-            </div>
-            <div className="w-full pt-2 md:pt-0">
-              <button className="w-full bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-6 py-3.5 rounded-xl text-xs font-bold tracking-widest uppercase transition-colors cursor-pointer">
-                Show Fit Results &gt;
-              </button>
-            </div>
+
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('openCarFinderChatbot'));
+              }}
+              className="z-10 whitespace-nowrap bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-6 py-4 rounded-2xl text-xs sm:text-sm font-bold tracking-widest uppercase transition-all shadow-[0_0_25px_rgba(4,217,255,0.4)] flex items-center gap-2.5 cursor-pointer transform hover:scale-105"
+            >
+              <Car className="w-5 h-5 text-emerald-400" />
+              <span>Launch Car Assistant ⚡</span>
+            </button>
           </div>
 
           {/* Success Banner */}

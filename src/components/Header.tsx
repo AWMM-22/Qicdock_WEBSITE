@@ -2,16 +2,26 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, Menu, X, ChevronRight, Zap, Shield, Sparkles, LogOut, Package } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getCartCount } from '../lib/cart';
 import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.jpg';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [cartCount, setCartCount] = useState<number>(() => getCartCount());
   const searchInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      setCartCount(getCartCount());
+    };
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
+  }, []);
 
   const navLinks = [
     { name: 'Categories', path: '/categories' },
@@ -158,7 +168,7 @@ export default function Header() {
           >
             <ShoppingBag className="w-5 h-5" />
             <span className="absolute top-1.5 right-1.5 bg-[#0A1E3F] text-[#F4F0E6] text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-[0_0_8px_rgba(4,217,255,0.6)]">
-              2
+              {cartCount}
             </span>
           </Link>
 

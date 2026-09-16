@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2, CreditCard } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getCartItems, saveCartItems } from '../lib/cart';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import leftMountImg from '../assets/images/m1.png';
 
@@ -58,39 +59,53 @@ export default function CartPage() {
     country: 'India',
     pincode: ''
   });
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Ultimate All-in-One Kit',
-      variant: 'Charger + 5 Mounts',
-      price: 2594,
-      originalPrice: 3694,
-      quantity: 1,
-      image: leftMountImg,
-    },
-    {
-      id: 2,
-      name: 'Car Pad Core Mount',
-      variant: 'Universal Fit',
-      price: 899,
-      originalPrice: 1299,
-      quantity: 1,
-      image: centerMountImg,
-    }
-  ]);
-
-  const handleQuantity = (id: number, delta: number) => {
-    setCartItems(prev => prev.map(item => {
-      if (item.id === id) {
-        const newQty = item.quantity + delta;
-        return { ...item, quantity: newQty > 0 ? newQty : 1 };
+  const [cartItems, setCartItems] = useState<any[]>(() => {
+    const saved = getCartItems();
+    if (saved && saved.length > 0) return saved;
+    const initial = [
+      {
+        id: 1,
+        name: 'Ultimate All-in-One Kit',
+        variant: 'Charger + 5 Mounts',
+        price: 2594,
+        originalPrice: 3694,
+        quantity: 1,
+        image: leftMountImg,
+      },
+      {
+        id: 2,
+        name: 'Car Pad Core Mount',
+        variant: 'Universal Fit',
+        price: 899,
+        originalPrice: 1299,
+        quantity: 1,
+        image: centerMountImg,
       }
-      return item;
-    }));
+    ];
+    saveCartItems(initial);
+    return initial;
+  });
+
+  const handleQuantity = (id: any, delta: number) => {
+    setCartItems(prev => {
+      const updated = prev.map(item => {
+        if (item.id === id) {
+          const newQty = item.quantity + delta;
+          return { ...item, quantity: newQty > 0 ? newQty : 1 };
+        }
+        return item;
+      });
+      saveCartItems(updated);
+      return updated;
+    });
   };
 
-  const handleRemove = (id: number) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  const handleRemove = (id: any) => {
+    setCartItems(prev => {
+      const updated = prev.filter(item => item.id !== id);
+      saveCartItems(updated);
+      return updated;
+    });
   };
 
   const applyCoupon = () => {
@@ -168,6 +183,7 @@ export default function CartPage() {
 
     setCheckoutStep('SUCCESS');
     setCartItems([]);
+    saveCartItems([]);
     setIsProcessing(false);
     window.scrollTo(0, 0);
   };

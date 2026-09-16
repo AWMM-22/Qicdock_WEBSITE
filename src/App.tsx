@@ -17,6 +17,7 @@ import SupportPage from './pages/SupportPage';
 import LoginPage from './pages/LoginPage';
 import OrdersPage from "./pages/OrdersPage";
 import AdminPage from './pages/AdminPage';
+import CarFinderChatbot from './components/CarFinderChatbot';
 import { AuthProvider } from './context/AuthContext';
 import { InventoryProvider } from './context/InventoryContext';
 
@@ -64,6 +65,7 @@ export default function App() {
           </main>
           <Footer />
           <BottomNav />
+          <CarFinderChatbot />
         </div>
       </BrowserRouter>
       </InventoryProvider>
