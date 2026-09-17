@@ -123,25 +123,9 @@ export default function CartPage() {
     setCouponCode('');
   };
 
-  const addTestItem = () => {
-    setCartItems([
-      {
-        id: 999,
-        name: 'Payment Test Transaction',
-        variant: 'Payment Testing',
-        price: 5,
-        originalPrice: 5,
-        quantity: 1,
-        image: 'https://placehold.co/150x150/0A1E3F/F4F0E6?text=TEST'
-      }
-    ]);
-    setCouponApplied(false);
-    setCouponCode('');
-  };
-
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const discount = couponApplied ? Math.floor(subtotal * 0.1) : 0; // 10% off for example
-  const shipping = (subtotal > 999 || subtotal === 5) ? 0 : 150;
+  const shipping = subtotal > 999 ? 0 : 150;
   const total = subtotal - discount + shipping;
 
   const processOrderSuccess = async (gateway: string, payId: string) => {
@@ -850,19 +834,6 @@ export default function CartPage() {
                   <ShieldCheck className="w-5 h-5 text-gray-600" />
                   <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">1-Year Hardware<br/>Warranty</span>
                 </div>
-              </div>
-
-              {/* Developer Test Tools */}
-              <div className="bg-[#152B52]/5 border border-[#152B52]/20 rounded-xl p-4">
-                <p className="text-[10px] font-bold text-[#0A1E3F] uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5" /> Developer Testing
-                </p>
-                <button 
-                  onClick={addTestItem}
-                  className="w-full bg-white hover:bg-gray-50 text-[#0A1E3F] py-3 rounded-lg font-bold uppercase tracking-widest text-xs border border-[#D6CDB8] transition-colors shadow-sm"
-                >
-                  Load ₹5 Test Item
-                </button>
               </div>
 
             </div>
