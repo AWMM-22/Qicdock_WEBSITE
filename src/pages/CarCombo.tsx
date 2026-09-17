@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
+import centerMountImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
 import airVentImg from '../assets/images/air_vent_mount.jpg';
 import headrestMountImg from '../assets/images/headrest_mount.jpg';
 
@@ -23,7 +23,7 @@ const carAddons: Addon[] = [
     location: 'Driver & Passenger Console', 
     reg: 299, 
     add: 99, 
-    description: 'Direct console mat with high-grip silicone and cable groove',
+    description: 'Custom-fit console tray charger with high-grip silicone and direct OEM fit',
     image: centerMountImg
   },
   { 

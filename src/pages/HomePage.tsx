@@ -465,10 +465,10 @@ export default function HomePage() {
             {/* Quick Brand Triggers for Chatbot */}
             <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
               {[
-                { name: '🏎️ Maruti Suzuki', brand: 'maruti' },
-                { name: '🚗 Toyota', brand: 'toyota' },
-                { name: '🚙 Mahindra', brand: 'mahindra' },
-                { name: '🌐 Universal (All Cars)', brand: 'universal' }
+                { name: 'Maruti Suzuki', brand: 'maruti' },
+                { name: 'Toyota', brand: 'toyota' },
+                { name: 'Mahindra', brand: 'mahindra' },
+                { name: 'Universal (All Cars)', brand: 'universal' }
               ].map((b, idx) => (
                 <button
                   key={idx}
@@ -478,7 +478,6 @@ export default function HomePage() {
                   className="bg-[#FAF7F0] hover:bg-[#0A1E3F] text-[#0A1E3F] hover:text-white border border-[#D6CDB8] hover:border-[#0A1E3F] px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer flex items-center gap-1.5"
                 >
                   <span>{b.name}</span>
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                 </button>
               ))}
             </div>
@@ -505,8 +504,7 @@ export default function HomePage() {
               }}
               className="z-10 whitespace-nowrap bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-6 py-4 rounded-2xl text-xs sm:text-sm font-bold tracking-widest uppercase transition-all shadow-[0_0_25px_rgba(4,217,255,0.4)] flex items-center gap-2.5 cursor-pointer transform hover:scale-105"
             >
-              <Car className="w-5 h-5 text-emerald-400" />
-              <span>Launch Car Assistant ⚡</span>
+              <span>Launch Car Assistant</span>
             </button>
           </div>
 

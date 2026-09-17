@@ -224,10 +224,10 @@ export default function CarFinderChatbot() {
           type: 'options',
           step: 'brand',
           options: [
-            { label: 'Maruti Suzuki', value: 'maruti', icon: '🏎️' },
-            { label: 'Toyota', value: 'toyota', icon: '🚗' },
-            { label: 'Mahindra', value: 'mahindra', icon: '🚙' },
-            { label: 'Other / Universal (Fits Any Car)', value: 'universal', icon: '🌐' }
+            { label: 'Maruti Suzuki', value: 'maruti' },
+            { label: 'Toyota', value: 'toyota' },
+            { label: 'Mahindra', value: 'mahindra' },
+            { label: 'Other / Universal (Fits Any Car)', value: 'universal' }
           ]
         }
       ]);
@@ -356,10 +356,10 @@ export default function CarFinderChatbot() {
         type: 'options',
         step: 'brand',
         options: [
-          { label: 'Maruti Suzuki', value: 'maruti', icon: '🏎️' },
-          { label: 'Toyota', value: 'toyota', icon: '🚗' },
-          { label: 'Mahindra', value: 'mahindra', icon: '🚙' },
-          { label: 'Other / Universal (Fits Any Car)', value: 'universal', icon: '🌐' }
+          { label: 'Maruti Suzuki', value: 'maruti' },
+          { label: 'Toyota', value: 'toyota' },
+          { label: 'Mahindra', value: 'mahindra' },
+          { label: 'Other / Universal (Fits Any Car)', value: 'universal' }
         ]
       }
     ]);
@@ -367,16 +367,15 @@ export default function CarFinderChatbot() {
 
   return (
     <>
-      {/* Floating Trigger Button (Bottom Right) */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-2">
+      {/* Floating Trigger Button (Lifted on Mobile to prevent overlap) */}
+      <div className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 md:z-50 flex flex-col items-end gap-2">
         {/* Helper pulse badge if closed */}
         {!isOpen && !hasOpenedBefore && (
           <div 
             onClick={() => { setIsOpen(true); setHasOpenedBefore(true); }}
             className="bg-[#FAF7F0] border border-[#0A1E3F]/30 text-[#0A1E3F] text-xs font-bold px-3.5 py-2 rounded-2xl shadow-xl flex items-center gap-2 cursor-pointer animate-bounce transition-all hover:bg-white"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-spin" />
-            <span>Find your car dock here! ⚡</span>
+            <span>Find your car dock here!</span>
             <X 
               className="w-3.5 h-3.5 text-gray-400 hover:text-gray-700 ml-1" 
               onClick={(e) => { e.stopPropagation(); setHasOpenedBefore(true); }} 
@@ -400,11 +399,11 @@ export default function CarFinderChatbot() {
             </>
           ) : (
             <>
-              <div className="relative">
-                <Car className="w-5 h-5 text-[#22C55E]" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#22C55E] rounded-full animate-ping"></span>
+              <div className="relative flex items-center justify-center">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 rounded-full animate-ping opacity-75"></span>
               </div>
-              <span className="text-xs font-bold uppercase tracking-wider">Find Your Car ⚡</span>
+              <span className="text-xs font-bold uppercase tracking-wider">Find Your Car</span>
             </>
           )}
         </button>
@@ -412,17 +411,17 @@ export default function CarFinderChatbot() {
 
       {/* Chatbot Window */}
       {isOpen && (
-        <div className="fixed bottom-20 sm:bottom-24 right-3 sm:right-6 z-50 w-[94vw] sm:w-[420px] max-w-[420px] h-[580px] max-h-[82vh] bg-[#FAF7F0] border border-[#D6CDB8] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
+        <div className="fixed bottom-24 sm:bottom-24 right-3 sm:right-6 z-50 w-[94vw] sm:w-[420px] max-w-[420px] h-[580px] max-h-[80vh] bg-[#FAF7F0] border border-[#D6CDB8] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
           
           {/* Header */}
           <div className="bg-[#0A1E3F] text-[#F4F0E6] p-4 flex items-center justify-between border-b border-[#0A1E3F]/40 shrink-0">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400">
-                <Car className="w-5 h-5" />
+              <div className="w-9 h-9 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 font-bold text-xs tracking-wider">
+                QD
               </div>
               <div>
                 <h3 className="font-bold text-sm tracking-wide flex items-center gap-1.5">
-                  QICDOCK Car Assistant
+                  QICDOCK Assistant
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 </h3>
                 <p className="text-[10px] text-gray-300">Instant Model Match & Cart</p>

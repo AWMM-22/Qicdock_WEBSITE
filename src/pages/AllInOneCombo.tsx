@@ -3,7 +3,7 @@ import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, RotateCcw, Truck
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import combinedImg from '../assets/images/3in1 copy.png';
-import carPadImg from '../assets/images/center_mount_1788721138616.jpg';
+import carPadImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
 import airVentImg from '../assets/images/air_vent_mount.jpg';
 import rearSeatImg from '../assets/images/headrest_mount.jpg';
 import tableStandImg from '../assets/images/table_stand_mount.jpg';
@@ -89,7 +89,7 @@ export default function AllInOneCombo() {
           
           {/* Left Column: Visual Showcase & Specifications (5 cols) */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-8 sm:p-10 relative overflow-hidden group">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-3 sm:p-8 relative overflow-hidden group">
               <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
                 <span className="px-3 py-1 rounded-full bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3" /> Ultimate Bundle
@@ -100,7 +100,7 @@ export default function AllInOneCombo() {
               </div>
 
               {/* Product Image Stage */}
-              <div className="w-full h-72 sm:h-96 flex items-center justify-center p-4">
+              <div className="w-full h-80 sm:h-96 flex items-center justify-center p-0 overflow-hidden">
                 <img 
                   src={combinedImg} 
                   alt="Qicdock All In One Combo Package" 
@@ -204,14 +204,14 @@ export default function AllInOneCombo() {
                   return (
                     <div
                       key={addon.id}
-                      className={`flex items-center gap-4 p-3 rounded-xl border transition-all ${
+                      className={`flex items-center gap-3 sm:gap-4 p-3 rounded-xl border transition-all ${
                         isSelected 
                           ? 'bg-[#E2DAC8] border-[#D6CDB8]' 
                           : 'bg-[#FAF7F0] border-[#E2DAC8] opacity-70'
                       }`}
                     >
-                      <div className="w-16 h-16 rounded-lg bg-[#EBE5D9] border border-[#E2DAC8] p-2 flex shrink-0">
-                         <img src={addon.image} alt={addon.name} className="w-full h-full object-contain" />
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-[#FAF7F0] border border-[#E2DAC8] p-0 flex shrink-0 overflow-hidden shadow-sm items-center justify-center">
+                         <img src={addon.image} alt={addon.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="flex-1">
                          <h4 className="text-sm font-bold text-[#0A1E3F] leading-tight">{addon.name}</h4>
