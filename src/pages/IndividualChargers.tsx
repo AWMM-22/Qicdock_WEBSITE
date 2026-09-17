@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import leftMountImg from '../assets/images/m1.png';
-import rightMountImg from '../assets/images/m3.png';
+import airVentImg from '../assets/images/air_vent_mount.jpg';
+import rearSeatImg from '../assets/images/headrest_mount.jpg';
+import tableStandImg from '../assets/images/table_stand_mount.jpg';
+import wallStandImg from '../assets/images/wall_stand_mount.jpg';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
-import airVentImg from '../assets/images/right_car_mount_1788721169113.jpg';
-import rearSeatImg from '../assets/images/left_car_mount_1788721155876.jpg';
 
 interface ProductSetup {
   id: string;
@@ -61,7 +61,7 @@ const individualSetups: ProductSetup[] = [
     fullPrice: '2,398',
     specialPrice: '2,148',
     savings: 'Save ₹250',
-    img: leftMountImg,
+    img: tableStandImg,
     mountType: 'Desk Stand Base',
     specs: ['Solid Aluminum', '65° Viewing Angle', 'StandBy Ready']
   },
@@ -72,7 +72,7 @@ const individualSetups: ProductSetup[] = [
     fullPrice: '2,298',
     specialPrice: '2,098',
     savings: 'Save ₹200',
-    img: rightMountImg,
+    img: wallStandImg,
     mountType: 'Wall Flush Mount',
     specs: ['3M VHB Tape Base', 'Bedside Friendly', 'Zero Footprint']
   },

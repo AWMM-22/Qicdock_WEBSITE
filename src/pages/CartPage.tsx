@@ -4,7 +4,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getCartItems, saveCartItems } from '../lib/cart';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
-import leftMountImg from '../assets/images/m1.png';
+import airVentImg from '../assets/images/air_vent_mount.jpg';
+import tableStandImg from '../assets/images/table_stand_mount.jpg';
+import wallStandImg from '../assets/images/wall_stand_mount.jpg';
+import combinedImg from '../assets/images/3in1 copy.png';
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -70,7 +73,7 @@ export default function CartPage() {
         price: 2594,
         originalPrice: 3694,
         quantity: 1,
-        image: leftMountImg,
+        image: combinedImg,
       },
       {
         id: 2,
@@ -342,13 +345,13 @@ export default function CartPage() {
       id: 3,
       name: 'Air Vent Clip Pro',
       price: '₹399',
-      image: centerMountImg,
+      image: airVentImg,
     },
     {
       id: 4,
-      name: 'Desktop Wall Base',
+      name: 'Desktop Table Stand Base',
       price: '₹299',
-      image: leftMountImg,
+      image: tableStandImg,
     }
   ];
 

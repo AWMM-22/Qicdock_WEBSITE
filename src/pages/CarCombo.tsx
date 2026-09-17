@@ -3,8 +3,8 @@ import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, RotateCcw
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
-import rightMountImg from '../assets/images/right_car_mount_1788721169113.jpg';
-import leftMountImg from '../assets/images/left_car_mount_1788721155876.jpg';
+import airVentImg from '../assets/images/air_vent_mount.jpg';
+import headrestMountImg from '../assets/images/headrest_mount.jpg';
 
 interface Addon {
   id: string;
@@ -33,7 +33,7 @@ const carAddons: Addon[] = [
     reg: 299, 
     add: 99, 
     description: 'Firm clamping arm with steel core suitable for heavy braking',
-    image: rightMountImg
+    image: airVentImg
   },
   { 
     id: 'rear', 
@@ -42,7 +42,7 @@ const carAddons: Addon[] = [
     reg: 399, 
     add: 149, 
     description: 'Extends charging & landscape video viewing to back row',
-    image: leftMountImg
+    image: headrestMountImg
   },
 ];
 
@@ -61,8 +61,8 @@ export default function CarCombo() {
 
   const galleryImages = [
     { src: centerMountImg, label: 'Center Console View' },
-    { src: rightMountImg, label: 'Air Vent Mount' },
-    { src: leftMountImg, label: 'Rear Passenger Mount' }
+    { src: airVentImg, label: 'Air Vent Mount' },
+    { src: headrestMountImg, label: 'Rear Passenger Mount' }
   ];
 
   const toggleAddon = (id: string) => {

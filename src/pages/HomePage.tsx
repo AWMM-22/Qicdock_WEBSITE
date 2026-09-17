@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
-import leftMountImg from '../assets/images/m1.png';
-import rightMountImg from '../assets/images/m3.png';
+import airVentImg from '../assets/images/air_vent_mount.jpg';
+import headrestMountImg from '../assets/images/headrest_mount.jpg';
+import tableStandImg from '../assets/images/table_stand_mount.jpg';
+import wallStandImg from '../assets/images/wall_stand_mount.jpg';
 import combinedImg from '../assets/images/3in1 copy.png';
 import universalPadImg from '../assets/images/Universal_.png';
 import universalMountImg from '../assets/images/Compact_.png';
@@ -197,12 +199,12 @@ export default function HomePage() {
             <div className="flex gap-4 lg:gap-6 max-w-[420px] mb-10">
               <div className="rounded-[24px] border-[2px] border-[#D6CDB8] p-1.5 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
                 <div className="w-full h-full rounded-[16px] overflow-hidden">
-                  <img src={leftMountImg} alt="Workspace mounting" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
+                  <img src={tableStandImg} alt="Workspace mounting" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
                 </div>
               </div>
               <div className="rounded-[24px] border-[2px] border-[#D6CDB8] p-1.5 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
                 <div className="w-full h-full rounded-[16px] overflow-hidden">
-                  <img src={rightMountImg} alt="Car mounting" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
+                  <img src={airVentImg} alt="Car mounting" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
                 </div>
               </div>
             </div>
@@ -358,7 +360,7 @@ export default function HomePage() {
                 <Link to="/category/home-office" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
                     <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={leftMountImg} alt="Home and office Combo" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <img src={tableStandImg} alt="Home and office Combo" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
                     <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
@@ -398,7 +400,7 @@ export default function HomePage() {
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
                     <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={rightMountImg} alt="Car Charger" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <img src={airVentImg} alt="Car Charger" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Car Charger</span>
@@ -432,7 +434,7 @@ export default function HomePage() {
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
                     <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={leftMountImg} alt="Only stand" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                      <img src={wallStandImg} alt="Only stand" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Only Stand</span>
@@ -723,7 +725,7 @@ export default function HomePage() {
 
                 <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-0 relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img src={leftMountImg} alt="Mega Pack" className="relative z-20 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
+                  <img src={combinedImg} alt="Mega Pack" className="relative z-20 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
                 </div>
 
                 <div className="space-y-1 md:space-y-2 mb-2 md:mb-4">

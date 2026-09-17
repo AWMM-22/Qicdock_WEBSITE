@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Plus, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import rightMountImg from '../assets/images/m3.png';
-import leftMountImg from '../assets/images/m1.png';
-import airVentImg from '../assets/images/right_car_mount_1788721169113.jpg';
+import airVentImg from '../assets/images/air_vent_mount.jpg';
+import headrestMountImg from '../assets/images/headrest_mount.jpg';
+import tableStandImg from '../assets/images/table_stand_mount.jpg';
+import wallStandImg from '../assets/images/wall_stand_mount.jpg';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 
 interface MountItem {
@@ -46,7 +47,7 @@ const standaloneBases: MountItem[] = [
     price: 399,
     originalPrice: 599,
     description: 'Dual-bracket headrest post mount giving rear passengers easy access to magnetic charging & movie watching.',
-    img: leftMountImg,
+    img: headrestMountImg,
     badge: 'Rear Row'
   },
   {
@@ -56,7 +57,7 @@ const standaloneBases: MountItem[] = [
     price: 399,
     originalPrice: 599,
     description: 'Solid CNC aluminum desk pedestal with rubberized base and 65-degree tilt for video conferencing & StandBy.',
-    img: rightMountImg,
+    img: tableStandImg,
     badge: 'Desk Workstation'
   },
   {
@@ -66,7 +67,7 @@ const standaloneBases: MountItem[] = [
     price: 299,
     originalPrice: 499,
     description: 'Low-profile magnetic dock plate with ultra-strong damage-free 3M VHB adhesive for wall, tile, or bedside.',
-    img: rightMountImg,
+    img: wallStandImg,
     badge: 'Bedside'
   },
   {

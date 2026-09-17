@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import combinedImg from '../assets/images/3in1 copy.png';
 import carPadImg from '../assets/images/center_mount_1788721138616.jpg';
-import airVentImg from '../assets/images/center-mount-transparent.png';
-import rearSeatImg from '../assets/images/m1.png';
-import tableStandImg from '../assets/images/m3.png';
-import wallStandImg from '../assets/images/m1.png';
+import airVentImg from '../assets/images/air_vent_mount.jpg';
+import rearSeatImg from '../assets/images/headrest_mount.jpg';
+import tableStandImg from '../assets/images/table_stand_mount.jpg';
+import wallStandImg from '../assets/images/wall_stand_mount.jpg';
 
 interface Addon {
   id: string;

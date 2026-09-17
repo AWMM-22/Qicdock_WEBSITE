@@ -2,10 +2,8 @@ import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, MonitorSmartphone, RotateCcw, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import rightMountImg from '../assets/images/m3.png';
-import leftMountImg from '../assets/images/m1.png';
-import tableStandImg from '../assets/images/m3.png'; // Using available images
-import wallStandImg from '../assets/images/m1.png'; // Using available images
+import tableStandImg from '../assets/images/table_stand_mount.jpg';
+import wallStandImg from '../assets/images/wall_stand_mount.jpg';
 
 interface Addon {
   id: string;
@@ -112,7 +110,7 @@ export default function HomeOfficeCombo() {
               {/* Main Image */}
               <div className="w-full h-64 sm:h-80 rounded-2xl bg-[#F4F0E6] border border-[#E2DAC8] flex items-center justify-center p-6 overflow-hidden mb-4">
                 <img 
-                  src={activeView === 'table' ? rightMountImg : leftMountImg} 
+                  src={activeView === 'table' ? tableStandImg : wallStandImg} 
                   alt="Home and Office Combo" 
                   className="max-h-full max-w-full object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" 
                 />

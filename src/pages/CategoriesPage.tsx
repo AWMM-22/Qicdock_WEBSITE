@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
-import leftMountImg from '../assets/images/m1.png';
-import rightMountImg from '../assets/images/m3.png';
+import airVentImg from '../assets/images/air_vent_mount.jpg';
+import headrestMountImg from '../assets/images/headrest_mount.jpg';
+import tableStandImg from '../assets/images/table_stand_mount.jpg';
+import wallStandImg from '../assets/images/wall_stand_mount.jpg';
 import combinedImg from '../assets/images/3in1 copy.png';
 
 const categoriesData = [
@@ -29,7 +31,7 @@ const categoriesData = [
     description: "Tailored automotive bundle including center console pad, 360° air vent clip, and rear passenger headrest bracket.",
     price: "From ₹2,346",
     savings: "Save ₹650",
-    image: centerMountImg,
+    image: airVentImg,
     link: "/category/car-combo"
   },
   {
@@ -41,7 +43,7 @@ const categoriesData = [
     description: "High-stability weighted aluminum desktop dock paired with an ultra-slim flush wall bracket for clutter-free charging.",
     price: "From ₹2,247",
     savings: "Save ₹450",
-    image: rightMountImg,
+    image: tableStandImg,
     link: "/category/home-office"
   },
   {
@@ -53,7 +55,7 @@ const categoriesData = [
     description: "Select your dedicated 25W Qi2 charger pre-bundled with your preferred mounting base for car, table, or wall.",
     price: "From ₹2,098",
     savings: "Special Pricing",
-    image: leftMountImg,
+    image: headrestMountImg,
     link: "/category/individual"
   },
   {
@@ -77,7 +79,7 @@ const categoriesData = [
     description: "Already own a Qicdock 25W magnetic core module? Expand your setup with standalone brackets and mounting bases.",
     price: "From ₹299",
     savings: "Add-on Pricing",
-    image: rightMountImg,
+    image: wallStandImg,
     link: "/category/stand-alone"
   }
 ];
