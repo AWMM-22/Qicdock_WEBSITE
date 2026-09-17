@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
+import { trackPageView } from '../lib/analytics';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
 import airVentImg from '../assets/images/air_vent_mount.webp';
@@ -159,6 +160,10 @@ const carModelsData: Record<string, { id: number; title: string; desc: string; p
 export default function HomePage() {
   const [selectedMake, setSelectedMake] = useState('Maruti Suzuki & Toyota / Universal');
   const [selectedModel, setSelectedModel] = useState('Fronx');
+
+  useEffect(() => {
+    trackPageView('Home');
+  }, []);
 
   const availableModels = ['Universal', 'Fronx', 'Baleno', 'Glanza', 'Taisor', 'Ertiga', 'Swift', 'Swift Dzire', '3XO'];
   const currentProducts = carModelsData[selectedModel] || carModelsData['Universal'];

@@ -3,6 +3,7 @@ import { MessageSquare, X, Send, Car, Sparkles, Check, CheckCircle2, Zap, Shoppi
 import { Link, useNavigate } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import { addToCart } from '../lib/cart';
+import { trackAssistantOpen, trackAssistantAnswer, trackAddToCart as trackAnalyticsAddToCart, trackComboUpgrade } from '../lib/analytics';
 
 // Image assets
 import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
@@ -199,6 +200,7 @@ export default function CarFinderChatbot() {
     const handleOpenChatbot = (e: any) => {
       setIsOpen(true);
       setHasOpenedBefore(true);
+      trackAssistantOpen();
       if (e?.detail?.brand) {
         handleSelectBrand(e.detail.brand);
       }
@@ -210,6 +212,7 @@ export default function CarFinderChatbot() {
   // Initialize initial message when first opened
   useEffect(() => {
     if (isOpen && messages.length === 0) {
+      trackAssistantOpen();
       setMessages([
         {
           id: 'welcome-1',
@@ -245,6 +248,8 @@ export default function CarFinderChatbot() {
     if (brandValue === 'toyota') brandLabel = 'Toyota';
     if (brandValue === 'mahindra') brandLabel = 'Mahindra';
     if (brandValue === 'universal') brandLabel = 'Universal (Fits Any Car)';
+
+    trackAssistantAnswer('brand', 'Which car brand do you drive?', brandLabel, brandLabel);
 
     // User message
     const userMsg: ChatMessage = {
@@ -307,13 +312,14 @@ export default function CarFinderChatbot() {
   };
 
   const handleSelectModel = (modelValue: string, modelLabel: string) => {
+    const product = CAR_PRODUCTS[modelValue] || CAR_PRODUCTS['universal'];
+    trackAssistantAnswer('model', 'Select your model', modelLabel, product.brand, modelLabel);
+
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
       sender: 'user',
       text: modelLabel
     };
-
-    const product = CAR_PRODUCTS[modelValue] || CAR_PRODUCTS['universal'];
 
     const botResponse: ChatMessage = {
       id: `bot-${Date.now() + 1}`,
@@ -340,6 +346,8 @@ export default function CarFinderChatbot() {
       originalPrice: product.originalPrice,
       image: product.image
     });
+
+    trackAnalyticsAddToCart(product.id, product.name, product.price, 'assistant');
 
     setAddedProductIds(prev => ({ ...prev, [product.id]: true }));
     setTimeout(() => {
@@ -536,6 +544,29 @@ export default function CarFinderChatbot() {
                           <span className="bg-emerald-50 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-100">
                             🛡️ 1-Yr Warranty
                           </span>
+                        </div>
+
+                        {/* Intelligent Recommendation: Upgrade to All-In-One Combo */}
+                        <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-xl p-2.5 flex items-center justify-between gap-2 shadow-sm">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-1 text-[11px] font-bold text-[#0A1E3F]">
+                              <Sparkles className="w-3.5 h-3.5 text-[#0A1E3F] shrink-0" />
+                              <span>Want Car + Desk + Wall Mounts?</span>
+                            </div>
+                            <p className="text-[10px] text-emerald-700 font-semibold leading-tight">
+                              Upgrade to All-In-One Combo & Save ₹1,100!
+                            </p>
+                          </div>
+                          <Link
+                            to="/category/all-in-one"
+                            onClick={() => {
+                              trackComboUpgrade(msg.product?.name || 'Vehicle Dock', 'All In One Combo', 1100);
+                              setIsOpen(false);
+                            }}
+                            className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider shrink-0 transition-colors"
+                          >
+                            View Combo
+                          </Link>
                         </div>
 
                         {/* Price & Add to Cart */}

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2, CreditCard } from 'lucide-react';
+import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2, CreditCard, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getCartItems, saveCartItems } from '../lib/cart';
+import { trackAddToCart as trackAnalyticsAddToCart, trackComboUpgrade } from '../lib/analytics';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import airVentImg from '../assets/images/air_vent_mount.webp';
 import tableStandImg from '../assets/images/table_stand_mount.webp';
@@ -403,9 +404,10 @@ export default function CartPage() {
             {/* Left Col: Cart Items or Address Form */}
             <div className="w-full lg:flex-1 space-y-4 md:space-y-6">
               
-              {checkoutStep === 'CART' ? (
-                // Cart Items List
-                cartItems.map((item) => (
+              {checkoutStep === 'CART' && (
+                <>
+                {/* Cart Items List */}
+                {cartItems.map((item) => (
                   <div key={item.id} className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl md:rounded-3xl p-3 sm:p-4 md:p-6 flex flex-row items-start sm:items-center gap-3 sm:gap-4 md:gap-6 relative group hover:border-[#D6CDB8] transition-colors">
                     
                     {/* Remove btn (Mobile absolute, desktop standard) */}
@@ -455,10 +457,143 @@ export default function CartPage() {
                       </div>
                     </div>
                   </div>
-
                 </div>
-              ))
-              ) : (
+              ))}
+
+                {/* Intelligent Cross-Sell / Stand Add-on Recommendations */}
+                <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F]/30 rounded-2xl md:rounded-3xl p-4 sm:p-6 shadow-sm space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 pb-3 border-b border-[#E2DAC8]">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-[#0A1E3F] flex items-center justify-center text-[#F4F0E6] shrink-0">
+                        <Sparkles className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h3 className="text-sm sm:text-base font-bold text-[#0A1E3F] uppercase tracking-wide">
+                          Smart Mount Recommendations
+                        </h3>
+                        <p className="text-[11px] text-gray-600">
+                          Pair your core charger with additional mounts for your desk & bedroom at special bundle prices
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 self-start sm:self-auto">
+                      Save up to ₹450
+                    </span>
+                  </div>
+
+                  {/* Add-on items row */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Option 1: Table Stand */}
+                    <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-xl p-3 flex items-center justify-between gap-3 group hover:border-[#0A1E3F]/50 transition-all">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-lg bg-[#FAF7F0] border border-[#E2DAC8] p-1 shrink-0 overflow-hidden flex items-center justify-center">
+                          <img src={tableStandImg} alt="Table Stand" loading="lazy" decoding="async" className="w-full h-full object-contain" />
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-bold text-[#0A1E3F] leading-snug">Weighted Table Stand Base</h4>
+                          <p className="text-[10px] text-gray-500">For Desk & Office</p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-xs font-bold text-[#0A1E3F]">₹149</span>
+                            <span className="text-[10px] text-gray-400 line-through">₹599</span>
+                            <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1 rounded">Save ₹450</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          const addon = {
+                            id: 'table-base',
+                            name: 'Weighted Aluminum Table Stand Base',
+                            variant: 'Add-on: Workspace Mount',
+                            price: 149,
+                            originalPrice: 599,
+                            image: tableStandImg
+                          };
+                          const current = getCartItems();
+                          const existing = current.find(i => String(i.id) === addon.id);
+                          if (existing) {
+                            existing.quantity += 1;
+                          } else {
+                            current.push({ ...addon, quantity: 1 });
+                          }
+                          saveCartItems(current);
+                          setCartItems([...current]);
+                          trackAnalyticsAddToCart(addon.id, addon.name, addon.price, 'cart_cross_sell');
+                        }}
+                        className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shrink-0 transition-colors cursor-pointer"
+                      >
+                        + Add
+                      </button>
+                    </div>
+
+                    {/* Option 2: Air Vent */}
+                    <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-xl p-3 flex items-center justify-between gap-3 group hover:border-[#0A1E3F]/50 transition-all">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-lg bg-[#FAF7F0] border border-[#E2DAC8] p-1 shrink-0 overflow-hidden flex items-center justify-center">
+                          <img src={airVentImg} alt="Air Vent" loading="lazy" decoding="async" className="w-full h-full object-contain" />
+                        </div>
+                        <div>
+                          <h4 className="text-xs font-bold text-[#0A1E3F] leading-snug">Air Vent 360° Clip Base</h4>
+                          <p className="text-[10px] text-gray-500">For AC Dashboard</p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="text-xs font-bold text-[#0A1E3F]">₹99</span>
+                            <span className="text-[10px] text-gray-400 line-through">₹499</span>
+                            <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1 rounded">Save ₹400</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          const addon = {
+                            id: 'vent-base',
+                            name: 'Air Vent 360° Holder Base',
+                            variant: 'Add-on: Dashboard Clip',
+                            price: 99,
+                            originalPrice: 499,
+                            image: airVentImg
+                          };
+                          const current = getCartItems();
+                          const existing = current.find(i => String(i.id) === addon.id);
+                          if (existing) {
+                            existing.quantity += 1;
+                          } else {
+                            current.push({ ...addon, quantity: 1 });
+                          }
+                          saveCartItems(current);
+                          setCartItems([...current]);
+                          trackAnalyticsAddToCart(addon.id, addon.name, addon.price, 'cart_cross_sell');
+                        }}
+                        className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider shrink-0 transition-colors cursor-pointer"
+                      >
+                        + Add
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Option 3: Upgrade to All in one kit */}
+                  <div className="bg-[#FAF7F0] border border-[#0A1E3F]/30 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-lg bg-[#FAF7F0] border border-[#E2DAC8] p-1 shrink-0 overflow-hidden flex items-center justify-center">
+                        <img src={combinedImg} alt="All In One Combo" loading="lazy" decoding="async" className="w-full h-full object-contain" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-[#0A1E3F] leading-snug">Want all 5 mounts for car, desk and wall?</h4>
+                        <p className="text-[10px] text-emerald-700 font-semibold">Switch to All In One Combo for maximum savings</p>
+                      </div>
+                    </div>
+                    <Link
+                      to="/category/all-in-one"
+                      onClick={() => trackComboUpgrade('Cart Items', 'All In One Combo', 1100)}
+                      className="inline-flex items-center justify-center bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors text-center shrink-0"
+                    >
+                      View All-In-One (Save ₹1,100)
+                    </Link>
+                  </div>
+                </div>
+                </>
+              )}
+
+              {checkoutStep === 'ADDRESS' && (
                 // Address Form
                 <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl md:rounded-3xl p-6 md:p-8">
                   <div className="flex items-center justify-between mb-8">

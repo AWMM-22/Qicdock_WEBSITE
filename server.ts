@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import cors from "cors";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
@@ -13,6 +14,27 @@ dotenv.config();
 // In-memory fallback state
 let orders: any[] = [];
 let inventory: Record<string, boolean> = {}; // { productId: isSoldOut }
+
+// Analytics storage with local persistence fallback
+const ANALYTICS_FILE = path.join(process.cwd(), "analytics_events.json");
+let analyticsEvents: any[] = [];
+
+try {
+  if (fs.existsSync(ANALYTICS_FILE)) {
+    const raw = fs.readFileSync(ANALYTICS_FILE, "utf-8");
+    analyticsEvents = JSON.parse(raw);
+  }
+} catch (e) {
+  console.warn("[Analytics] Could not load local analytics file, starting fresh.");
+}
+
+function saveAnalyticsLocal() {
+  try {
+    fs.writeFileSync(ANALYTICS_FILE, JSON.stringify(analyticsEvents.slice(-5000), null, 2), "utf-8");
+  } catch (e) {
+    console.error("[Analytics] Error saving local analytics:", e);
+  }
+}
 
 // Supabase client initialization (server-side)
 const supabaseUrl =
@@ -45,6 +67,197 @@ async function startServer() {
     const { productId, isSoldOut } = req.body;
     inventory[productId] = isSoldOut;
     res.json({ success: true, inventory });
+  });
+
+  // --- Analytics Tracking API ---
+  app.post("/api/analytics/track", async (req, res) => {
+    try {
+      const event = {
+        id: "evt_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7),
+        sessionId: req.body.sessionId || "sess_unknown",
+        eventType: req.body.eventType || "unknown",
+        timestamp: req.body.timestamp || new Date().toISOString(),
+        url: req.body.url || null,
+        referrer: req.body.referrer || null,
+        brand: req.body.brand || null,
+        model: req.body.model || null,
+        question: req.body.question || null,
+        answer: req.body.answer || null,
+        productId: req.body.productId || null,
+        productName: req.body.productName || null,
+        price: req.body.price || null,
+        amount: req.body.amount || null,
+        source: req.body.source || "direct",
+        metadata: req.body.metadata || {}
+      };
+
+      analyticsEvents.push(event);
+      if (analyticsEvents.length > 5000) {
+        analyticsEvents = analyticsEvents.slice(-5000);
+      }
+      saveAnalyticsLocal();
+
+      // Non-blocking async write to Supabase table if configured
+      supabase.from("analytics_events").insert([event]).then(({ error }) => {
+        if (error && error.code !== "42P01") {
+          // Table may not exist yet, graceful fallback to local memory/file
+        }
+      }).catch(() => {});
+
+      res.json({ success: true });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
+  // --- Analytics Aggregated Stats API ---
+  app.get("/api/analytics/stats", async (req, res) => {
+    try {
+      const range = (req.query.range as string) || "all";
+      const now = Date.now();
+      
+      let filteredEvents = [...analyticsEvents];
+      if (range === "today") {
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+        filteredEvents = filteredEvents.filter(e => new Date(e.timestamp).getTime() >= startOfDay.getTime());
+      } else if (range === "7days") {
+        const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+        filteredEvents = filteredEvents.filter(e => new Date(e.timestamp).getTime() >= sevenDaysAgo);
+      }
+
+      // Fetch latest orders count & revenue
+      let totalOrdersCount = orders.length;
+      let totalRevenue = orders.reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+      try {
+        const { data: dbOrders } = await supabase.from("orders").select("id, amount, created_at");
+        if (dbOrders && dbOrders.length > 0) {
+          totalOrdersCount = dbOrders.length;
+          totalRevenue = dbOrders.reduce((sum: number, o: any) => sum + (Number(o.amount) || 0), 0);
+        }
+      } catch {}
+
+      // Unique visitors (sessions)
+      const sessionSet = new Set(filteredEvents.map(e => e.sessionId));
+      const totalVisitors = Math.max(sessionSet.size, filteredEvents.length > 0 ? 1 : 0);
+
+      // Assistant engagement
+      const assistantSessions = new Set(
+        filteredEvents
+          .filter(e => e.eventType === "assistant_open" || e.eventType === "assistant_answer")
+          .map(e => e.sessionId)
+      );
+      const assistantEngagements = assistantSessions.size;
+
+      // Question / Answer breakdown
+      const brandCounts: Record<string, number> = {};
+      const modelCounts: Record<string, number> = {};
+      let totalAnswers = 0;
+
+      filteredEvents.forEach(e => {
+        if (e.eventType === "assistant_answer") {
+          totalAnswers++;
+          if (e.brand) {
+            brandCounts[e.brand] = (brandCounts[e.brand] || 0) + 1;
+          }
+          if (e.model) {
+            modelCounts[e.model] = (modelCounts[e.model] || 0) + 1;
+          }
+        }
+      });
+
+      // Format brand breakdown for charts
+      const brandDistribution = Object.entries(brandCounts).map(([brand, count]) => ({
+        brand,
+        count,
+        percentage: totalAnswers > 0 ? Math.round((count / totalAnswers) * 100) : 0
+      })).sort((a, b) => b.count - a.count);
+
+      // Format model breakdown for charts
+      const modelDistribution = Object.entries(modelCounts).map(([model, count]) => ({
+        model,
+        count
+      })).sort((a, b) => b.count - a.count);
+
+      // Add to cart & upgrades
+      const addToCartEvents = filteredEvents.filter(e => e.eventType === "add_to_cart");
+      const totalAddToCart = addToCartEvents.length;
+      const addedFromAssistant = addToCartEvents.filter(e => e.source === "assistant" || e.source === "chatbot").length;
+      const comboUpgrades = filteredEvents.filter(e => e.eventType === "combo_upgrade_click").length;
+
+      // Conversion rate
+      const conversionRate = totalVisitors > 0 ? Number(((totalOrdersCount / totalVisitors) * 100).toFixed(1)) : 0;
+      const assistantToCartRate = assistantEngagements > 0 ? Number(((addedFromAssistant / assistantEngagements) * 100).toFixed(1)) : 0;
+
+      // Daily Trends (last 7 days)
+      const dailyTrends: Record<string, { date: string; label: string; visitors: Set<string>; assistant: Set<string>; carts: number; orders: number }> = {};
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now - i * 24 * 60 * 60 * 1000);
+        const dateKey = d.toISOString().split("T")[0];
+        const label = d.toLocaleDateString("en-US", { weekday: "short", month: "numeric", day: "numeric" });
+        dailyTrends[dateKey] = { date: dateKey, label, visitors: new Set(), assistant: new Set(), carts: 0, orders: 0 };
+      }
+
+      analyticsEvents.forEach(e => {
+        const dateKey = e.timestamp.split("T")[0];
+        if (dailyTrends[dateKey]) {
+          dailyTrends[dateKey].visitors.add(e.sessionId);
+          if (e.eventType === "assistant_open" || e.eventType === "assistant_answer") {
+            dailyTrends[dateKey].assistant.add(e.sessionId);
+          }
+          if (e.eventType === "add_to_cart") {
+            dailyTrends[dateKey].carts++;
+          }
+        }
+      });
+
+      const trendsArray = Object.values(dailyTrends).map(t => ({
+        date: t.date,
+        label: t.label,
+        visitors: t.visitors.size,
+        assistant: t.assistant.size,
+        carts: t.carts,
+        orders: 0
+      }));
+
+      // Recent Event Stream
+      const recentEvents = [...filteredEvents].reverse().slice(0, 35).map(e => ({
+        id: e.id,
+        sessionId: e.sessionId,
+        eventType: e.eventType,
+        timestamp: e.timestamp,
+        brand: e.brand,
+        model: e.model,
+        question: e.question,
+        answer: e.answer,
+        productName: e.productName,
+        price: e.price,
+        source: e.source
+      }));
+
+      res.json({
+        success: true,
+        stats: {
+          totalVisitors,
+          assistantEngagements,
+          assistantAnswers: totalAnswers,
+          totalAddToCart,
+          addedFromAssistant,
+          comboUpgrades,
+          totalOrdersCount,
+          totalRevenue,
+          conversionRate,
+          assistantToCartRate,
+          brandDistribution,
+          modelDistribution,
+          dailyTrends: trendsArray,
+          recentEvents
+        }
+      });
+    } catch (err: any) {
+      console.error("[Analytics Stats Error]:", err);
+      res.status(500).json({ error: err.message });
+    }
   });
 
   // Orders API (fetches from Supabase with in-memory fallback)
