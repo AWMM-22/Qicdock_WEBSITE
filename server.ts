@@ -69,6 +69,122 @@ async function startServer() {
     res.json({ success: true, inventory });
   });
 
+  // Phone normalization & validation for Indian numbers
+  function normalizeIndianPhone(input: string): string | null {
+    if (!input || typeof input !== "string") return null;
+    const digits = input.replace(/\D/g, "");
+    let normalized = digits;
+    if (digits.length === 12 && digits.startsWith("91")) {
+      normalized = digits.slice(2);
+    } else if (digits.length === 11 && digits.startsWith("0")) {
+      normalized = digits.slice(1);
+    }
+    if (/^[6-9]\d{9}$/.test(normalized)) {
+      return normalized;
+    }
+    return null;
+  }
+
+  // --- Personalized Deal Optimization API ---
+  app.post("/api/deals/quote", (req, res) => {
+    try {
+      const { productId = "fronx", phone, brand, model } = req.body;
+      const normalizedPhone = normalizeIndianPhone(phone);
+      if (!normalizedPhone) {
+        return res.status(400).json({
+          error: "That doesn't look like a valid Indian mobile number. Please enter your 10-digit mobile number."
+        });
+      }
+
+      // Authentic catalog pricing
+      const basePrice = 2098;
+      const baseOriginal = 3299;
+      const addonPrice = 149;
+      const addonOriginal = 599;
+      const mountSavings = addonOriginal - addonPrice; // 450
+      const couponDiscount = 100;
+      const totalSavings = mountSavings + couponDiscount; // 550
+
+      const deal = {
+        dealId: `deal_${Date.now()}`,
+        title: "Vehicle Dock + Workspace Desk Stand Bundle",
+        badge: "Smart Bundle Deal",
+        description: "Adding the Weighted Aluminum Table Stand to your order unlocks special bundle pricing + an exclusive coupon.",
+        baseProductPrice: basePrice,
+        baseProductOriginalPrice: baseOriginal,
+        addonItem: {
+          id: "table-base",
+          name: "Weighted Aluminum Table Stand Base",
+          variant: "Add-on: Workspace Mount",
+          price: addonPrice,
+          originalPrice: addonOriginal,
+          addonSavings: mountSavings
+        },
+        bundlePrice: basePrice + addonPrice,
+        totalOriginalPrice: baseOriginal + addonOriginal,
+        mountSavings: mountSavings,
+        couponSavings: couponDiscount,
+        totalSavings: totalSavings,
+        coupon: {
+          code: "QIC100",
+          discountAmount: couponDiscount,
+          minOrderValue: 1999,
+          description: "₹100 OFF coupon applied for your order"
+        }
+      };
+
+      res.json({
+        success: true,
+        deal,
+        maskedPhone: `+91 ${normalizedPhone.slice(0, 2)}******${normalizedPhone.slice(8)}`
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Failed to generate deal quote" });
+    }
+  });
+
+  // --- Coupon Validation API ---
+  app.post("/api/deals/validate-coupon", (req, res) => {
+    try {
+      const { code, subtotal = 0 } = req.body;
+      const cleanCode = (code || "").trim().toUpperCase();
+
+      if (cleanCode === "QIC100") {
+        if (subtotal < 1999) {
+          return res.json({
+            valid: false,
+            message: "Coupon QIC100 requires a minimum order value of ₹1,999."
+          });
+        }
+        return res.json({
+          valid: true,
+          code: "QIC100",
+          discountAmount: 100,
+          discountType: "fixed",
+          message: "₹100 discount applied!"
+        });
+      }
+
+      if (cleanCode === "WELCOME10" || cleanCode === "SAVE10") {
+        const discount = Math.floor(subtotal * 0.1);
+        return res.json({
+          valid: true,
+          code: cleanCode,
+          discountAmount: discount,
+          discountType: "percentage",
+          message: "10% discount applied!"
+        });
+      }
+
+      return res.status(400).json({
+        valid: false,
+        message: "Invalid or expired coupon code."
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Failed to validate coupon" });
+    }
+  });
+
   // --- Analytics Tracking API ---
   app.post("/api/analytics/track", async (req, res) => {
     try {

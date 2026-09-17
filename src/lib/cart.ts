@@ -50,3 +50,31 @@ export function getCartCount(): number {
   const items = getCartItems();
   return items.reduce((acc, i) => acc + (i.quantity || 1), 0);
 }
+
+const COUPON_STORAGE_KEY = 'quickdoc_applied_coupon';
+
+export function getAppliedCoupon(): string {
+  try {
+    return localStorage.getItem(COUPON_STORAGE_KEY) || '';
+  } catch {
+    return '';
+  }
+}
+
+export function setAppliedCoupon(code: string): void {
+  try {
+    if (code) {
+      localStorage.setItem(COUPON_STORAGE_KEY, code.toUpperCase());
+    } else {
+      localStorage.removeItem(COUPON_STORAGE_KEY);
+    }
+  } catch (e) {
+    console.error('Failed to save applied coupon:', e);
+  }
+}
+
+export function clearAppliedCoupon(): void {
+  try {
+    localStorage.removeItem(COUPON_STORAGE_KEY);
+  } catch {}
+}

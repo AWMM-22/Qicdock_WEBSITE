@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, X, Send, Car, Sparkles, Check, CheckCircle2, Zap, ShoppingBag, ArrowRight, RotateCcw, ChevronDown, ShieldCheck, ExternalLink } from 'lucide-react';
+import { MessageSquare, X, Send, Car, Sparkles, Check, CheckCircle2, Zap, ShoppingBag, ArrowRight, RotateCcw, ChevronDown, ShieldCheck, ExternalLink, Phone, Tag, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import { addToCart } from '../lib/cart';
+import { addToCart, setAppliedCoupon } from '../lib/cart';
 import { trackAssistantOpen, trackAssistantAnswer, trackAddToCart as trackAnalyticsAddToCart, trackComboUpgrade } from '../lib/analytics';
 
 // Image assets
@@ -11,6 +11,7 @@ import ertigaImg from '../assets/images/Ertiga.webp';
 import swiftDzireImg from '../assets/images/Dzire and Swift.webp';
 import threeXoImg from '../assets/images/3XO.webp';
 import universalPadImg from '../assets/images/Universal_.webp';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
 
 export interface CarProduct {
   id: string;
@@ -27,6 +28,36 @@ export interface CarProduct {
   image: string;
   badge: string;
   specs: string[];
+}
+
+export interface DealAddon {
+  id: string;
+  name: string;
+  variant: string;
+  price: number;
+  originalPrice: number;
+  addonSavings: number;
+}
+
+export interface OptimizedDeal {
+  dealId: string;
+  title: string;
+  badge: string;
+  description: string;
+  baseProductPrice: number;
+  baseProductOriginalPrice: number;
+  addonItem: DealAddon;
+  bundlePrice: number;
+  totalOriginalPrice: number;
+  mountSavings: number;
+  couponSavings: number;
+  totalSavings: number;
+  coupon: {
+    code: string;
+    discountAmount: number;
+    minOrderValue: number;
+    description: string;
+  };
 }
 
 export const CAR_PRODUCTS: Record<string, CarProduct> = {
@@ -195,6 +226,122 @@ export default function CarFinderChatbot() {
   const { isSoldOut } = useInventory();
   const navigate = useNavigate();
 
+  // Deal Optimization Flow State
+  const [recommendedProduct, setRecommendedProduct] = useState<CarProduct | null>(null);
+  const [dealStep, setDealStep] = useState<'IDLE' | 'OFFER' | 'PHONE_INPUT' | 'CONFIRMATION' | 'OPTIMIZING' | 'DEAL_READY' | 'DECLINED'>('IDLE');
+  const [phoneInput, setPhoneInput] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [confirmedPhone, setConfirmedPhone] = useState('');
+  const [isOptimizing, setIsOptimizing] = useState(false);
+  const [optimizedDeal, setOptimizedDeal] = useState<OptimizedDeal | null>(null);
+  const [dealAddedToCart, setDealAddedToCart] = useState(false);
+
+  // Normalization and validation for Indian mobile numbers
+  const normalizeAndValidateIndianPhone = (raw: string): string | null => {
+    if (!raw || typeof raw !== 'string') return null;
+    const digits = raw.replace(/\D/g, '');
+    let normalized = digits;
+    if (digits.length === 12 && digits.startsWith('91')) {
+      normalized = digits.slice(2);
+    } else if (digits.length === 11 && digits.startsWith('0')) {
+      normalized = digits.slice(1);
+    }
+    if (/^[6-9]\d{9}$/.test(normalized)) {
+      return normalized;
+    }
+    return null;
+  };
+
+  const handlePhoneSubmit = () => {
+    const validNumber = normalizeAndValidateIndianPhone(phoneInput);
+    if (!validNumber) {
+      setPhoneError("That doesn't look like a valid Indian mobile number. Please enter your 10-digit mobile number.");
+      return;
+    }
+    setPhoneError('');
+    setConfirmedPhone(validNumber);
+    setDealStep('CONFIRMATION');
+  };
+
+  const handleChangeNumber = () => {
+    setDealStep('PHONE_INPUT');
+    setConfirmedPhone('');
+    setPhoneError('');
+  };
+
+  const handleProceedToOptimization = async () => {
+    if (isOptimizing || !confirmedPhone) return;
+    setIsOptimizing(true);
+    setDealStep('OPTIMIZING');
+
+    try {
+      const res = await fetch('/api/deals/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId: recommendedProduct?.id || 'fronx',
+          phone: confirmedPhone,
+          brand: recommendedProduct?.brand,
+          model: recommendedProduct?.model
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success && data.deal) {
+        setOptimizedDeal(data.deal);
+        setDealStep('DEAL_READY');
+      } else {
+        setPhoneError(data.error || 'Unable to optimize deal at this moment.');
+        setDealStep('PHONE_INPUT');
+        setConfirmedPhone('');
+      }
+    } catch (e) {
+      setPhoneError('Network error while checking deals. Please try again.');
+      setDealStep('PHONE_INPUT');
+      setConfirmedPhone('');
+    } finally {
+      setIsOptimizing(false);
+    }
+  };
+
+  const handleAddDealToCart = () => {
+    if (!recommendedProduct || !optimizedDeal) return;
+
+    // 1. Add base recommended vehicle dock
+    addToCart({
+      id: recommendedProduct.id,
+      name: recommendedProduct.name,
+      variant: `Custom Fit: ${recommendedProduct.slot}`,
+      price: recommendedProduct.price,
+      originalPrice: recommendedProduct.originalPrice,
+      image: recommendedProduct.image
+    });
+
+    // 2. Add bundle add-on item (Table Stand)
+    addToCart({
+      id: optimizedDeal.addonItem.id,
+      name: optimizedDeal.addonItem.name,
+      variant: optimizedDeal.addonItem.variant,
+      price: optimizedDeal.addonItem.price,
+      originalPrice: optimizedDeal.addonItem.originalPrice,
+      image: tableStandImg
+    });
+
+    // 3. Pre-apply exclusive coupon
+    if (optimizedDeal.coupon?.code) {
+      setAppliedCoupon(optimizedDeal.coupon.code);
+    }
+
+    trackAnalyticsAddToCart(
+      recommendedProduct.id,
+      `${recommendedProduct.name} + ${optimizedDeal.addonItem.name}`,
+      optimizedDeal.bundlePrice,
+      'assistant_deal'
+    );
+
+    setDealAddedToCart(true);
+  };
+
   // Listen for custom open event (e.g. from Find Your Car section on Homepage)
   useEffect(() => {
     const handleOpenChatbot = (e: any) => {
@@ -241,7 +388,7 @@ export default function CarFinderChatbot() {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, dealStep, isOptimizing]);
 
   const handleSelectBrand = (brandValue: string) => {
     let brandLabel = 'Maruti Suzuki';
@@ -260,6 +407,14 @@ export default function CarFinderChatbot() {
 
     if (brandValue === 'universal') {
       const product = CAR_PRODUCTS['universal'];
+      setRecommendedProduct(product);
+      setDealStep('OFFER');
+      setPhoneInput('');
+      setPhoneError('');
+      setConfirmedPhone('');
+      setOptimizedDeal(null);
+      setDealAddedToCart(false);
+
       const botResponse: ChatMessage = {
         id: `bot-${Date.now() + 1}`,
         sender: 'bot',
@@ -313,6 +468,14 @@ export default function CarFinderChatbot() {
 
   const handleSelectModel = (modelValue: string, modelLabel: string) => {
     const product = CAR_PRODUCTS[modelValue] || CAR_PRODUCTS['universal'];
+    setRecommendedProduct(product);
+    setDealStep('OFFER');
+    setPhoneInput('');
+    setPhoneError('');
+    setConfirmedPhone('');
+    setOptimizedDeal(null);
+    setDealAddedToCart(false);
+
     trackAssistantAnswer('model', 'Select your model', modelLabel, product.brand, modelLabel);
 
     const userMsg: ChatMessage = {
@@ -356,6 +519,14 @@ export default function CarFinderChatbot() {
   };
 
   const handleRestart = () => {
+    setRecommendedProduct(null);
+    setDealStep('IDLE');
+    setPhoneInput('');
+    setPhoneError('');
+    setConfirmedPhone('');
+    setOptimizedDeal(null);
+    setDealAddedToCart(false);
+
     setMessages([
       {
         id: `welcome-${Date.now()}`,
@@ -617,6 +788,280 @@ export default function CarFinderChatbot() {
                             🔄 Check Another Car
                           </button>
                         </div>
+                      </div>
+                    )}
+
+                    {/* Personalized Deal Optimization Flow */}
+                    {msg.type === 'product_card' && msg.product && (
+                      <div className="pt-1">
+                        {/* 1. DEAL OFFER STEP */}
+                        {dealStep === 'OFFER' && (
+                          <div className="bg-[#FAF7F0] border-2 border-emerald-600/40 rounded-2xl p-3.5 space-y-2.5 shadow-sm animate-in fade-in duration-300">
+                            <div className="flex items-start gap-2.5">
+                              <div className="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                                <Sparkles className="w-3.5 h-3.5" />
+                              </div>
+                              <div className="space-y-1 flex-1">
+                                <div className="flex items-center justify-between">
+                                  <h5 className="font-bold text-xs text-[#0A1E3F] flex items-center gap-1.5">
+                                    Want a better deal? 👀
+                                  </h5>
+                                  <span className="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                    Exclusive Offer
+                                  </span>
+                                </div>
+                                <p className="text-[11px] text-gray-700 leading-snug">
+                                  Share your mobile number and we'll check the best available bundle offer for your recommendation. You could save <strong className="text-emerald-800 font-bold">₹550 Total (Mount discount + ₹100 coupon)</strong> on your order.
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex gap-2 pt-1">
+                              <button
+                                onClick={() => setDealStep('DECLINED')}
+                                className="flex-1 bg-white hover:bg-gray-100 text-gray-700 border border-[#D6CDB8] py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                              >
+                                No, thanks
+                              </button>
+                              <button
+                                onClick={() => { setDealStep('PHONE_INPUT'); setPhoneError(''); }}
+                                className="flex-1 bg-[#0A1E3F] hover:bg-[#152B52] text-white py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                              >
+                                <Zap className="w-3.5 h-3.5 text-amber-300" />
+                                <span>Check Best Offer</span>
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* 2. PHONE INPUT STEP */}
+                        {dealStep === 'PHONE_INPUT' && (
+                          <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 rounded-2xl p-3.5 space-y-3 shadow-sm animate-in fade-in duration-300">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A1E3F]">
+                                <Phone className="w-3.5 h-3.5 text-[#0A1E3F]" />
+                                <span>Mobile Number</span>
+                              </div>
+                              <span className="text-[10px] text-gray-500 font-medium">10-Digit Mobile Number</span>
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <div className="flex rounded-xl overflow-hidden border border-[#D6CDB8] bg-white focus-within:border-[#0A1E3F] transition-colors shadow-inner">
+                                <span className="bg-[#EBE5D9] text-[#0A1E3F] font-bold text-xs px-3 py-2.5 flex items-center border-r border-[#D6CDB8] select-none">
+                                  +91
+                                </span>
+                                <input
+                                  type="tel"
+                                  inputMode="numeric"
+                                  value={phoneInput}
+                                  onChange={(e) => {
+                                    setPhoneInput(e.target.value);
+                                    if (phoneError) setPhoneError('');
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') handlePhoneSubmit();
+                                  }}
+                                  placeholder="Enter your 10-digit mobile number"
+                                  maxLength={15}
+                                  autoFocus
+                                  className="flex-1 min-w-0 px-3 py-2 text-xs font-semibold text-[#0A1E3F] placeholder:text-gray-400 focus:outline-none bg-transparent"
+                                />
+                              </div>
+
+                              {phoneError && (
+                                <p className="text-[10px] text-red-600 font-bold bg-red-50 border border-red-200 px-2.5 py-1.5 rounded-lg animate-in fade-in duration-200">
+                                  ⚠️ {phoneError}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => setDealStep('DECLINED')}
+                                className="flex-1 bg-white hover:bg-gray-100 text-gray-700 border border-[#D6CDB8] py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer"
+                              >
+                                No, thanks
+                              </button>
+                              <button
+                                onClick={handlePhoneSubmit}
+                                className="flex-1 bg-[#0A1E3F] hover:bg-[#152B52] text-white py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                              >
+                                <span>Continue</span>
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* 3. CONFIRMATION STEP */}
+                        {dealStep === 'CONFIRMATION' && (
+                          <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-2xl p-3.5 space-y-3 shadow-md animate-in fade-in duration-300">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A1E3F]">
+                                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                                <span>Please confirm your number</span>
+                              </div>
+                              <p className="text-[11px] text-gray-700 leading-relaxed">
+                                This number will also be used for <strong className="text-[#0A1E3F] font-bold">delivery and order-related communication</strong>. Please make sure it is correct before continuing.
+                              </p>
+                            </div>
+
+                            <div className="bg-white border border-[#D6CDB8] rounded-xl p-2.5 text-center shadow-sm">
+                              <div className="text-[10px] text-gray-500 uppercase tracking-widest font-semibold">Your Mobile Number</div>
+                              <div className="text-base font-['Anton'] tracking-wider text-[#0A1E3F] mt-0.5">
+                                +91 {confirmedPhone.slice(0, 5)} {confirmedPhone.slice(5)}
+                              </div>
+                            </div>
+
+                            <div className="flex gap-2 pt-0.5">
+                              <button
+                                onClick={handleChangeNumber}
+                                disabled={isOptimizing}
+                                className="flex-1 bg-white hover:bg-gray-100 text-gray-700 border border-[#D6CDB8] py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-50"
+                              >
+                                Change Number
+                              </button>
+                              <button
+                                onClick={handleProceedToOptimization}
+                                disabled={isOptimizing}
+                                className="flex-1 bg-[#0A1E3F] hover:bg-[#152B52] text-white py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider shadow-sm transition-all cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-50"
+                              >
+                                {isOptimizing ? (
+                                  <>
+                                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                    <span>Finding Best Deal...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>Proceed</span>
+                                    <ArrowRight className="w-3.5 h-3.5" />
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* 4. OPTIMIZING STEP */}
+                        {dealStep === 'OPTIMIZING' && (
+                          <div className="bg-[#FAF7F0] border border-[#0A1E3F]/30 rounded-2xl p-4 text-center space-y-2 shadow-sm animate-in fade-in duration-300">
+                            <Loader2 className="w-6 h-6 text-[#0A1E3F] animate-spin mx-auto" />
+                            <p className="text-xs font-bold text-[#0A1E3F]">
+                              Analyzing dock fitment & checking exclusive bundle offers...
+                            </p>
+                            <p className="text-[10px] text-gray-500">Calculating maximum bundle savings & applying coupon</p>
+                          </div>
+                        )}
+
+                        {/* 5. DEAL READY STEP */}
+                        {dealStep === 'DEAL_READY' && optimizedDeal && (
+                          <div className="bg-white border-2 border-emerald-600 rounded-2xl p-3.5 shadow-lg space-y-3 animate-in fade-in zoom-in-95 duration-300">
+                            <div className="flex items-center justify-between pb-2 border-b border-[#EBE5D9]">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-base">🎉</span>
+                                <h5 className="font-bold text-xs sm:text-sm text-[#0A1E3F]">
+                                  We found a better deal for you!
+                                </h5>
+                              </div>
+                              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                                {optimizedDeal.badge}
+                              </span>
+                            </div>
+
+                            <p className="text-[11px] text-gray-700 leading-snug">
+                              {optimizedDeal.description}
+                            </p>
+
+                            {/* Bundle item add-on highlight */}
+                            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-xl p-2.5 flex items-center gap-2.5">
+                              <div className="w-11 h-11 rounded-lg bg-white border border-[#D6CDB8] p-1 shrink-0 flex items-center justify-center overflow-hidden">
+                                <img src={tableStandImg} alt="Table Stand" loading="lazy" decoding="async" className="w-full h-full object-contain" />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center justify-between">
+                                  <h6 className="text-xs font-bold text-[#0A1E3F] truncate">{optimizedDeal.addonItem.name}</h6>
+                                  <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                                    Save ₹{optimizedDeal.addonItem.addonSavings}
+                                  </span>
+                                </div>
+                                <p className="text-[10px] text-gray-500">{optimizedDeal.addonItem.variant}</p>
+                                <div className="flex items-center gap-1.5 mt-0.5">
+                                  <span className="text-xs font-bold text-[#0A1E3F]">₹{optimizedDeal.addonItem.price}</span>
+                                  <span className="text-[10px] text-gray-400 line-through">₹{optimizedDeal.addonItem.originalPrice}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Savings + Coupon banner */}
+                            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Tag className="w-4 h-4 text-emerald-700 shrink-0" />
+                                <div>
+                                  <div className="text-xs font-bold text-emerald-900 flex items-center gap-1">
+                                    <span>Coupon: {optimizedDeal.coupon.code}</span>
+                                    <span className="text-[9px] bg-emerald-200/80 text-emerald-900 font-bold px-1.5 py-0.5 rounded">✓ ₹{optimizedDeal.coupon.discountAmount} OFF</span>
+                                  </div>
+                                  <p className="text-[10px] text-emerald-700 font-medium">Applied automatically to your cart</p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-[9px] text-gray-500 block uppercase font-bold">Total Savings</span>
+                                <span className="text-sm font-['Anton'] text-emerald-800">₹{optimizedDeal.totalSavings}</span>
+                              </div>
+                            </div>
+
+                            {/* Price & Add Deal to Cart */}
+                            <div className="pt-2 border-t border-[#EBE5D9] flex items-center justify-between">
+                              <div>
+                                <span className="text-[10px] text-gray-400 line-through block">₹{optimizedDeal.totalOriginalPrice}</span>
+                                <span className="text-lg font-['Anton'] text-[#0A1E3F]">₹{optimizedDeal.bundlePrice}</span>
+                              </div>
+
+                              <button
+                                onClick={handleAddDealToCart}
+                                className="px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-1.5 transition-all cursor-pointer bg-[#0A1E3F] hover:bg-[#152B52] text-white shadow-md"
+                              >
+                                {dealAddedToCart ? (
+                                  <>
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                                    <span>Deal Added!</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <ShoppingBag className="w-3.5 h-3.5" />
+                                    <span>Add Deal to Cart</span>
+                                  </>
+                                )}
+                              </button>
+                            </div>
+
+                            {dealAddedToCart && (
+                              <div className="pt-1 animate-in fade-in duration-200">
+                                <Link
+                                  to="/cart"
+                                  onClick={() => setIsOpen(false)}
+                                  className="w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl font-bold text-xs tracking-wider uppercase shadow-md transition-colors flex items-center justify-center gap-1.5"
+                                >
+                                  <span>View Cart & Checkout (₹100 Off)</span>
+                                  <ArrowRight className="w-3.5 h-3.5" />
+                                </Link>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* 6. DECLINED STEP */}
+                        {dealStep === 'DECLINED' && (
+                          <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-xl p-2.5 text-[11px] text-gray-600 flex items-center justify-between">
+                            <span>Standard dock recommendation active.</span>
+                            <button
+                              onClick={() => { setDealStep('PHONE_INPUT'); setPhoneError(''); }}
+                              className="text-[#0A1E3F] font-bold underline hover:text-[#152B52] cursor-pointer"
+                            >
+                              Check deals
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

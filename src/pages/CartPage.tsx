@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2, CreditCard, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getCartItems, saveCartItems } from '../lib/cart';
+import { getCartItems, saveCartItems, getAppliedCoupon, setAppliedCoupon, clearAppliedCoupon } from '../lib/cart';
 import { trackAddToCart as trackAnalyticsAddToCart, trackComboUpgrade } from '../lib/analytics';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import airVentImg from '../assets/images/air_vent_mount.webp';
@@ -49,8 +49,8 @@ const loadCashfreeScript = () => {
 export default function CartPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [couponCode, setCouponCode] = useState('');
-  const [couponApplied, setCouponApplied] = useState(false);
+  const [couponCode, setCouponCode] = useState(() => getAppliedCoupon());
+  const [couponApplied, setCouponApplied] = useState(() => Boolean(getAppliedCoupon()));
   const [isProcessing, setIsProcessing] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState<'CART' | 'ADDRESS' | 'SUCCESS'>('CART');
   const [paymentGateway, setPaymentGateway] = useState<'razorpay' | 'cashfree'>('razorpay');
@@ -113,20 +113,25 @@ export default function CartPage() {
   };
 
   const applyCoupon = () => {
-    if (couponCode.trim() !== '') {
+    const code = couponCode.trim().toUpperCase();
+    if (code !== '') {
       setCouponApplied(true);
+      setAppliedCoupon(code);
     }
   };
 
   const removeCoupon = () => {
     setCouponApplied(false);
     setCouponCode('');
+    clearAppliedCoupon();
   };
 
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const discount = couponApplied ? Math.floor(subtotal * 0.1) : 0; // 10% off for example
+  const discount = couponApplied
+    ? (couponCode.toUpperCase() === 'QIC100' ? Math.min(100, subtotal) : Math.floor(subtotal * 0.1))
+    : 0;
   const shipping = subtotal > 999 ? 0 : 150;
-  const total = subtotal - discount + shipping;
+  const total = Math.max(0, subtotal - discount + shipping);
 
   const processOrderSuccess = async (gateway: string, payId: string) => {
     let confirmedOrder: any = null;
