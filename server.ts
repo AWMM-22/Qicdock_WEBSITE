@@ -36,6 +36,27 @@ function saveAnalyticsLocal() {
   }
 }
 
+// Customer Phone Leads storage with local persistence fallback
+const LEADS_FILE = path.join(process.cwd(), "phone_leads.json");
+let phoneLeads: any[] = [];
+
+try {
+  if (fs.existsSync(LEADS_FILE)) {
+    const raw = fs.readFileSync(LEADS_FILE, "utf-8");
+    phoneLeads = JSON.parse(raw);
+  }
+} catch (e) {
+  console.warn("[Leads] Could not load local leads file, starting fresh.");
+}
+
+function saveLeadsLocal() {
+  try {
+    fs.writeFileSync(LEADS_FILE, JSON.stringify(phoneLeads.slice(-5000), null, 2), "utf-8");
+  } catch (e) {
+    console.error("[Leads] Error saving local leads:", e);
+  }
+}
+
 // Supabase client initialization (server-side)
 const supabaseUrl =
   process.env.VITE_SUPABASE_URL ||
@@ -182,6 +203,86 @@ async function startServer() {
       });
     } catch (err: any) {
       res.status(500).json({ error: err.message || "Failed to validate coupon" });
+    }
+  });
+
+  // --- Customer Phone Leads API ---
+  app.post("/api/leads", async (req, res) => {
+    try {
+      const { phone, brand, model, productId, productName, consentGiven, consentText } = req.body;
+      const normalized = normalizeIndianPhone(phone);
+      if (!normalized) {
+        return res.status(400).json({ error: "Invalid Indian mobile number." });
+      }
+
+      const leadId = `lead_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+      const formattedPhone = `+91 ${normalized.slice(0, 5)} ${normalized.slice(5)}`;
+      const newLead = {
+        id: leadId,
+        phone: normalized,
+        formattedPhone,
+        brand: brand || "Unknown",
+        model: model || "Universal",
+        productId: productId || "fronx",
+        productName: productName || "Vehicle Wireless Dock",
+        consentGiven: Boolean(consentGiven),
+        consentText: consentText || "Agreed to contact for enquiry, purchase, delivery & support and accepted Terms & Privacy Policy",
+        consentTimestamp: new Date().toISOString(),
+        status: "New",
+        createdAt: new Date().toISOString()
+      };
+
+      // Check if lead already exists with same phone in last 24h, update if needed
+      const existingIdx = phoneLeads.findIndex(l => l.phone === normalized);
+      if (existingIdx >= 0) {
+        phoneLeads[existingIdx] = { ...phoneLeads[existingIdx], ...newLead };
+      } else {
+        phoneLeads.unshift(newLead);
+      }
+      saveLeadsLocal();
+
+      // Supabase insert (non-blocking fallback)
+      supabase.from("customer_leads").insert([newLead]).catch(() => {});
+
+      res.json({ success: true, leadId, lead: newLead });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message || "Failed to save lead" });
+    }
+  });
+
+  app.get("/api/leads", async (req, res) => {
+    try {
+      let dbLeads: any[] = [];
+      try {
+        const { data, error } = await supabase.from("customer_leads").select("*").order("createdAt", { ascending: false });
+        if (!error && data) {
+          dbLeads = data;
+        }
+      } catch {}
+
+      const dbIds = new Set(dbLeads.map(l => l.id));
+      const memoryOnly = phoneLeads.filter(l => !dbIds.has(l.id));
+      res.json({ success: true, leads: [...dbLeads, ...memoryOnly] });
+    } catch (e: any) {
+      res.json({ success: true, leads: phoneLeads });
+    }
+  });
+
+  app.patch("/api/leads/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const lead = phoneLeads.find(l => l.id === id);
+      if (lead) {
+        lead.status = status;
+        saveLeadsLocal();
+      }
+      try {
+        await supabase.from("customer_leads").update({ status }).eq("id", id);
+      } catch {}
+      res.json({ success: true, status });
+    } catch (e: any) {
+      res.status(500).json({ error: e.message });
     }
   });
 

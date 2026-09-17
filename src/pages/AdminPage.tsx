@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useInventory } from '../context/InventoryContext';
-import { Truck, ExternalLink, RefreshCw, AlertCircle, CheckCircle2, X, BarChart3, PieChart as PieChartIcon, Users, ShoppingBag, TrendingUp, Sparkles, Car, DollarSign, Clock, Calendar, ArrowRight, ShieldCheck, Activity } from 'lucide-react';
+import { Truck, ExternalLink, RefreshCw, AlertCircle, CheckCircle2, X, BarChart3, PieChart as PieChartIcon, Users, ShoppingBag, TrendingUp, Sparkles, Car, DollarSign, Clock, Calendar, ArrowRight, ShieldCheck, Activity, Phone, PhoneCall, Copy, Check } from 'lucide-react';
 
 // Centralized list of all products for the admin panel
 const ALL_PRODUCTS = [
@@ -42,7 +42,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   
-  const [activeTab, setActiveTab] = useState<'analytics' | 'orders' | 'inventory'>('analytics');
+  const [activeTab, setActiveTab] = useState<'analytics' | 'leads' | 'orders' | 'inventory'>('analytics');
   const [analyticsRange, setAnalyticsRange] = useState<'all' | 'today' | '7days'>('all');
   const [analyticsStats, setAnalyticsStats] = useState<any>(null);
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
@@ -53,9 +53,17 @@ export default function AdminPage() {
   const [trackingModal, setTrackingModal] = useState<any | null>(null);
   const { inventory, isSoldOut, refreshInventory } = useInventory();
 
+  // Leads State
+  const [leads, setLeads] = useState<any[]>([]);
+  const [loadingLeads, setLoadingLeads] = useState(false);
+  const [leadSearch, setLeadSearch] = useState('');
+  const [leadStatusFilter, setLeadStatusFilter] = useState<'ALL' | 'New' | 'Contacted'>('ALL');
+  const [copiedLeadId, setCopiedLeadId] = useState<string | null>(null);
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchAnalytics();
+      fetchLeads();
       fetchOrders();
       refreshInventory();
     }
@@ -86,6 +94,45 @@ export default function AdminPage() {
     } finally {
       setLoadingAnalytics(false);
     }
+  };
+
+  const fetchLeads = async () => {
+    setLoadingLeads(true);
+    try {
+      const res = await fetch('/api/leads');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.leads) {
+          setLeads(data.leads);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch leads:', err);
+    } finally {
+      setLoadingLeads(false);
+    }
+  };
+
+  const toggleLeadStatus = async (leadId: string, currentStatus: string) => {
+    const nextStatus = currentStatus === 'Contacted' ? 'New' : 'Contacted';
+    try {
+      const res = await fetch(`/api/leads/${leadId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: nextStatus })
+      });
+      if (res.ok) {
+        setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: nextStatus } : l));
+      }
+    } catch (err) {
+      console.error('Failed to update lead status:', err);
+    }
+  };
+
+  const copyToClipboard = (text: string, leadId: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedLeadId(leadId);
+    setTimeout(() => setCopiedLeadId(null), 2000);
   };
 
   const fetchOrders = async () => {
@@ -207,10 +254,10 @@ export default function AdminPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <button 
-              onClick={() => { fetchAnalytics(); fetchOrders(); refreshInventory(); }} 
+              onClick={() => { fetchAnalytics(); fetchLeads(); fetchOrders(); refreshInventory(); }} 
               className="flex items-center gap-1.5 text-xs font-bold bg-[#EBE5D9] border border-[#D6CDB8] px-4 py-2.5 rounded-xl text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#F4F0E6] transition-all cursor-pointer shadow-sm"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loadingAnalytics || loadingOrders ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${loadingAnalytics || loadingOrders || loadingLeads ? 'animate-spin' : ''}`} />
               Sync Live Data
             </button>
             <button 
@@ -234,6 +281,17 @@ export default function AdminPage() {
           >
             <BarChart3 className="w-4 h-4" />
             Analytics &amp; User Intelligence
+          </button>
+          <button
+            onClick={() => setActiveTab('leads')}
+            className={`flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
+              activeTab === 'leads'
+                ? 'bg-[#0A1E3F] text-[#F4F0E6] shadow-md shadow-[#0A1E3F]/20'
+                : 'bg-[#FAF7F0] text-gray-600 hover:text-[#0A1E3F] border border-[#E2DAC8]'
+            }`}
+          >
+            <PhoneCall className="w-4 h-4" />
+            Customer Phone Leads ({leads.length})
           </button>
           <button
             onClick={() => setActiveTab('orders')}
@@ -619,6 +677,214 @@ export default function AdminPage() {
 
             </div>
 
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* TAB: CUSTOMER PHONE LEADS */}
+        {/* ========================================================================= */}
+        {activeTab === 'leads' && (
+          <div className="space-y-6 animate-in fade-in duration-300">
+            {/* KPI Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-5 shadow-sm flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest block mb-1">Total Leads</span>
+                  <div className="text-3xl font-['Anton'] text-[#0A1E3F]">{leads.length}</div>
+                  <p className="text-[10px] text-gray-500 mt-1">Verified with calling consent</p>
+                </div>
+                <div className="w-12 h-12 rounded-2xl bg-[#0A1E3F]/5 border border-[#0A1E3F]/15 flex items-center justify-center text-[#0A1E3F]">
+                  <PhoneCall className="w-6 h-6" />
+                </div>
+              </div>
+
+              <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-5 shadow-sm flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest block mb-1">New / Pending Follow-Up</span>
+                  <div className="text-3xl font-['Anton'] text-amber-600">
+                    {leads.filter(l => (l.status || 'New') === 'New').length}
+                  </div>
+                  <p className="text-[10px] text-amber-700 mt-1">Awaiting sales/order call</p>
+                </div>
+                <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600">
+                  <Clock className="w-6 h-6" />
+                </div>
+              </div>
+
+              <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-5 shadow-sm flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest block mb-1">Contacted Leads</span>
+                  <div className="text-3xl font-['Anton'] text-emerald-700">
+                    {leads.filter(l => l.status === 'Contacted').length}
+                  </div>
+                  <p className="text-[10px] text-emerald-700 mt-1">Successfully assisted</p>
+                </div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600">
+                  <CheckCircle2 className="w-6 h-6" />
+                </div>
+              </div>
+            </div>
+
+            {/* Search & Filter Header */}
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-5 shadow-sm flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+              <div className="flex-1 max-w-md">
+                <input
+                  type="text"
+                  value={leadSearch}
+                  onChange={(e) => setLeadSearch(e.target.value)}
+                  placeholder="Search by phone, car model, brand..."
+                  className="w-full bg-white border border-[#D6CDB8] rounded-xl px-4 py-2.5 text-xs font-semibold text-[#0A1E3F] placeholder:text-gray-400 focus:outline-none focus:border-[#0A1E3F]"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                {(['ALL', 'New', 'Contacted'] as const).map((st) => (
+                  <button
+                    key={st}
+                    onClick={() => setLeadStatusFilter(st)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                      leadStatusFilter === st
+                        ? 'bg-[#0A1E3F] text-[#F4F0E6]'
+                        : 'bg-white text-gray-600 border border-[#E2DAC8] hover:border-[#D6CDB8]'
+                    }`}
+                  >
+                    {st === 'ALL' ? 'All Leads' : st}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Leads Table */}
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl overflow-hidden shadow-sm">
+              <div className="p-5 border-b border-[#E2DAC8] flex items-center justify-between">
+                <h3 className="font-['Anton'] uppercase text-lg text-[#0A1E3F] tracking-wide flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-[#0A1E3F]" />
+                  Customer Numbers &amp; Call Enquiries
+                </h3>
+                <span className="text-xs font-bold text-gray-500">
+                  Showing {
+                    leads.filter(l => {
+                      const matchesSearch = !leadSearch || 
+                        (l.phone && l.phone.includes(leadSearch)) ||
+                        (l.brand && l.brand.toLowerCase().includes(leadSearch.toLowerCase())) ||
+                        (l.model && l.model.toLowerCase().includes(leadSearch.toLowerCase()));
+                      const matchesFilter = leadStatusFilter === 'ALL' || (l.status || 'New') === leadStatusFilter;
+                      return matchesSearch && matchesFilter;
+                    }).length
+                  } of {leads.length} leads
+                </span>
+              </div>
+
+              {loadingLeads ? (
+                <div className="py-16 text-center text-xs font-bold text-gray-500 flex items-center justify-center gap-2">
+                  <RefreshCw className="w-4 h-4 animate-spin" /> Loading customer leads...
+                </div>
+              ) : leads.length === 0 ? (
+                <div className="py-16 text-center text-xs text-gray-500 space-y-1">
+                  <p className="font-bold text-sm text-[#0A1E3F]">No customer phone leads captured yet</p>
+                  <p>When users enter their mobile numbers in the Chatbot Assistant, they will appear here live.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="bg-[#EBE5D9]/60 text-gray-600 uppercase text-[10px] tracking-wider border-b border-[#E2DAC8]">
+                        <th className="p-3.5 pl-5 font-bold">Customer Number</th>
+                        <th className="p-3.5 font-bold">Vehicle / Interest</th>
+                        <th className="p-3.5 font-bold">Consent Status</th>
+                        <th className="p-3.5 font-bold">Captured Date</th>
+                        <th className="p-3.5 font-bold">Status</th>
+                        <th className="p-3.5 pr-5 text-right font-bold">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#E2DAC8]">
+                      {leads
+                        .filter(l => {
+                          const matchesSearch = !leadSearch || 
+                            (l.phone && l.phone.includes(leadSearch)) ||
+                            (l.brand && l.brand.toLowerCase().includes(leadSearch.toLowerCase())) ||
+                            (l.model && l.model.toLowerCase().includes(leadSearch.toLowerCase()));
+                          const matchesFilter = leadStatusFilter === 'ALL' || (l.status || 'New') === leadStatusFilter;
+                          return matchesSearch && matchesFilter;
+                        })
+                        .map((lead) => {
+                          const isContacted = lead.status === 'Contacted';
+                          return (
+                            <tr key={lead.id} className="hover:bg-white/60 transition-colors">
+                              <td className="p-3.5 pl-5 font-bold text-[#0A1E3F]">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-['Anton'] tracking-wider text-sm">
+                                    {lead.formattedPhone || `+91 ${lead.phone}`}
+                                  </span>
+                                  <button
+                                    onClick={() => copyToClipboard(lead.phone, lead.id)}
+                                    title="Copy Phone Number"
+                                    className="p-1 rounded-md text-gray-400 hover:text-[#0A1E3F] hover:bg-gray-100 transition-colors"
+                                  >
+                                    {copiedLeadId === lead.id ? (
+                                      <Check className="w-3.5 h-3.5 text-emerald-600" />
+                                    ) : (
+                                      <Copy className="w-3.5 h-3.5" />
+                                    )}
+                                  </button>
+                                </div>
+                              </td>
+                              <td className="p-3.5">
+                                <div className="font-bold text-[#0A1E3F]">{lead.brand} - {lead.model}</div>
+                                <div className="text-[10px] text-gray-500">{lead.productName || 'Custom Vehicle Dock'}</div>
+                              </td>
+                              <td className="p-3.5">
+                                <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                                  <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Calling &amp; Delivery Consent
+                                </span>
+                              </td>
+                              <td className="p-3.5 text-gray-600 text-[11px]">
+                                {lead.createdAt ? new Date(lead.createdAt).toLocaleString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                }) : 'Recently'}
+                              </td>
+                              <td className="p-3.5">
+                                <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                  isContacted 
+                                    ? 'bg-blue-50 text-blue-700 border border-blue-200' 
+                                    : 'bg-amber-50 text-amber-700 border border-amber-200'
+                                }`}>
+                                  {isContacted ? 'Contacted' : 'New Lead'}
+                                </span>
+                              </td>
+                              <td className="p-3.5 pr-5 text-right">
+                                <div className="flex items-center justify-end gap-2">
+                                  <a
+                                    href={`tel:+91${lead.phone}`}
+                                    className="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors shadow-xs"
+                                  >
+                                    <Phone className="w-3 h-3" />
+                                    <span>Call</span>
+                                  </a>
+                                  <button
+                                    onClick={() => toggleLeadStatus(lead.id, lead.status || 'New')}
+                                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
+                                      isContacted
+                                        ? 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50'
+                                        : 'bg-[#0A1E3F] text-white border-[#0A1E3F] hover:bg-[#152B52]'
+                                    }`}
+                                  >
+                                    {isContacted ? 'Mark New' : 'Mark Contacted'}
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
 

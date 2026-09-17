@@ -231,6 +231,8 @@ export default function CarFinderChatbot() {
   const [dealStep, setDealStep] = useState<'IDLE' | 'OFFER' | 'PHONE_INPUT' | 'CONFIRMATION' | 'OPTIMIZING' | 'DEAL_READY' | 'DECLINED'>('IDLE');
   const [phoneInput, setPhoneInput] = useState('');
   const [phoneError, setPhoneError] = useState('');
+  const [consentAgreed, setConsentAgreed] = useState(true);
+  const [consentError, setConsentError] = useState('');
   const [confirmedPhone, setConfirmedPhone] = useState('');
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizedDeal, setOptimizedDeal] = useState<OptimizedDeal | null>(null);
@@ -258,7 +260,12 @@ export default function CarFinderChatbot() {
       setPhoneError("That doesn't look like a valid Indian mobile number. Please enter your 10-digit mobile number.");
       return;
     }
+    if (!consentAgreed) {
+      setConsentError("Please agree to the contact terms and conditions to proceed.");
+      return;
+    }
     setPhoneError('');
+    setConsentError('');
     setConfirmedPhone(validNumber);
     setDealStep('CONFIRMATION');
   };
@@ -267,6 +274,7 @@ export default function CarFinderChatbot() {
     setDealStep('PHONE_INPUT');
     setConfirmedPhone('');
     setPhoneError('');
+    setConsentError('');
   };
 
   const handleProceedToOptimization = async () => {
@@ -275,6 +283,22 @@ export default function CarFinderChatbot() {
     setDealStep('OPTIMIZING');
 
     try {
+      // 1. Store lead in database with consent audit info
+      fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: confirmedPhone,
+          brand: recommendedProduct?.brand,
+          model: recommendedProduct?.model,
+          productId: recommendedProduct?.id || 'fronx',
+          productName: recommendedProduct?.name,
+          consentGiven: true,
+          consentText: 'I agree to be contacted regarding my product enquiry, purchase, delivery, and related support, and I agree to the Terms & Conditions and Privacy Policy.'
+        })
+      }).catch(() => {});
+
+      // 2. Fetch personalized deal optimization quote
       const res = await fetch('/api/deals/quote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -837,15 +861,20 @@ export default function CarFinderChatbot() {
                         {/* 2. PHONE INPUT STEP */}
                         {dealStep === 'PHONE_INPUT' && (
                           <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 rounded-2xl p-3.5 space-y-3 shadow-sm animate-in fade-in duration-300">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A1E3F]">
-                                <Phone className="w-3.5 h-3.5 text-[#0A1E3F]" />
-                                <span>Mobile Number</span>
+                            <div className="space-y-1">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A1E3F]">
+                                  <Phone className="w-3.5 h-3.5 text-[#0A1E3F]" />
+                                  <span>Get your personalized deal</span>
+                                </div>
+                                <span className="text-[10px] text-gray-500 font-medium">10-Digit Indian Mobile</span>
                               </div>
-                              <span className="text-[10px] text-gray-500 font-medium">10-Digit Mobile Number</span>
+                              <p className="text-[11px] text-gray-600 leading-snug">
+                                Share your mobile number and our team can contact you to help with your purchase and provide the best available deal.
+                              </p>
                             </div>
 
-                            <div className="space-y-1.5">
+                            <div className="space-y-2">
                               <div className="flex rounded-xl overflow-hidden border border-[#D6CDB8] bg-white focus-within:border-[#0A1E3F] transition-colors shadow-inner">
                                 <span className="bg-[#EBE5D9] text-[#0A1E3F] font-bold text-xs px-3 py-2.5 flex items-center border-r border-[#D6CDB8] select-none">
                                   +91
@@ -868,9 +897,37 @@ export default function CarFinderChatbot() {
                                 />
                               </div>
 
+                              {/* Interactive Mandatory Consent Checkbox */}
+                              <label className="flex items-start gap-2 cursor-pointer select-none text-[11px] text-gray-700 leading-snug pt-0.5">
+                                <input
+                                  type="checkbox"
+                                  checked={consentAgreed}
+                                  onChange={(e) => {
+                                    setConsentAgreed(e.target.checked);
+                                    if (consentError) setConsentError('');
+                                  }}
+                                  className="w-4 h-4 mt-0.5 rounded border-gray-300 text-[#0A1E3F] focus:ring-[#0A1E3F] cursor-pointer shrink-0 accent-[#0A1E3F]"
+                                />
+                                <span>
+                                  I agree to be contacted regarding my product enquiry, purchase, delivery, and related support, and I agree to the{' '}
+                                  <Link to="/about" target="_blank" className="text-[#0A1E3F] font-bold underline hover:text-[#152B52]">
+                                    Terms & Conditions
+                                  </Link>{' '}
+                                  and{' '}
+                                  <Link to="/about" target="_blank" className="text-[#0A1E3F] font-bold underline hover:text-[#152B52]">
+                                    Privacy Policy
+                                  </Link>.
+                                </span>
+                              </label>
+
                               {phoneError && (
                                 <p className="text-[10px] text-red-600 font-bold bg-red-50 border border-red-200 px-2.5 py-1.5 rounded-lg animate-in fade-in duration-200">
                                   ⚠️ {phoneError}
+                                </p>
+                              )}
+                              {consentError && (
+                                <p className="text-[10px] text-red-600 font-bold bg-red-50 border border-red-200 px-2.5 py-1.5 rounded-lg animate-in fade-in duration-200">
+                                  ⚠️ {consentError}
                                 </p>
                               )}
                             </div>
@@ -899,10 +956,10 @@ export default function CarFinderChatbot() {
                             <div className="space-y-1">
                               <div className="flex items-center gap-1.5 text-xs font-bold text-[#0A1E3F]">
                                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                                <span>Please confirm your number</span>
+                                <span>Is this number correct?</span>
                               </div>
                               <p className="text-[11px] text-gray-700 leading-relaxed">
-                                This number will also be used for <strong className="text-[#0A1E3F] font-bold">delivery and order-related communication</strong>. Please make sure it is correct before continuing.
+                                We'll use this number to <strong className="text-[#0A1E3F] font-bold">contact you regarding your product enquiry/purchase</strong> and for delivery or order-related communication.
                               </p>
                             </div>
 
