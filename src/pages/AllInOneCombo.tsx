@@ -3,7 +3,7 @@ import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, RotateCcw, Truck
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import combinedImg from '../assets/images/3in1 copy.webp';
-import carPadImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
+import carPadImg from '../assets/images/center_mount_1788721138616.webp';
 import airVentImg from '../assets/images/air_vent_mount.webp';
 import rearSeatImg from '../assets/images/headrest_mount.webp';
 import tableStandImg from '../assets/images/table_stand_mount.webp';

@@ -429,7 +429,7 @@ export default function HomePage() {
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
                     <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={centerMountTransparentImg} alt="Universal car charging pad" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                      <img src={centerMountImg} alt="Universal car charging pad" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors text-center max-w-[140px] md:max-w-full">Universal Charging Pad</span>

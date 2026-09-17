@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import centerMountImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
+import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import airVentImg from '../assets/images/air_vent_mount.webp';
 import headrestMountImg from '../assets/images/headrest_mount.webp';
 
