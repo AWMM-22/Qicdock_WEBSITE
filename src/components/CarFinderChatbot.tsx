@@ -601,13 +601,7 @@ export default function CarFinderChatbot() {
               <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Close</span>
             </>
           ) : (
-            <>
-              <div className="relative flex items-center justify-center">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 rounded-full animate-ping opacity-75"></span>
-              </div>
-              <span className="text-xs font-bold uppercase tracking-wider">Find Your Car</span>
-            </>
+            <span className="text-xs font-bold uppercase tracking-wider">Find Your Car</span>
           )}
         </button>
       </div>
