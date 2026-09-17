@@ -5,11 +5,11 @@ import { useInventory } from '../context/InventoryContext';
 import { addToCart } from '../lib/cart';
 
 // Image assets
-import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
-import ertigaImg from '../assets/images/Ertiga.png';
-import swiftDzireImg from '../assets/images/Dzire and Swift.png';
-import threeXoImg from '../assets/images/3XO.png';
-import universalPadImg from '../assets/images/Universal_.png';
+import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
+import ertigaImg from '../assets/images/Ertiga.webp';
+import swiftDzireImg from '../assets/images/Dzire and Swift.webp';
+import threeXoImg from '../assets/images/3XO.webp';
+import universalPadImg from '../assets/images/Universal_.webp';
 
 export interface CarProduct {
   id: string;
@@ -500,11 +500,13 @@ export default function CarFinderChatbot() {
                     {msg.type === 'product_card' && msg.product && (
                       <div className="bg-white border-2 border-[#0A1E3F] rounded-2xl p-3.5 shadow-md space-y-3 mt-2 animate-in fade-in zoom-in-95 duration-200">
                         {/* Image stage */}
-                        <div className="h-32 rounded-xl bg-[#FAF7F0] border border-[#E2DAC8] overflow-hidden relative flex items-center justify-center">
+                        <div className="h-32 rounded-xl bg-[#FAF7F0] border border-[#E2DAC8] overflow-hidden relative flex items-center justify-center p-2">
                           <img
                             src={msg.product.image}
                             alt={msg.product.name}
-                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-contain"
                           />
                           <span className="absolute top-2 left-2 bg-[#0A1E3F] text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                             100% Fit Guarantee

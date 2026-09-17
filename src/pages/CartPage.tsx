@@ -3,11 +3,11 @@ import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCir
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getCartItems, saveCartItems } from '../lib/cart';
-import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
-import airVentImg from '../assets/images/air_vent_mount.jpg';
-import tableStandImg from '../assets/images/table_stand_mount.jpg';
-import wallStandImg from '../assets/images/wall_stand_mount.jpg';
-import combinedImg from '../assets/images/3in1 copy.png';
+import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
+import airVentImg from '../assets/images/air_vent_mount.webp';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
+import wallStandImg from '../assets/images/wall_stand_mount.webp';
+import combinedImg from '../assets/images/3in1 copy.webp';
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -416,8 +416,8 @@ export default function CartPage() {
                       <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </button>
 
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-[#EBE5D9] rounded-xl border border-[#D6CDB8] flex items-center justify-center overflow-hidden shrink-0">
-                    <img src={item.image} alt={item.name} className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform" />
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-[#EBE5D9] rounded-xl border border-[#D6CDB8] flex items-center justify-center overflow-hidden shrink-0 p-1">
+                    <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:scale-105 transition-transform" />
                   </div>
 
                   <div className="flex-1 w-full min-w-0">
@@ -748,7 +748,7 @@ export default function CartPage() {
               {suggestions.map((item) => (
                 <div key={item.id} className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-xl p-3 flex flex-col group hover:border-[#D6CDB8] transition-colors relative overflow-hidden">
                   <div className="w-full h-24 sm:h-28 bg-[#EBE5D9] rounded-lg border border-[#D6CDB8] mb-3 flex items-center justify-center p-3 relative z-10">
-                    <img src={item.image} alt={item.name} className="max-w-full max-h-full object-contain opacity-80 group-hover:scale-110 transition-transform duration-500" />
+                    <img src={item.image} alt={item.name} loading="lazy" decoding="async" className="max-w-full max-h-full object-contain opacity-80 group-hover:scale-110 transition-transform duration-500" />
                   </div>
                   <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] mb-1 line-clamp-1">{item.name}</h3>
                   <div className="flex justify-between items-center mt-auto pt-1">

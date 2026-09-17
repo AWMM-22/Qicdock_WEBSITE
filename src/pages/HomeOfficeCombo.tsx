@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, MonitorSmartphone, RotateCcw, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import tableStandImg from '../assets/images/table_stand_mount.jpg';
-import wallStandImg from '../assets/images/wall_stand_mount.jpg';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
+import wallStandImg from '../assets/images/wall_stand_mount.webp';
 
 interface Addon {
   id: string;
@@ -112,6 +112,9 @@ export default function HomeOfficeCombo() {
                 <img 
                   src={activeView === 'table' ? tableStandImg : wallStandImg} 
                   alt="Home and Office Combo" 
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
                   className="max-h-full max-w-full object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" 
                 />
               </div>
@@ -219,7 +222,7 @@ export default function HomeOfficeCombo() {
                       }`}
                     >
                       <div className="w-16 h-16 rounded-lg bg-[#EBE5D9] border border-[#E2DAC8] p-2 flex shrink-0">
-                         <img src={addon.image} alt={addon.name} className="w-full h-full object-contain" />
+                         <img src={addon.image} alt={addon.name} loading="lazy" decoding="async" className="w-full h-full object-contain" />
                       </div>
                       <div className="flex-1">
                          <h4 className="text-sm font-bold text-[#0A1E3F] leading-tight">{addon.name}</h4>

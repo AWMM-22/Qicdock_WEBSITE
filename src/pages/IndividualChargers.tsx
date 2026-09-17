@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Filter } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import airVentImg from '../assets/images/air_vent_mount.jpg';
-import rearSeatImg from '../assets/images/headrest_mount.jpg';
-import tableStandImg from '../assets/images/table_stand_mount.jpg';
-import wallStandImg from '../assets/images/wall_stand_mount.jpg';
-import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
+import airVentImg from '../assets/images/air_vent_mount.webp';
+import rearSeatImg from '../assets/images/headrest_mount.webp';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
+import wallStandImg from '../assets/images/wall_stand_mount.webp';
+import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 
 interface ProductSetup {
   id: string;
@@ -168,11 +168,13 @@ export default function IndividualChargers() {
                   </div>
 
                   {/* Image Showcase */}
-                  <div className="h-52 bg-[#F4F0E6] p-0 m-3 rounded-xl border border-[#E2DAC8] flex items-center justify-center overflow-hidden">
+                  <div className="h-52 bg-[#F4F0E6] p-2 m-3 rounded-xl border border-[#E2DAC8] flex items-center justify-center overflow-hidden">
                     <img 
                       src={product.img} 
                       alt={product.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
                     />
                   </div>
 

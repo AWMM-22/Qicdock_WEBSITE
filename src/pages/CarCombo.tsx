@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import centerMountImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
-import airVentImg from '../assets/images/air_vent_mount.jpg';
-import headrestMountImg from '../assets/images/headrest_mount.jpg';
+import centerMountImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
+import airVentImg from '../assets/images/air_vent_mount.webp';
+import headrestMountImg from '../assets/images/headrest_mount.webp';
 
 interface Addon {
   id: string;
@@ -128,6 +128,9 @@ export default function CarCombo() {
                 <img 
                   src={galleryImages[activeImageIndex].src} 
                   alt="Car Combo Configuration" 
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
                   className="max-h-full max-w-full object-contain rounded-lg drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" 
                 />
               </div>
@@ -144,7 +147,7 @@ export default function CarCombo() {
                         : 'border-[#E2DAC8] opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={img.src} alt={img.label} className="h-full object-contain" />
+                    <img src={img.src} alt={img.label} loading="lazy" decoding="async" className="h-full object-contain" />
                   </button>
                 ))}
               </div>

@@ -1,13 +1,13 @@
 import { ShieldCheck, Wrench, Magnet, Layers, MonitorSmartphone, Car, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
-import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
-import airVentImg from '../assets/images/air_vent_mount.jpg';
-import headrestMountImg from '../assets/images/headrest_mount.jpg';
-import tableStandImg from '../assets/images/table_stand_mount.jpg';
-import wallStandImg from '../assets/images/wall_stand_mount.jpg';
-import combinedImg from '../assets/images/3in1 copy.png';
+import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
+import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
+import airVentImg from '../assets/images/air_vent_mount.webp';
+import headrestMountImg from '../assets/images/headrest_mount.webp';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
+import wallStandImg from '../assets/images/wall_stand_mount.webp';
+import combinedImg from '../assets/images/3in1 copy.webp';
 
 const categoriesData = [
   {
@@ -154,11 +154,13 @@ export default function CategoriesPage() {
                   </div>
 
                   {/* Product Image Stage */}
-                  <div className="w-full h-full lg:h-52 min-h-[110px] bg-[#F4F0E6]/80 rounded-xl border border-[#E2DAC8] p-0 flex items-center justify-center lg:mb-6 overflow-hidden flex-1 lg:flex-none">
+                  <div className="w-full h-full lg:h-52 min-h-[110px] bg-[#F4F0E6]/80 rounded-xl border border-[#E2DAC8] p-2 flex items-center justify-center lg:mb-6 overflow-hidden flex-1 lg:flex-none">
                     <img 
                       src={cat.image} 
                       alt={cat.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
                     />
                   </div>
                 </div>

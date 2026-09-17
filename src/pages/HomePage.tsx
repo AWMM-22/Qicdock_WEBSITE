@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
-import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
-import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
-import airVentImg from '../assets/images/air_vent_mount.jpg';
-import headrestMountImg from '../assets/images/headrest_mount.jpg';
-import tableStandImg from '../assets/images/table_stand_mount.jpg';
-import wallStandImg from '../assets/images/wall_stand_mount.jpg';
-import combinedImg from '../assets/images/3in1 copy.png';
-import universalPadImg from '../assets/images/Universal_.png';
-import universalMountImg from '../assets/images/Compact_.png';
-import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
-import ertigaImg from '../assets/images/Ertiga.png';
-import swiftDzireImg from '../assets/images/Dzire and Swift.png';
-import threeXoImg from '../assets/images/3XO.png';
+import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
+import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
+import airVentImg from '../assets/images/air_vent_mount.webp';
+import headrestMountImg from '../assets/images/headrest_mount.webp';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
+import wallStandImg from '../assets/images/wall_stand_mount.webp';
+import combinedImg from '../assets/images/3in1 copy.webp';
+import universalPadImg from '../assets/images/Universal_.webp';
+import universalMountImg from '../assets/images/Compact_.webp';
+import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
+import ertigaImg from '../assets/images/Ertiga.webp';
+import swiftDzireImg from '../assets/images/Dzire and Swift.webp';
+import threeXoImg from '../assets/images/3XO.webp';
 
 const carModelsData: Record<string, { id: number; title: string; desc: string; price: string; oldPrice: string; speed: string; rating: string; reviews: string; installedIn: string; image: string }[]> = {
   "Universal": [
@@ -236,6 +236,9 @@ export default function HomePage() {
             <img 
               src={centerMountTransparentImg} 
               alt="QicDock Stand" 
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
               className="w-[82%] sm:w-[70%] md:w-[90%] lg:w-[85%] xl:w-[75%] max-w-[310px] md:max-w-none object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] md:drop-shadow-[-30px_30px_60px_rgba(0,0,0,0.8)] transform -rotate-[8deg] md:-rotate-[12deg] pointer-events-none my-2 md:my-0" 
             />
             
@@ -296,7 +299,9 @@ export default function HomePage() {
                <img 
                  src={combinedImg} 
                  alt="Combined solutions" 
-                 className="w-full h-full object-cover"
+                 loading="lazy"
+                 decoding="async"
+                 className="w-full h-full object-contain p-2"
                />
             </div>
           </div>
@@ -325,8 +330,8 @@ export default function HomePage() {
                 {/* 1. All in One */}
                 <Link to="/category/all-in-one" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto">
                   <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={combinedImg} alt="All in one" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
+                      <img src={combinedImg} alt="All in one" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
                     <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
@@ -342,8 +347,8 @@ export default function HomePage() {
                 {/* 2. Car Combo */}
                 <Link to="/category/car-combo" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={centerMountImg} alt="Car combo" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
+                      <img src={centerMountImg} alt="Car combo" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
                     <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
@@ -359,8 +364,8 @@ export default function HomePage() {
                 {/* 3. Home and office Combo */}
                 <Link to="/category/home-office" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={tableStandImg} alt="Home and office Combo" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
+                      <img src={tableStandImg} alt="Home and office Combo" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
                     <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
@@ -382,6 +387,8 @@ export default function HomePage() {
                   <img 
                     src={centerMountTransparentImg} 
                     alt="Core Module" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-[220px] md:w-[320px] object-contain relative z-10 drop-shadow-[0_0_20px_rgba(4,217,255,0.5)]"
                   />
                 </div>
@@ -399,8 +406,8 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={airVentImg} alt="Car Charger" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
+                      <img src={airVentImg} alt="Car Charger" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Car Charger</span>
@@ -416,8 +423,8 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={centerMountTransparentImg} alt="Universal car charging pad" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
+                      <img src={centerMountTransparentImg} alt="Universal car charging pad" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors text-center max-w-[140px] md:max-w-full">Universal Charging Pad</span>
@@ -433,8 +440,8 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-0 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={wallStandImg} alt="Only stand" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
+                      <img src={wallStandImg} alt="Only stand" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Only Stand</span>
@@ -533,8 +540,8 @@ export default function HomePage() {
             {currentProducts.map(product => (
               <div key={product.id} className="bg-[#FAF7F0] border border-[#1E293B] rounded-2xl overflow-hidden flex flex-col group hover:border-[#0A1E3F]/50 transition-colors">
                 {/* Image Area */}
-                <div className="w-full aspect-[16/10] bg-[#FAF7F0] relative overflow-hidden flex items-center justify-center p-0">
-                  <img src={product.image} alt={product.title} className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" />
+                <div className="w-full aspect-[16/10] bg-[#FAF7F0] relative overflow-hidden flex items-center justify-center p-2">
+                  <img src={product.image} alt={product.title} loading="lazy" decoding="async" className="w-full h-full object-contain opacity-95 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" />
                   <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-[#0A1E3F] text-[#FAF7F0] text-[7px] md:text-[9px] font-bold px-1.5 md:px-2 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider shadow-lg">
                     <Check className="w-2 h-2 md:w-3 md:h-3" /> 100% Fit Guarantee
                   </div>
@@ -617,9 +624,9 @@ export default function HomePage() {
                 </div>
 
                 {/* 3D Render Image Placeholder - Using existing combinedImg */}
-                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-0 group-hover:border-[#0066FF]/50 transition-colors relative">
+                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-1 group-hover:border-[#0066FF]/50 transition-colors relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img src={combinedImg} alt="Ultimate Kit" className="relative z-20 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)]" />
+                  <img src={combinedImg} alt="Ultimate Kit" loading="lazy" decoding="async" className="relative z-20 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)]" />
                 </div>
 
                 <div className="space-y-1 md:space-y-2 mb-2 md:mb-4">
@@ -669,9 +676,9 @@ export default function HomePage() {
                   <p className="text-[#1A2C4F] text-[9px] md:text-xs font-medium tracking-wide leading-relaxed">All-in-one car charger bundle designed for front and rear passengers. Keep your phone locked in place over speed bumps, potholes, and sharp corners while delivering 25W fast charging.</p>
                 </div>
 
-                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-0 relative">
+                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-1 relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img src={centerMountImg} alt="Car Pack" className="relative z-20 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
+                  <img src={centerMountImg} alt="Car Pack" loading="lazy" decoding="async" className="relative z-20 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
                 </div>
 
                 <div className="space-y-1 md:space-y-2 mb-2 md:mb-4">
@@ -721,9 +728,9 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-0 relative">
+                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-1 relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img src={combinedImg} alt="Mega Pack" className="relative z-20 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
+                  <img src={combinedImg} alt="Mega Pack" loading="lazy" decoding="async" className="relative z-20 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
                 </div>
 
                 <div className="space-y-1 md:space-y-2 mb-2 md:mb-4">

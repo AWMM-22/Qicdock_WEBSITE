@@ -170,11 +170,13 @@ export default function OrdersPage() {
                   <div className="space-y-4">
                     {(order.items || []).map((item: any, i: number) => (
                       <div key={i} className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 border border-[#EBE5D9] shrink-0">
+                        <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-100 border border-[#EBE5D9] shrink-0 p-1 flex items-center justify-center">
                           <img 
                             src={item.image || 'https://placehold.co/150x150/0A1E3F/F4F0E6?text=QICDOCK'} 
                             alt={item.name} 
-                            className="w-full h-full object-cover" 
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-contain" 
                           />
                         </div>
                         <div className="flex-1">

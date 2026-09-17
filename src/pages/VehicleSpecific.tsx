@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Search, Car, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import centerMountTransparentImg from '../assets/images/center-mount-transparent.png';
-import centerMountImg from '../assets/images/center_mount_1788721138616.jpg';
-import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
-import ertigaImg from '../assets/images/Ertiga.png';
-import swiftDzireImg from '../assets/images/Dzire and Swift.png';
-import universalPadImg from '../assets/images/Universal_.png';
-import threeXoImg from '../assets/images/3XO.png';
+import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
+import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
+import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
+import ertigaImg from '../assets/images/Ertiga.webp';
+import swiftDzireImg from '../assets/images/Dzire and Swift.webp';
+import universalPadImg from '../assets/images/Universal_.webp';
+import threeXoImg from '../assets/images/3XO.webp';
 
 interface CarModel {
   id: string;
@@ -152,11 +152,13 @@ export default function VehicleSpecific() {
                     </div>
 
                     {/* Image Stage */}
-                    <div className="h-44 bg-[#F4F0E6] rounded-xl border border-[#E2DAC8] p-0 flex items-center justify-center mb-5 overflow-hidden">
+                    <div className="h-44 bg-[#F4F0E6] rounded-xl border border-[#E2DAC8] p-2 flex items-center justify-center mb-5 overflow-hidden">
                       <img
                         src={vehicle.image}
                         alt={vehicle.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
                       />
                     </div>
 

@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Check, ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, RotateCcw, Truck, Plus, Minus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
-import combinedImg from '../assets/images/3in1 copy.png';
-import carPadImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.png';
-import airVentImg from '../assets/images/air_vent_mount.jpg';
-import rearSeatImg from '../assets/images/headrest_mount.jpg';
-import tableStandImg from '../assets/images/table_stand_mount.jpg';
-import wallStandImg from '../assets/images/wall_stand_mount.jpg';
+import combinedImg from '../assets/images/3in1 copy.webp';
+import carPadImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
+import airVentImg from '../assets/images/air_vent_mount.webp';
+import rearSeatImg from '../assets/images/headrest_mount.webp';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
+import wallStandImg from '../assets/images/wall_stand_mount.webp';
 
 interface Addon {
   id: string;
@@ -104,6 +104,9 @@ export default function AllInOneCombo() {
                 <img 
                   src={combinedImg} 
                   alt="Qicdock All In One Combo Package" 
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="sync"
                   className="max-h-full max-w-full object-contain filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)] group-hover:scale-105 transition-transform duration-500" 
                 />
               </div>
@@ -210,8 +213,8 @@ export default function AllInOneCombo() {
                           : 'bg-[#FAF7F0] border-[#E2DAC8] opacity-70'
                       }`}
                     >
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-[#FAF7F0] border border-[#E2DAC8] p-0 flex shrink-0 overflow-hidden shadow-sm items-center justify-center">
-                         <img src={addon.image} alt={addon.name} className="w-full h-full object-cover" />
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-[#FAF7F0] border border-[#E2DAC8] p-1 flex shrink-0 overflow-hidden shadow-sm items-center justify-center">
+                         <img src={addon.image} alt={addon.name} loading="lazy" decoding="async" className="w-full h-full object-contain" />
                       </div>
                       <div className="flex-1">
                          <h4 className="text-sm font-bold text-[#0A1E3F] leading-tight">{addon.name}</h4>

@@ -3,7 +3,7 @@ import { Search, User, ShoppingBag, Menu, X, ChevronRight, Zap, Shield, Sparkles
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getCartCount } from '../lib/cart';
-import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.jpg';
+import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.webp';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -82,6 +82,9 @@ export default function Header() {
             <img 
               src={brandLogo} 
               alt="QicDock" 
+              loading="eager"
+              fetchPriority="high"
+              decoding="sync"
               className="h-9 sm:h-11 w-auto object-contain rounded-lg border border-[#0A1E3F]/30 shadow-[0_0_15px_rgba(4,217,255,0.2)]" 
             />
           </Link>

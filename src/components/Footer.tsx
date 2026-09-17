@@ -1,7 +1,7 @@
 import { ArrowRight, Facebook, Twitter, Instagram, Youtube, Linkedin, Mail } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import type { MouseEvent } from 'react';
-import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.jpg';
+import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.webp';
 
 export default function Footer() {
   const navigate = useNavigate();
@@ -35,6 +35,8 @@ export default function Footer() {
               <img 
                 src={brandLogo} 
                 alt="QicDock" 
+                loading="lazy"
+                decoding="async"
                 className="h-10 sm:h-12 w-auto object-contain rounded-lg border border-[#0A1E3F]/30 shadow-[0_0_15px_rgba(4,217,255,0.2)]" 
               />
             </Link>
