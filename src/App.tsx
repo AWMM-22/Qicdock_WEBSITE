@@ -17,6 +17,7 @@ import SupportPage from './pages/SupportPage';
 import LoginPage from './pages/LoginPage';
 import OrdersPage from "./pages/OrdersPage";
 import AdminPage from './pages/AdminPage';
+import CarProductDetailPage from './pages/CarProductDetailPage';
 import CarFinderChatbot from './components/CarFinderChatbot';
 import { AuthProvider } from './context/AuthContext';
 import { InventoryProvider } from './context/InventoryContext';
@@ -55,6 +56,8 @@ export default function App() {
               <Route path="/category/home-office" element={<HomeOfficeCombo />} />
               <Route path="/category/individual" element={<IndividualChargers />} />
               <Route path="/category/vehicle-specific" element={<VehicleSpecific />} />
+              <Route path="/product/:slug" element={<CarProductDetailPage />} />
+              <Route path="/car-product/:slug" element={<CarProductDetailPage />} />
               <Route path="/category/stand-alone" element={<StandAloneMounts />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/support" element={<SupportPage />} />

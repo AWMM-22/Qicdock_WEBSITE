@@ -242,7 +242,7 @@ async function startServer() {
       saveLeadsLocal();
 
       // Supabase insert (non-blocking fallback)
-      supabase.from("customer_leads").insert([newLead]).catch(() => {});
+      supabase.from("customer_leads").insert([newLead]).then(() => {}, () => {});
 
       res.json({ success: true, leadId, lead: newLead });
     } catch (e: any) {
@@ -319,7 +319,7 @@ async function startServer() {
         if (error && error.code !== "42P01") {
           // Table may not exist yet, graceful fallback to local memory/file
         }
-      }).catch(() => {});
+      }, () => {});
 
       res.json({ success: true });
     } catch (e: any) {

@@ -1,33 +1,11 @@
 import { ArrowRight, Facebook, Twitter, Instagram, Youtube, Linkedin, Mail } from 'lucide-react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import type { MouseEvent } from 'react';
-import brandLogo from '../assets/images/qicdock_brand_logo_1788854744770.webp';
+import { Link } from 'react-router-dom';
+import brandLogo from '../assets/images/qicdocklogo.png';
 
 export default function Footer() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleFindYourCar = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (location.pathname !== '/') {
-      navigate('/#compatibility');
-    } else {
-      const el = document.getElementById('compatibility');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
-
-  const handleShopUniversal = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    navigate('/categories');
-  };
-
   return (
-    <footer className="bg-[#EBE5D9] pt-14 pb-24 md:pb-12 px-4 sm:px-6 lg:px-10 border-t border-[#E2DAC8] text-[#0A1E3F]">
+    <footer className="bg-[#EBE5D9] pt-12 pb-24 md:pb-12 px-4 sm:px-6 lg:px-10 border-t border-[#E2DAC8] text-[#0A1E3F]">
       <div className="max-w-[1400px] mx-auto">
-        
         {/* Top Brand & Newsletter (Desktop & Mobile) */}
         <div className="mb-10 pb-10 border-b border-[#E2DAC8] flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
           <div className="max-w-md space-y-4">
@@ -137,7 +115,7 @@ export default function Footer() {
 
           {/* Company address block */}
           <p className="text-[10px] sm:text-[11px] text-gray-600 max-w-2xl mx-auto leading-relaxed px-4 mb-2">
-            For queries contact us: QICDOCK Automotive Labs, Unit no. 204 & 205, 2nd Floor, Signature Park, Electronic City, Bengaluru, Karnataka-560100, India
+            For queries contact us: QICDOCK, Avoir Corporate Park, Mulund West, Mumbai, Maharashtra, India
           </p>
           <p className="text-[11px] sm:text-xs text-gray-600 font-medium">
             Support: <a href="mailto:support@qicdock.com" className="text-[#0A1E3F] hover:text-[#0A1E3F] transition-colors">support@qicdock.com</a>

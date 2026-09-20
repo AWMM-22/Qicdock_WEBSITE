@@ -388,7 +388,7 @@ export default function CarFinderChatbot() {
         {
           id: 'welcome-1',
           sender: 'bot',
-          text: '👋 Hi there! Welcome to QICDOCK Car Compatibility Assistant.',
+          text: 'Hi there! Welcome to QICDOCK Car Compatibility Assistant.',
           type: 'text'
         },
         {
@@ -442,7 +442,7 @@ export default function CarFinderChatbot() {
       const botResponse: ChatMessage = {
         id: `bot-${Date.now() + 1}`,
         sender: 'bot',
-        text: '⚡ Here is our Universal Automotive Wireless Charging Pad that fits virtually any dashboard or console with high-grip silicone:'
+        text: 'Here is our Universal Automotive Wireless Charging Pad that fits virtually any dashboard or console with high-grip silicone:'
       };
       const cardMsg: ChatMessage = {
         id: `card-${Date.now() + 2}`,
@@ -463,18 +463,18 @@ export default function CarFinderChatbot() {
         { label: 'Ertiga (2019 - 2025)', value: 'ertiga' },
         { label: 'Swift (4th Gen 2024-25)', value: 'swift-2024' },
         { label: 'Swift Dzire (2020 - 2025)', value: 'dzire' },
-        { label: '🌐 Other Model (Universal Fit)', value: 'universal' }
+        { label: 'Other Model (Universal Fit)', value: 'universal' }
       ];
     } else if (brandValue === 'toyota') {
       modelOptions = [
         { label: 'Toyota Glanza (2022 - 2025)', value: 'glanza' },
         { label: 'Toyota Urban Cruiser Taisor (2024 - 2025)', value: 'taisor' },
-        { label: '🌐 Other Model (Universal Fit)', value: 'universal' }
+        { label: 'Other Model (Universal Fit)', value: 'universal' }
       ];
     } else if (brandValue === 'mahindra') {
       modelOptions = [
         { label: 'Mahindra XUV 3XO (2024 - 2025)', value: '3xo' },
-        { label: '🌐 Other Model (Universal Fit)', value: 'universal' }
+        { label: 'Other Model (Universal Fit)', value: 'universal' }
       ];
     }
 
@@ -511,7 +511,7 @@ export default function CarFinderChatbot() {
     const botResponse: ChatMessage = {
       id: `bot-${Date.now() + 1}`,
       sender: 'bot',
-      text: `🎯 Found the exact 100% fit-guaranteed dock for your ${product.model}! Here are the specs:`
+      text: `Found the exact 100% fit-guaranteed dock for your ${product.model}! Here are the specs:`
     };
 
     const cardMsg: ChatMessage = {
@@ -658,7 +658,7 @@ export default function CarFinderChatbot() {
               return (
                 <div key={msg.id} className="flex items-start gap-2 max-w-[95%]">
                   <div className="w-7 h-7 rounded-full bg-[#0A1E3F] text-white flex items-center justify-center shrink-0 mt-0.5 text-[11px] font-bold">
-                    ⚡
+                    <Zap className="w-3.5 h-3.5" />
                   </div>
 
                   <div className="space-y-2 flex-1">
@@ -728,10 +728,10 @@ export default function CarFinderChatbot() {
                         {/* Specs badges */}
                         <div className="flex flex-wrap gap-1">
                           <span className="bg-blue-50 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-100">
-                            ⚡ 25W Qi2 Fast Wireless
+                            25W Qi2 Fast Wireless
                           </span>
                           <span className="bg-emerald-50 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded border border-emerald-100">
-                            🛡️ 1-Yr Warranty
+                            1-Yr Warranty
                           </span>
                         </div>
 
@@ -793,6 +793,13 @@ export default function CarFinderChatbot() {
                         {/* Quick actions */}
                         <div className="flex gap-2 pt-1">
                           <Link
+                            to={`/product/${msg.product.id === 'swift-2024' ? 'swift' : msg.product.id}`}
+                            onClick={() => setIsOpen(false)}
+                            className="flex-1 text-center bg-[#0A1E3F]/10 text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] border border-[#0A1E3F]/25 py-1.5 rounded-lg font-bold text-[11px] transition-colors"
+                          >
+                            View Cockpit →
+                          </Link>
+                          <Link
                             to="/cart"
                             onClick={() => setIsOpen(false)}
                             className="flex-1 text-center bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 py-1.5 rounded-lg font-bold text-[11px] transition-colors"
@@ -801,9 +808,10 @@ export default function CarFinderChatbot() {
                           </Link>
                           <button
                             onClick={handleRestart}
-                            className="flex-1 text-center bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 py-1.5 rounded-lg font-bold text-[11px] transition-colors"
+                            className="px-2.5 text-center bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 py-1.5 rounded-lg font-bold text-[11px] transition-colors"
+                            title="Check another car"
                           >
-                            🔄 Check Another Car
+                            <RotateCcw className="w-3.5 h-3.5 mx-auto" />
                           </button>
                         </div>
                       </div>
@@ -822,7 +830,7 @@ export default function CarFinderChatbot() {
                               <div className="space-y-1 flex-1">
                                 <div className="flex items-center justify-between">
                                   <h5 className="font-bold text-xs text-[#0A1E3F] flex items-center gap-1.5">
-                                    Want a better deal? 👀
+                                    Want a better deal?
                                   </h5>
                                   <span className="bg-emerald-100 text-emerald-800 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
                                     Exclusive Offer
@@ -915,13 +923,13 @@ export default function CarFinderChatbot() {
                               </label>
 
                               {phoneError && (
-                                <p className="text-[10px] text-red-600 font-bold bg-red-50 border border-red-200 px-2.5 py-1.5 rounded-lg animate-in fade-in duration-200">
-                                  ⚠️ {phoneError}
+                                <p className="text-[10px] text-red-600 font-bold bg-red-50 border border-red-200 px-2.5 py-1.5 rounded-lg animate-in fade-in duration-200 flex items-center gap-1.5">
+                                  <span>{phoneError}</span>
                                 </p>
                               )}
                               {consentError && (
-                                <p className="text-[10px] text-red-600 font-bold bg-red-50 border border-red-200 px-2.5 py-1.5 rounded-lg animate-in fade-in duration-200">
-                                  ⚠️ {consentError}
+                                <p className="text-[10px] text-red-600 font-bold bg-red-50 border border-red-200 px-2.5 py-1.5 rounded-lg animate-in fade-in duration-200 flex items-center gap-1.5">
+                                  <span>{consentError}</span>
                                 </p>
                               )}
                             </div>
@@ -1009,7 +1017,7 @@ export default function CarFinderChatbot() {
                           <div className="bg-white border-2 border-emerald-600 rounded-2xl p-3.5 shadow-lg space-y-3 animate-in fade-in zoom-in-95 duration-300">
                             <div className="flex items-center justify-between pb-2 border-b border-[#EBE5D9]">
                               <div className="flex items-center gap-1.5">
-                                <span className="text-base">🎉</span>
+                                <Sparkles className="w-4 h-4 text-emerald-600" />
                                 <h5 className="font-bold text-xs sm:text-sm text-[#0A1E3F]">
                                   We found a better deal for you!
                                 </h5>
@@ -1050,7 +1058,7 @@ export default function CarFinderChatbot() {
                                 <div>
                                   <div className="text-xs font-bold text-emerald-900 flex items-center gap-1">
                                     <span>Coupon: {optimizedDeal.coupon.code}</span>
-                                    <span className="text-[9px] bg-emerald-200/80 text-emerald-900 font-bold px-1.5 py-0.5 rounded">✓ ₹{optimizedDeal.coupon.discountAmount} OFF</span>
+                                    <span className="text-[9px] bg-emerald-200/80 text-emerald-900 font-bold px-1.5 py-0.5 rounded">₹{optimizedDeal.coupon.discountAmount} OFF</span>
                                   </div>
                                   <p className="text-[10px] text-emerald-700 font-medium">Applied automatically to your cart</p>
                                 </div>

@@ -113,83 +113,68 @@ export default function CategoriesPage() {
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {categoriesData.map((cat, idx) => {
             const soldOut = cat.productId ? isSoldOut(cat.productId) : false;
             return (
               <Link 
                 to={cat.link} 
                 key={idx} 
-                className={`bg-[#FAF7F0] border rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden relative group transition-all duration-300 flex flex-row lg:flex-col justify-between p-3 sm:p-6 md:p-8 hover:-translate-y-1 hover:shadow-md gap-3 sm:gap-0 ${
-                  soldOut ? 'border-red-300 opacity-90' : 'border-[#0A1E3F]/30 hover:border-[#0A1E3F]/70'
+                className={`bg-[#FAF7F0] border-2 rounded-none overflow-hidden relative group transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg ${
+                  soldOut ? 'border-red-300 opacity-90' : 'border-[#0A1E3F]/40 hover:border-[#0A1E3F]'
                 }`}
               >
-                {/* Background Glow on hover */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#0A1E3F]/5 rounded-full blur-3xl group-hover:bg-[#0A1E3F]/15 transition-all pointer-events-none"></div>
-
-                {/* Left/Top Row: Badge & Image Preview */}
-                <div className="relative z-10 w-2/5 lg:w-full flex flex-col">
-                  <div className="flex flex-col sm:flex-row sm:items-center items-start justify-between gap-1 sm:gap-2 mb-2 sm:mb-6 hidden lg:flex">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[11px] font-bold tracking-wider uppercase">
+                {/* Product Image Stage (Edge-to-Edge) */}
+                <div className="w-full h-48 sm:h-56 bg-transparent border-b border-[#E2DAC8] p-0 flex items-center justify-center overflow-hidden relative">
+                  <img 
+                    src={cat.image} 
+                    alt={cat.title} 
+                    loading="lazy"
+                    decoding="async" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                  
+                  {/* Badges overlay on image */}
+                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none border border-[#0A1E3F]/30 bg-[#FAF7F0]/95 text-[#0A1E3F] text-[10px] font-bold tracking-wider uppercase backdrop-blur-sm shadow-sm">
                       <cat.badgeIcon className="w-3.5 h-3.5" />
                       {cat.badgeText}
                     </span>
+                  </div>
+
+                  <div className="absolute top-3 right-3">
                     {soldOut ? (
-                      <span className="text-[11px] font-bold tracking-wider uppercase text-red-600 bg-red-100 px-2 py-0.5 rounded border border-red-200">
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-red-700 bg-red-100 px-2 py-1 rounded-none border border-red-300">
                         Sold Out
                       </span>
                     ) : (
-                      <span className="text-[11px] font-bold tracking-wider uppercase text-gray-600 group-hover:text-[#0A1E3F] transition-colors self-end sm:self-auto">
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-emerald-800 bg-emerald-100/95 px-2 py-1 rounded-none border border-emerald-300 backdrop-blur-sm">
                         {cat.savings}
                       </span>
                     )}
                   </div>
-
-                  {/* Mobile-only badges (above image) */}
-                  <div className="flex lg:hidden flex-col gap-1 mb-2">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-[#0A1E3F]/30 bg-[#0A1E3F]/10 text-[#0A1E3F] text-[9px] font-bold tracking-wider uppercase self-start">
-                      <cat.badgeIcon className="w-2.5 h-2.5" />
-                      {cat.badgeText}
-                    </span>
-                  </div>
-
-                  {/* Product Image Stage */}
-                  <div className="w-full h-full lg:h-52 min-h-[110px] bg-[#F4F0E6]/80 rounded-xl border border-[#E2DAC8] p-2 flex items-center justify-center lg:mb-6 overflow-hidden flex-1 lg:flex-none">
-                    <img 
-                      src={cat.image} 
-                      alt={cat.title} 
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
-                    />
-                  </div>
                 </div>
 
-                {/* Right/Bottom Content */}
-                <div className="relative z-10 flex flex-col flex-1 justify-between pt-0 lg:pt-2 border-t-0 lg:border-t border-[#E2DAC8]">
+                {/* Content Section */}
+                <div className="relative z-10 flex flex-col flex-1 justify-between p-4 sm:p-6">
                   <div>
-                    <div className="flex justify-between items-start mb-0.5">
-                      <p className="text-[#0A1E3F] text-[9px] lg:text-xs font-semibold tracking-wider uppercase">
-                        {cat.subtitle}
-                      </p>
-                      <span className="lg:hidden text-[9px] font-bold tracking-wider uppercase text-[#22C55E] self-start mt-0.5">
-                        {soldOut ? 'Sold Out' : cat.savings}
-                      </span>
-                    </div>
-                    <h2 className="text-sm lg:text-2xl font-['Anton'] text-[#0A1E3F] uppercase tracking-wide group-hover:text-[#0A1E3F] transition-colors mb-1 lg:mb-2 leading-tight">
+                    <p className="text-[#0A1E3F] text-[10px] sm:text-xs font-semibold tracking-wider uppercase mb-1">
+                      {cat.subtitle}
+                    </p>
+                    <h2 className="text-base sm:text-xl font-['Anton'] text-[#0A1E3F] uppercase tracking-wide group-hover:text-[#152B52] transition-colors mb-2 leading-tight">
                       {cat.title}
                     </h2>
-                    <p className="text-gray-600 text-[10px] lg:text-sm leading-relaxed mb-2 lg:mb-6 line-clamp-2">
+                    <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-2">
                       {cat.description}
                     </p>
                   </div>
 
-                  <div className="pt-2 lg:pt-4 border-t border-[#E2DAC8] mt-auto flex flex-col gap-1.5 lg:gap-3">
-                    <div className="flex flex-row lg:flex-col justify-between lg:justify-start items-center lg:items-start">
-                      <span className="text-[9px] lg:text-[11px] text-gray-600 uppercase tracking-wider block">Starting at</span>
-                      <span className="text-[11px] lg:text-lg font-bold text-[#0A1E3F] tracking-wide">{cat.price}</span>
+                  <div className="pt-3 border-t border-[#E2DAC8] mt-auto flex flex-col gap-2.5">
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-[10px] sm:text-xs text-gray-600 uppercase tracking-wider block">Starting at</span>
+                      <span className="text-base sm:text-lg font-['Anton'] text-[#0A1E3F] tracking-wide">{cat.price}</span>
                     </div>
-                    <span className={`w-full text-center py-1.5 lg:py-2.5 px-2 lg:px-4 rounded-lg lg:rounded-xl font-bold text-[10px] lg:text-xs uppercase tracking-widest transition-all ${
+                    <span className={`w-full text-center py-2.5 px-4 rounded-none font-bold text-xs uppercase tracking-widest transition-all ${
                       soldOut 
                         ? 'bg-red-100 text-red-700 hover:bg-red-200' 
                         : 'bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6]'
@@ -204,9 +189,9 @@ export default function CategoriesPage() {
         </div>
 
         {/* Bottom Guarantee Banner */}
-        <div className="mt-16 bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+        <div className="mt-16 bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-none p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="space-y-1">
-            <h3 className="text-xl font-bold text-[#0A1E3F] uppercase tracking-wide">
+            <h3 className="text-xl font-['Anton'] text-[#0A1E3F] uppercase tracking-wide">
               Not sure which setup fits your vehicle?
             </h3>
             <p className="text-gray-600 text-sm">
@@ -215,7 +200,7 @@ export default function CategoriesPage() {
           </div>
           <Link
             to="/#compatibility"
-            className="whitespace-nowrap px-6 py-3.5 rounded-xl bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(4,217,255,0.3)]"
+            className="whitespace-nowrap px-6 py-3.5 rounded-none bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-widest transition-all shadow-md"
           >
             Launch Vehicle Engine
           </Link>

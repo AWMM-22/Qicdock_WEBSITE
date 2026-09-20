@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
+import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, RefreshCw, Zap, Star, Eye, CreditCard, Wind, MonitorSmartphone, Lightbulb, Layers, Home, BatteryCharging, Plus, ArrowRight, Facebook, Twitter, Instagram, Truck, ShieldCheck, CheckCircle2, Sparkles, Play, Pause, ChevronLeft, ChevronRight } from 'lucide-react';
 import { trackPageView } from '../lib/analytics';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
@@ -9,169 +9,98 @@ import headrestMountImg from '../assets/images/headrest_mount.webp';
 import tableStandImg from '../assets/images/table_stand_mount.webp';
 import wallStandImg from '../assets/images/wall_stand_mount.webp';
 import combinedImg from '../assets/images/3in1 copy.webp';
-import universalPadImg from '../assets/images/Universal_.webp';
-import universalMountImg from '../assets/images/Compact_.webp';
-import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
-import ertigaImg from '../assets/images/Ertiga.webp';
-import swiftDzireImg from '../assets/images/Dzire and Swift.webp';
-import threeXoImg from '../assets/images/3XO.webp';
-
-const carModelsData: Record<string, { id: number; title: string; desc: string; price: string; oldPrice: string; speed: string; rating: string; reviews: string; installedIn: string; image: string }[]> = {
-  "Universal": [
-    {
-      id: 1,
-      title: "Universal Car Charging Pad",
-      desc: "Universal 25W Qi2 fast wireless charging pad with secure dashboard & console grip",
-      price: "₹2,499",
-      oldPrice: "₹2,999",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.8",
-      reviews: "342",
-      installedIn: "UNIVERSAL",
-      image: universalPadImg
-    },
-    {
-      id: 2,
-      title: "Universal MagCharge Console Mount",
-      desc: "Adjustable magnetic arm mount for all standard automotive consoles and air vents",
-      price: "₹2,799",
-      oldPrice: "₹3,499",
-      speed: "25W Fast Charge",
-      rating: "4.9",
-      reviews: "215",
-      installedIn: "UNIVERSAL",
-      image: universalMountImg
-    }
-  ],
-  "Fronx": [
-    {
-      id: 1,
-      title: "Fronx Car Charger",
-      desc: "Custom-molded 25W Qi2 wireless charging pad engineered specifically for Maruti Suzuki Fronx",
-      price: "₹3,299",
-      oldPrice: "₹3,999",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.9",
-      reviews: "180",
-      installedIn: "FRONX",
-      image: fronxEtcImg
-    }
-  ],
-  "Baleno": [
-    {
-      id: 1,
-      title: "Baleno Car Charger",
-      desc: "Precision fit 25W magnetic wireless charging dock seamlessly integrated into Baleno console",
-      price: "₹3,299",
-      oldPrice: "₹3,999",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.8",
-      reviews: "196",
-      installedIn: "BALENO",
-      image: fronxEtcImg
-    }
-  ],
-  "Glanza": [
-    {
-      id: 1,
-      title: "Glanza Car Charger",
-      desc: "Custom-fit wireless charging tray engineered for Toyota Glanza center console",
-      price: "₹3,299",
-      oldPrice: "₹3,999",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.9",
-      reviews: "142",
-      installedIn: "GLANZA",
-      image: fronxEtcImg
-    }
-  ],
-  "Taisor": [
-    {
-      id: 1,
-      title: "Taisor Car Charger",
-      desc: "OEM-fit wireless fast charging pad designed exclusively for Toyota Urban Cruiser Taisor",
-      price: "₹3,399",
-      oldPrice: "₹4,099",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.9",
-      reviews: "118",
-      installedIn: "TAISOR",
-      image: fronxEtcImg
-    }
-  ],
-  "Ertiga": [
-    {
-      id: 1,
-      title: "Ertiga Car Charger",
-      desc: "Multi-device 25W fast wireless charging console integration for Maruti Suzuki Ertiga",
-      price: "₹3,599",
-      oldPrice: "₹4,299",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.7",
-      reviews: "230",
-      installedIn: "ERTIGA",
-      image: ertigaImg
-    }
-  ],
-  "Swift": [
-    {
-      id: 1,
-      title: "Swift Car Charger",
-      desc: "Precision molded 25W magnetic fast charging pad tailored for Swift dashboard console",
-      price: "₹3,199",
-      oldPrice: "₹3,899",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.9",
-      reviews: "310",
-      installedIn: "SWIFT",
-      image: swiftDzireImg
-    }
-  ],
-  "Swift Dzire": [
-    {
-      id: 1,
-      title: "Swift Dzire Car Charger",
-      desc: "Custom-contoured 25W wireless charging dock designed precisely for Swift Dzire console",
-      price: "₹3,299",
-      oldPrice: "₹3,999",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.9",
-      reviews: "285",
-      installedIn: "SWIFT DZIRE",
-      image: swiftDzireImg
-    }
-  ],
-  "3XO": [
-    {
-      id: 1,
-      title: "Mahindra 3XO Car Charger",
-      desc: "Precision-molded wireless charging center console tray designed for Mahindra XUV 3XO",
-      price: "₹3,499",
-      oldPrice: "₹4,199",
-      speed: "25W Qi2 Fast Charge",
-      rating: "4.8",
-      reviews: "112",
-      installedIn: "3XO",
-      image: threeXoImg
-    }
-  ]
-};
+import RotatingHeadline from '../components/RotatingHeadline';
 
 export default function HomePage() {
-  const [selectedMake, setSelectedMake] = useState('Maruti Suzuki & Toyota / Universal');
-  const [selectedModel, setSelectedModel] = useState('Fronx');
+  const [isMarqueePaused, setIsMarqueePaused] = useState(false);
+  const marqueeContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleScrollMarquee = (direction: 'left' | 'right') => {
+    if (marqueeContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -340 : 340;
+      marqueeContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const smartCombos = [
+    {
+      id: 'ultimate-kit',
+      title: 'Ultimate All-in-One Kit',
+      subtitle: 'Every Mount Included',
+      tag: 'Best Value',
+      isFlagship: true,
+      img: combinedImg,
+      features: [
+        'Charger (₹1,999) + 5 Mounts',
+        'Desk, Wall, Vent, Rear Seat, Pad'
+      ],
+      regularPrice: 'Regular ₹3,694',
+      salePrice: '₹2,594',
+      savings: 'SAVE ₹1,100',
+      link: '/category/all-in-one',
+      cta: 'Get Ultimate Kit'
+    },
+    {
+      id: 'car-combo',
+      title: 'Car Combo Bundle',
+      subtitle: 'Front & Rear Vehicle Charging',
+      tag: 'Cockpit Ready',
+      isFlagship: false,
+      img: centerMountImg,
+      features: [
+        '1x Qicdock Core Charger',
+        'Console Pad + Vent Clip + Headrest'
+      ],
+      regularPrice: 'Regular ₹2,996',
+      salePrice: '₹2,346',
+      savings: 'SAVE ₹650',
+      link: '/category/car-combo',
+      cta: 'Get Car Pack'
+    },
+    {
+      id: 'home-office',
+      title: 'Home & Office Combo',
+      subtitle: 'Desk & Wall Mount Package',
+      tag: 'Workstation Setup',
+      isFlagship: false,
+      img: tableStandImg,
+      features: [
+        '1x Qicdock Core Charger',
+        'Weighted Stand + Magnetic Wall Base'
+      ],
+      regularPrice: 'Regular ₹2,697',
+      salePrice: '₹2,247',
+      savings: 'SAVE ₹450',
+      link: '/category/home-office',
+      cta: 'Get Workstation'
+    },
+    {
+      id: 'dual-charger',
+      title: 'Dual Charger Mega Pack',
+      subtitle: 'For Home & Car Setups',
+      tag: 'Special Value',
+      isFlagship: false,
+      img: combinedImg,
+      features: [
+        '2x Qicdock Core Chargers',
+        'All 5 Universal Mount Bases'
+      ],
+      regularPrice: 'Regular ₹5,693',
+      salePrice: '₹4,293',
+      savings: 'SAVE ₹1,400',
+      link: '/category/all-in-one',
+      cta: 'Get Mega Bundle'
+    }
+  ];
 
   useEffect(() => {
     trackPageView('Home');
   }, []);
 
-  const availableModels = ['Universal', 'Fronx', 'Baleno', 'Glanza', 'Taisor', 'Ertiga', 'Swift', 'Swift Dzire', '3XO'];
-  const currentProducts = carModelsData[selectedModel] || carModelsData['Universal'];
-
   return (
     <>
       {/* Hero Section */}
-      <main className="flex-1 relative flex flex-col justify-center items-center overflow-hidden pb-16 md:pb-32 pt-6 md:pt-20">
+      <main className="relative flex flex-col justify-start md:justify-center items-center overflow-hidden min-h-[calc(100svh-4rem)] sm:min-h-[calc(100vh-5rem)] pt-1 sm:pt-2 md:pt-3 pb-8 sm:pb-12 md:pb-16">
         
         {/* Abstract Background Curves */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-[0.04]">
@@ -179,7 +108,7 @@ export default function HomePage() {
             {/* Generate multiple dense parallel sine waves */}
             {Array.from({ length: 25 }).map((_, i) => (
               <path 
-                key={i}
+                key={i} 
                 d={`M-100,${100 + i * 30} C300,${-50 + i * 30} 500,${350 + i * 30} 900,${200 + i * 30} C1300,${50 + i * 30} 1500,${250 + i * 30} 1600,${200 + i * 30}`} 
                 stroke="#0A1E3F" 
                 strokeWidth="4" 
@@ -189,34 +118,39 @@ export default function HomePage() {
         </div>
 
         {/* Foreground Content */}
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-10 flex flex-col md:flex-row justify-center md:justify-between items-center h-full gap-4 md:gap-8">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-10 flex flex-col md:flex-row justify-start md:justify-between items-center h-full gap-3 md:gap-8 mt-1 sm:mt-2 md:my-auto pt-0.5 sm:pt-1 md:pt-2">
           
           {/* Left Column (Desktop Only) */}
-          <div className="hidden md:flex flex-col justify-center w-1/2 z-20 md:pr-4 lg:pr-10">
-            {/* Huge Stacked Text */}
-            <div className="flex flex-col mb-10">
-              <h2 className="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[0.9] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight">ONE DOCK.</h2>
-              <h2 className="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[0.9] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight">EVERY DRIVE.</h2>
-              <h2 className="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[0.9] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight">EVERY DESK.</h2>
+          <div className="hidden md:flex flex-col justify-center w-1/2 z-20 md:pr-4 lg:pr-10 pt-0">
+            {/* Huge Stacked Text with Framer Motion Dynamic Rotating Words */}
+            <div className="flex flex-col mb-8 lg:mb-10">
+              <RotatingHeadline
+                layout="stacked"
+                align="left"
+                staticText="Designed to"
+                staticTextClassName="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[1.0] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight"
+                dynamicTextClassName="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[1.0] font-['Anton'] tracking-tight"
+                gradientClassName="text-[#0A1E3F]"
+              />
             </div>
 
             {/* Small Images Row */}
-            <div className="flex gap-4 lg:gap-6 max-w-[420px] mb-10">
-              <div className="rounded-[24px] border-[2px] border-[#D6CDB8] p-1.5 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
-                <div className="w-full h-full rounded-[16px] overflow-hidden">
-                  <img src={tableStandImg} alt="Workspace mounting" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
+            <div className="flex gap-4 lg:gap-6 max-w-[420px] mb-8">
+              <div className="rounded-none border-2 border-[#0A1E3F]/40 p-0 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
+                <div className="w-full h-full overflow-hidden">
+                  <img src={tableStandImg} alt="Workspace mounting" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
                 </div>
               </div>
-              <div className="rounded-[24px] border-[2px] border-[#D6CDB8] p-1.5 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
-                <div className="w-full h-full rounded-[16px] overflow-hidden">
-                  <img src={airVentImg} alt="Car mounting" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
+              <div className="rounded-none border-2 border-[#0A1E3F]/40 p-0 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
+                <div className="w-full h-full overflow-hidden">
+                  <img src={airVentImg} alt="Car mounting" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
                 </div>
               </div>
             </div>
             
-            {/* Action button */}
-            <div>
-              <Link to="/categories" className="inline-flex items-center justify-center bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest px-10 py-4 rounded-xl shadow-xl shadow-[#0A1E3F]/20 transition-all hover:-translate-y-1">
+            {/* Action button - brought down */}
+            <div className="mt-2 lg:mt-4">
+              <Link to="/categories" className="inline-flex items-center justify-center bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest px-10 py-4 rounded-none shadow-xl shadow-[#0A1E3F]/20 transition-all hover:-translate-y-1">
                 Explore Categories
               </Link>
             </div>
@@ -225,36 +159,33 @@ export default function HomePage() {
           {/* Right/Center Image & Mobile Layout */}
           <div className="flex-1 w-full md:w-1/2 flex flex-col items-center justify-center relative z-30">
             
-            {/* Mobile Title Stack */}
-            <div className="md:hidden flex flex-col items-center text-center w-full space-y-1 mb-4">
-              <h1 className="text-[12vw] leading-[0.9] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase">
-                ONE DOCK
-              </h1>
-              <h1 className="text-[12vw] leading-[0.9] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase pt-1">
-                EVERY DRIVE
-              </h1>
-              <h1 className="text-[12vw] leading-[0.9] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase pt-1 pb-3">
-                EVERY DESK
-              </h1>
+            {/* Mobile Title Stack with Framer Motion Dynamic Rotating Words */}
+            <div className="md:hidden flex flex-col items-center text-center w-full mb-3">
+              <RotatingHeadline
+                layout="stacked"
+                align="center"
+                staticText="Designed to"
+                staticTextClassName="text-[12.5vw] xs:text-[46px] leading-[1.05] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase"
+                dynamicTextClassName="text-[12.5vw] xs:text-[46px] leading-[1.05] font-['Anton'] tracking-tight"
+                gradientClassName="text-[#0A1E3F]"
+              />
             </div>
 
+            {/* Hero Image with increased height and presence */}
             <img 
               src={centerMountTransparentImg} 
               alt="QicDock Stand" 
               loading="eager"
               fetchPriority="high"
               decoding="sync"
-              className="w-[82%] sm:w-[70%] md:w-[90%] lg:w-[85%] xl:w-[75%] max-w-[310px] md:max-w-none object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] md:drop-shadow-[-30px_30px_60px_rgba(0,0,0,0.8)] transform -rotate-[8deg] md:-rotate-[12deg] pointer-events-none my-2 md:my-0" 
+              className="w-[88%] sm:w-[78%] md:w-[95%] lg:w-[90%] xl:w-[82%] max-w-[360px] sm:max-w-[440px] md:max-w-none max-h-[44vh] sm:max-h-[50vh] md:max-h-[540px] lg:max-h-[600px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] md:drop-shadow-[-30px_30px_60px_rgba(0,0,0,0.8)] transform -rotate-[8deg] md:-rotate-[12deg] pointer-events-none my-2 md:my-0" 
             />
             
-            {/* Mobile-Only Subtitle and Button */}
-            <div className="md:hidden flex flex-col items-center text-center mt-5 z-45 space-y-3.5">
-              <p className="text-gray-700 font-medium text-sm tracking-wide leading-snug">
-                Qicdock Mobile<br />Build Experience
-              </p>
+            {/* Mobile-Only Subtitle and Button - brought down with proper spacing */}
+            <div className="md:hidden flex flex-col items-center text-center mt-6 sm:mt-8 z-30">
               <Link
                 to="/categories"
-                className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full shadow-lg shadow-[#0A1E3F]/20 transition-all active:scale-95"
+                className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-none shadow-lg shadow-[#0A1E3F]/20 transition-all active:scale-95"
               >
                 Explore Categories
               </Link>
@@ -275,9 +206,9 @@ export default function HomePage() {
             
             <div className="grid grid-cols-2 gap-x-4 sm:gap-x-12 gap-y-6 sm:gap-y-10">
               {/* Feature 1 */}
-              <div className="space-y-3 sm:space-y-4 border border-[#0A1E3F] p-4 sm:p-5 rounded-2xl bg-[#FAF7F0] shadow-sm">
-                <div className="w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-full bg-[#EAF2A6] flex items-center justify-center border border-[#dce68f]">
-                  <Smartphone className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] text-[#E2DAC8] stroke-[1.5]" />
+              <div className="space-y-3 sm:space-y-4 border-2 border-[#0A1E3F]/40 hover:border-[#0A1E3F] p-4 sm:p-5 rounded-none bg-[#FAF7F0] shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(10,30,63,0.1)] group">
+                <div className="w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300">
+                  <Smartphone className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] stroke-[2]" />
                 </div>
                 <h3 className="text-sm sm:text-[18px] font-semibold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">On-Desk Adaptability</h3>
                 <p className="text-gray-600 leading-relaxed text-xs sm:text-[15px]">
@@ -286,9 +217,9 @@ export default function HomePage() {
               </div>
 
               {/* Feature 2 */}
-              <div className="space-y-3 sm:space-y-4 border border-[#0A1E3F] p-4 sm:p-5 rounded-2xl bg-[#FAF7F0] shadow-sm">
-                <div className="w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-full bg-[#DDF1FB] flex items-center justify-center border border-[#cae9f8]">
-                  <Car className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] text-[#E2DAC8] stroke-[1.5]" />
+              <div className="space-y-3 sm:space-y-4 border-2 border-[#0A1E3F]/40 hover:border-[#0A1E3F] p-4 sm:p-5 rounded-none bg-[#FAF7F0] shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(10,30,63,0.1)] group">
+                <div className="w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300">
+                  <Car className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] stroke-[2]" />
                 </div>
                 <h3 className="text-sm sm:text-[18px] font-semibold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">Seamless Car &amp; Wall Integration</h3>
                 <p className="text-gray-600 leading-relaxed text-xs sm:text-[15px]">
@@ -300,13 +231,13 @@ export default function HomePage() {
 
           {/* Right Content - Image */}
           <div className="flex-1 w-full flex justify-end">
-            <div className="w-full max-w-[650px] rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#111] aspect-[16/9] lg:aspect-[1.8] relative shadow-2xl border border-[#D6CDB8]">
+            <div className="w-full max-w-[650px] rounded-none overflow-hidden bg-[#111] aspect-[16/9] lg:aspect-[1.8] relative shadow-2xl border-2 border-[#0A1E3F]/40">
                <img 
                  src={combinedImg} 
                  alt="Combined solutions" 
                  loading="lazy"
                  decoding="async"
-                 className="w-full h-full object-contain p-2"
+                 className="w-full h-full object-cover"
                />
             </div>
           </div>
@@ -327,19 +258,284 @@ export default function HomePage() {
           </div>
 
           {/* Main Stage */}
-          <div className="relative w-full max-w-[1000px] mx-auto mt-10 md:mt-16">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-12 items-center relative z-10">
+          <div className="relative w-full max-w-[1000px] mx-auto mt-6 md:mt-16">
+            
+            {/* MOBILE VIEW ONLY: The Dynamic Bento Box (Asymmetric Grid) */}
+            <div className="block md:hidden">
+              <div className="grid grid-cols-2 gap-3">
+                
+                {/* 1. HERO BENTO CARD: 25W Qi2 Core Engine (Span 2 Cols) */}
+                <div className="col-span-2 bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-none p-4 shadow-md relative overflow-hidden">
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase bg-[#0A1E3F] text-[#F4F0E6]">
+                      <Sparkles className="w-3 h-3 text-[#F4F0E6]" />
+                      25W Core Engine
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 border border-emerald-200">
+                      <Zap className="w-3 h-3 text-emerald-600" />
+                      Qi2 Fast Wireless
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-24 h-24 flex-shrink-0 relative overflow-hidden flex items-center justify-center">
+                      <img 
+                        src={centerMountTransparentImg} 
+                        alt="Qicdock Core Module" 
+                        loading="lazy" 
+                        decoding="async" 
+                        className="w-full h-full object-contain relative z-10 drop-shadow-md"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-['Anton'] text-lg text-[#0A1E3F] uppercase tracking-wide leading-tight">
+                        ONE CORE. EVERY DOCK.
+                      </h3>
+                      <p className="text-[11px] text-gray-600 mt-1 leading-snug">
+                        Hot-swappable magnetic puck clicks seamlessly into car vents, console trays, desk stands, and wall brackets.
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        <span className="text-[9px] font-bold px-2 py-0.5 bg-[#EBE5D9] text-[#0A1E3F]">
+                          Neodymium Lock
+                        </span>
+                        <span className="text-[9px] font-bold px-2 py-0.5 bg-[#EBE5D9] text-[#0A1E3F]">
+                          360° Rotate
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. FLAGSHIP BENTO CARD: All in One Combo (Span 2 Cols) */}
+                <Link 
+                  to="/category/all-in-one" 
+                  className="col-span-2 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm hover:shadow-md transition-all active:scale-[0.99] group overflow-hidden flex flex-col"
+                >
+                  <div className="w-full h-44 sm:h-48 relative overflow-hidden bg-transparent">
+                    <img 
+                      src={combinedImg} 
+                      alt="All in one combo" 
+                      loading="lazy" 
+                      decoding="async" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    />
+                    <div className="absolute top-2.5 left-2.5 flex items-center gap-2">
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300">
+                        Most Popular
+                      </span>
+                      <span className="text-[10px] font-bold text-white bg-emerald-700 px-2 py-0.5">Save ₹1,100</span>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h4 className="font-['Anton'] text-lg text-[#0A1E3F] uppercase tracking-wide leading-tight group-hover:text-[#152B52] transition-colors">
+                      ALL IN ONE COMBO
+                    </h4>
+                    <p className="text-[11px] text-gray-600 mt-0.5 line-clamp-1">
+                      Car Cockpit + Desk Stand + Bedside Wall Kit
+                    </p>
+                    <div className="flex items-baseline gap-2 mt-2">
+                      <span className="text-base font-['Anton'] text-[#0A1E3F]">From ₹2,594</span>
+                      <span className="text-xs text-gray-400 line-through">₹3,694</span>
+                      <span className="ml-auto text-xs font-bold text-[#0A1E3F] inline-flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+                        Configure <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+
+                {/* 3. VERTICAL BENTO CARD: Car Combo (Span 1 Col) */}
+                <Link 
+                  to="/category/car-combo" 
+                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
+                >
+                  <div>
+                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
+                      <img 
+                        src={centerMountImg} 
+                        alt="Car combo" 
+                        loading="lazy" 
+                        decoding="async" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-blue-900 border border-blue-200">
+                          Cockpit
+                        </span>
+                        <Car className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
+                        Car Combo
+                      </h4>
+                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
+                        Vent + Headrest + Console
+                      </p>
+                    </div>
+                  </div>
+                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
+                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">From ₹2,346</span>
+                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
+                  </div>
+                </Link>
+
+                {/* 4. VERTICAL BENTO CARD: Home & Office (Span 1 Col) */}
+                <Link 
+                  to="/category/home-office" 
+                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
+                >
+                  <div>
+                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
+                      <img 
+                        src={tableStandImg} 
+                        alt="Home and office Combo" 
+                        loading="lazy" 
+                        decoding="async" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-purple-900 border border-purple-200">
+                          Workstation
+                        </span>
+                        <Home className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
+                        Home & Office
+                      </h4>
+                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
+                        Desk Stand + Wall Dock
+                      </p>
+                    </div>
+                  </div>
+                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
+                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">From ₹2,247</span>
+                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
+                  </div>
+                </Link>
+
+                {/* 5. VERTICAL BENTO CARD: Vehicle Specific (Span 1 Col) */}
+                <Link 
+                  to="/category/vehicle-specific" 
+                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
+                >
+                  <div>
+                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
+                      <img 
+                        src={airVentImg} 
+                        alt="Vehicle Specific" 
+                        loading="lazy" 
+                        decoding="async" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-emerald-900 border border-emerald-200">
+                          OEM Fit
+                        </span>
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
+                        Vehicle Specific
+                      </h4>
+                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
+                        Fronx, Baleno, Swift, 3XO...
+                      </p>
+                    </div>
+                  </div>
+                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
+                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">₹2,098 Flat</span>
+                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
+                  </div>
+                </Link>
+
+                {/* 6. VERTICAL BENTO CARD: Universal Charging Pad (Span 1 Col) */}
+                <Link 
+                  to="/category/individual" 
+                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
+                >
+                  <div>
+                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
+                      <img 
+                        src={centerMountImg} 
+                        alt="Universal car charging pad" 
+                        loading="lazy" 
+                        decoding="async" 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-[#0A1E3F] border border-[#0A1E3F]/20">
+                          Any Car
+                        </span>
+                        <BatteryCharging className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
+                      </div>
+                    </div>
+                    <div className="p-3">
+                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
+                        Universal Pad
+                      </h4>
+                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
+                        Grip Dash & Center Console
+                      </p>
+                    </div>
+                  </div>
+                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
+                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">₹2,098</span>
+                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
+                  </div>
+                </Link>
+
+                {/* 7. FOOTER BENTO STRIP: Stand-Alone Mounts & Brackets (Span 2 Cols) */}
+                <Link 
+                  to="/category/stand-alone" 
+                  className="col-span-2 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex items-center justify-between group transition-all active:scale-[0.99] overflow-hidden"
+                >
+                  <div className="w-24 h-24 flex-shrink-0 relative overflow-hidden bg-transparent">
+                    <img 
+                      src={wallStandImg} 
+                      alt="Modular mounts" 
+                      loading="lazy" 
+                      decoding="async" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0 p-3">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-[#EBE5D9] text-[#0A1E3F]">
+                        Modular Mounts
+                      </span>
+                      <span className="text-[10px] font-bold text-gray-600">From ₹299</span>
+                    </div>
+                    <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors">
+                      Stand-Alone Brackets & Bases
+                    </h4>
+                    <p className="text-[10px] text-gray-500 truncate">
+                      Extra vent clips, desk stands & flush wall plates
+                    </p>
+                  </div>
+                  <div className="w-7 h-7 bg-[#EBE5D9] flex items-center justify-center text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#F4F0E6] transition-colors flex-shrink-0 mr-3">
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </div>
+                </Link>
+
+              </div>
+            </div>
+
+            {/* DESKTOP VIEW ONLY: The 3-Column Connector Stage */}
+            <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-12 items-center relative z-10">
               
               {/* Left Column */}
               <div className="flex flex-col gap-6 md:gap-8 items-center md:items-end">
                 {/* 1. All in One */}
                 <Link to="/category/all-in-one" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto">
                   <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={combinedImg} alt="All in one" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
+                      <img src={combinedImg} alt="All in one" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
+                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
                       <Layers className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
                       <div className="absolute top-1/2 -translate-y-1/2 left-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-left rotate-[18deg]">
                         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
@@ -352,11 +548,11 @@ export default function HomePage() {
                 {/* 2. Car Combo */}
                 <Link to="/category/car-combo" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={centerMountImg} alt="Car combo" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
+                      <img src={centerMountImg} alt="Car combo" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
+                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
                       <Car className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
                       <div className="absolute top-1/2 -translate-y-1/2 left-full w-6 md:w-12 lg:w-16 h-[1px] bg-[#555] -z-10 origin-left rotate-[-2deg]">
                         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
@@ -369,11 +565,11 @@ export default function HomePage() {
                 {/* 3. Home and office Combo */}
                 <Link to="/category/home-office" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={tableStandImg} alt="Home and office Combo" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
+                      <img src={tableStandImg} alt="Home and office Combo" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
+                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
                       <Home className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
                       <div className="absolute top-1/2 -translate-y-1/2 left-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-left rotate-[-20deg]">
                         <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
@@ -392,8 +588,8 @@ export default function HomePage() {
                   <img 
                     src={centerMountTransparentImg} 
                     alt="Core Module" 
-                    loading="lazy"
-                    decoding="async"
+                    loading="lazy" 
+                    decoding="async" 
                     className="w-[220px] md:w-[320px] object-contain relative z-10 drop-shadow-[0_0_20px_rgba(4,217,255,0.5)]"
                   />
                 </div>
@@ -404,15 +600,15 @@ export default function HomePage() {
                 {/* 4. Car Charger */}
                 <Link to="/category/vehicle-specific" className="flex flex-col items-center md:items-start group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 flex-row-reverse md:flex-row w-full sm:w-auto justify-center md:justify-start">
-                    <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
+                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
                       <Zap className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
                       <div className="absolute top-1/2 -translate-y-1/2 right-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-right rotate-[-18deg]">
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
                       </div>
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={airVentImg} alt="Car Charger" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
+                      <img src={airVentImg} alt="Car Charger" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Car Charger</span>
@@ -421,15 +617,15 @@ export default function HomePage() {
                 {/* 5. Universal car charging pad */}
                 <Link to="/category/individual" className="flex flex-col items-center md:items-start group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 flex-row-reverse md:flex-row w-full sm:w-auto justify-center md:justify-start">
-                    <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
+                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
                       <BatteryCharging className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
                       <div className="absolute top-1/2 -translate-y-1/2 right-full w-6 md:w-12 lg:w-16 h-[1px] bg-[#555] -z-10 origin-right rotate-[2deg]">
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
                       </div>
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={centerMountImg} alt="Universal car charging pad" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
+                      <img src={centerMountImg} alt="Universal car charging pad" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors text-center max-w-[140px] md:max-w-full">Universal Charging Pad</span>
@@ -438,15 +634,15 @@ export default function HomePage() {
                 {/* 6. Only stand */}
                 <Link to="/category/stand-alone" className="flex flex-col items-center md:items-start group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
                   <div className="flex items-center gap-0 flex-row-reverse md:flex-row w-full sm:w-auto justify-center md:justify-start">
-                    <div className="hidden md:flex w-8 h-8 rounded-full border border-[#D6CDB8] bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F]/50 transition-colors relative z-20">
+                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
                       <MonitorSmartphone className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
                       <div className="absolute top-1/2 -translate-y-1/2 right-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-right rotate-[20deg]">
                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
                       </div>
                     </div>
                     <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[180px] md:w-[180px] aspect-[4/3] rounded-2xl border border-[#D6CDB8] bg-[#FAF7F0] p-1 flex justify-center items-center shadow-lg group-hover:border-[#0A1E3F]/50 transition-colors relative z-10 overflow-hidden">
-                      <img src={wallStandImg} alt="Only stand" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
+                      <img src={wallStandImg} alt="Only stand" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   </div>
                   <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Only Stand</span>
@@ -458,47 +654,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Vehicle Compatibility Engine Section */}
-      <section id="compatibility" className="bg-[#F4F0E6] w-full pb-24 px-4 md:px-10">
+      {/* Vehicle Compatibility & Car Assistant Section */}
+      <section id="compatibility" className="bg-[#F4F0E6] w-full py-8 md:py-12 px-4 md:px-10">
         <div className="max-w-[1400px] mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col items-center text-center space-y-4 mb-10">
-            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 px-3.5 py-1 rounded-full">
-              INTERACTIVE CAR MATCHING ASSISTANT
-            </span>
-            <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mt-2">
-              Find Your Car Dock
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base max-w-lg">
-              Click your car brand below to start the interactive Car Assistant or browse custom-fit models.
-            </p>
-
-            {/* Quick Brand Triggers for Chatbot */}
-            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
-              {[
-                { name: 'Maruti Suzuki', brand: 'maruti' },
-                { name: 'Toyota', brand: 'toyota' },
-                { name: 'Mahindra', brand: 'mahindra' },
-                { name: 'Universal (All Cars)', brand: 'universal' }
-              ].map((b, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    window.dispatchEvent(new CustomEvent('openCarFinderChatbot', { detail: { brand: b.brand } }));
-                  }}
-                  className="bg-[#FAF7F0] hover:bg-[#0A1E3F] text-[#0A1E3F] hover:text-white border border-[#D6CDB8] hover:border-[#0A1E3F] px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer flex items-center gap-1.5"
-                >
-                  <span>{b.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* Interactive Assistant Launch Banner */}
-          <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-3xl p-6 md:p-8 mb-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
+          <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-none p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden">
             <div className="space-y-2 text-center md:text-left z-10">
-              <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+              <div className="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 text-[11px] font-bold px-3 py-1 rounded-none uppercase tracking-wider">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 AI-Guided Model Matcher
               </div>
@@ -514,266 +676,166 @@ export default function HomePage() {
               onClick={() => {
                 window.dispatchEvent(new CustomEvent('openCarFinderChatbot'));
               }}
-              className="z-10 whitespace-nowrap bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-6 py-4 rounded-2xl text-xs sm:text-sm font-bold tracking-widest uppercase transition-all shadow-[0_0_25px_rgba(4,217,255,0.4)] flex items-center gap-2.5 cursor-pointer transform hover:scale-105"
+              className="z-10 whitespace-nowrap bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-6 py-4 rounded-none text-xs sm:text-sm font-bold tracking-widest uppercase transition-all shadow-md flex items-center gap-2.5 cursor-pointer transform hover:scale-105"
             >
               <span>Launch Car Assistant</span>
             </button>
           </div>
-
-          {/* Success Banner */}
-          <div className="bg-[#0A1E3F]/5 border border-[#0A1E3F]/30 rounded-xl p-4 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-[#0A1E3F] flex items-center justify-center shrink-0">
-                <Check className="w-6 h-6 text-[#FAF7F0] stroke-[3]" />
-              </div>
-              <div>
-                <div className="text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase mb-0.5">100% Fit Guarantee Confirmed</div>
-                <div className="text-[#0A1E3F] text-sm md:text-base font-medium">Compatible chargers for <span className="text-[#0A1E3F]">2025 {selectedModel.toUpperCase()}</span></div>
-              </div>
-            </div>
-            <button 
-              onClick={() => setSelectedModel('Universal')}
-              className="flex items-center gap-2 text-gray-600 hover:text-[#0A1E3F] border border-[#1E293B] hover:border-gray-500 bg-[#FAF7F0] px-4 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase transition-all shrink-0 cursor-pointer"
-            >
-              <RefreshCw className="w-3 h-3" />
-              Reset
-            </button>
-          </div>
-
-          {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-            {currentProducts.map(product => (
-              <div key={product.id} className="bg-[#FAF7F0] border border-[#1E293B] rounded-2xl overflow-hidden flex flex-col group hover:border-[#0A1E3F]/50 transition-colors">
-                {/* Image Area */}
-                <div className="w-full aspect-[16/10] bg-[#FAF7F0] relative overflow-hidden flex items-center justify-center p-2">
-                  <img src={product.image} alt={product.title} loading="lazy" decoding="async" className="w-full h-full object-contain opacity-95 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" />
-                  <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-[#0A1E3F] text-[#FAF7F0] text-[7px] md:text-[9px] font-bold px-1.5 md:px-2 py-1 rounded-full flex items-center gap-1 uppercase tracking-wider shadow-lg">
-                    <Check className="w-2 h-2 md:w-3 md:h-3" /> 100% Fit Guarantee
-                  </div>
-                  <div className="absolute bottom-2 left-2 md:bottom-3 md:left-3 bg-[#FAF7F0]/90 text-[#0A1E3F] text-[7px] md:text-[9px] font-bold px-1.5 md:px-2 py-1 rounded-md uppercase tracking-wider border border-[#0A1E3F]/20 backdrop-blur-sm">
-                    Installed in {product.installedIn}
-                  </div>
-                </div>
-                
-                {/* Content Area */}
-                <div className="p-3 md:p-5 flex flex-col flex-1">
-                  {/* Specs row */}
-                  <div className="flex items-center justify-between mb-2 md:mb-3">
-                    <div className="flex items-center gap-1 text-[#0A1E3F]">
-                      <Zap className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 fill-current" />
-                      <span className="text-[8px] md:text-[10px] font-bold tracking-wide uppercase">{product.speed}</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-yellow-500">
-                      <Star className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 fill-current" />
-                      <span className="text-[8px] md:text-[10px] font-bold text-gray-700">{product.rating} <span className="text-gray-600">({product.reviews})</span></span>
-                    </div>
-                  </div>
-                  
-                  {/* Title & Desc */}
-                  <h3 className="text-[#0A1E3F] font-bold text-xs md:text-sm leading-snug mb-1 md:mb-2">{product.title}</h3>
-                  <p className="text-gray-600 text-[9px] md:text-[11px] leading-relaxed mb-3 md:mb-4 flex-1 line-clamp-2 md:line-clamp-none">{product.desc}</p>
-                  
-                  {/* Price Row */}
-                  <div className="flex items-end gap-1.5 md:gap-2 mb-3 md:mb-5">
-                    <span className="text-sm md:text-lg font-bold text-[#0A1E3F] leading-none">{product.price}</span>
-                    <span className="text-[10px] md:text-xs text-gray-600 line-through leading-none pb-0.5">{product.oldPrice}</span>
-                  </div>
-                  
-                  {/* Buttons */}
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-auto">
-                    <Link to="/category/vehicle-specific" className="flex-1 flex items-center justify-center gap-1 md:gap-2 bg-[#1E293B]/50 hover:bg-[#1E293B] border border-[#2D3748] text-gray-700 hover:text-[#0A1E3F] px-2 py-2 md:px-4 md:py-2.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-bold tracking-widest uppercase transition-colors">
-                      <Eye className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" /> <span className="hidden sm:inline">View Product</span><span className="sm:hidden">View</span>
-                    </Link>
-                    <Link to="/cart" className="flex-1 sm:flex-none flex items-center justify-center gap-1 md:gap-2 bg-[#0A1E3F] hover:bg-[#03b8d9] text-[#F4F0E6] px-2 py-2 md:px-5 md:py-2.5 rounded-lg md:rounded-xl text-[8px] md:text-[10px] font-bold tracking-widest uppercase transition-colors shadow-[0_0_15px_rgba(4,217,255,0.3)]">
-                      <ShoppingBag className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" /> Add
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
         </div>
       </section>
 
       {/* Best Value Combos Section */}
-      <section className="bg-[#EBE5D9] w-full py-24 px-4 md:px-10 border-t border-[#111]">
-        <div className="max-w-[1400px] mx-auto">
+      <section className="bg-[#EBE5D9] w-full py-16 md:py-24 border-t border-[#0A1E3F]/20 relative overflow-hidden">
+        {/* Ambient Navy subtle backlight */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-[#0A1E3F]/[0.03] rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-[1400px] mx-auto px-4 md:px-10">
           {/* Header */}
-          <div className="text-center space-y-4 mb-16 flex flex-col items-center">
-            <span className="text-[#0066FF] text-xs font-bold tracking-[0.2em] uppercase bg-[#0066FF]/10 border border-[#0066FF]/30 px-4 py-2 rounded-full backdrop-blur-sm inline-block shadow-[0_0_15px_rgba(0,102,255,0.2)]">
-              SAVE UP TO ₹1,100 WITH BUNDLES
+          <div className="text-center space-y-3 mb-8 md:mb-12 flex flex-col items-center">
+            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/25 px-4 py-2 rounded-none backdrop-blur-sm inline-block shadow-sm">
+              SAVE UP TO ₹1,400 WITH BUNDLES
             </span>
-            <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mt-4">
-              Smart Combos. <span className="text-[#0A1E3F]">Bigger Savings.</span>
+            <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mt-2">
+              Smart Combos. <span className="text-[#0A1E3F] relative inline-block">
+                Bigger Savings.
+                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F]/40 to-transparent" />
+              </span>
             </h2>
-            <p className="text-[#1A2C4F] text-sm md:text-base max-w-2xl mx-auto font-medium">
+            <p className="text-[#1A2C4F] text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium">
               Unlock instant discounts on mounts and accessories when you buy them together.
             </p>
+
+            {/* Interactive Control Pill with Navy Blue theme */}
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 pt-2">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] shadow-sm text-[11px] font-semibold text-[#0A1E3F]">
+                <span className={`w-2 h-2 rounded-full ${isMarqueePaused ? 'bg-amber-500' : 'bg-[#0A1E3F] animate-pulse'}`} />
+                <span>{isMarqueePaused ? 'Motion Paused' : 'Continuous Horizontal Glide'}</span>
+                <span className="text-gray-500 font-normal hidden sm:inline">• Hover cards to pause</span>
+              </div>
+
+              {/* Pause / Play Toggle */}
+              <button
+                onClick={() => setIsMarqueePaused(prev => !prev)}
+                className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
+                title={isMarqueePaused ? "Resume Motion" : "Pause Motion"}
+                aria-label={isMarqueePaused ? "Resume Motion" : "Pause Motion"}
+              >
+                {isMarqueePaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5 fill-current" />}
+              </button>
+
+              {/* Scroll Controls */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleScrollMarquee('left')}
+                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
+                  title="Scroll Left"
+                  aria-label="Scroll Left"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => handleScrollMarquee('right')}
+                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
+                  title="Scroll Right"
+                  aria-label="Scroll Right"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
           </div>
+        </div>
 
-          {/* Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
-            
-            {/* Card 1: Ultimate */}
-            <div className="bg-[#FAF7F0] border border-[#0066FF]/50 rounded-2xl md:rounded-3xl p-3 md:p-5 lg:p-6 flex flex-col relative overflow-hidden shadow-[0_0_40px_rgba(0,102,255,0.15)] group transition-all hover:-translate-y-1">
-              <div className="absolute inset-0 bg-gradient-to-b from-[#0066FF]/10 to-transparent opacity-50 pointer-events-none"></div>
-              
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-2 md:mb-4">
-                  <div>
-                    <span className="text-[#0066FF] text-[8px] md:text-[10px] font-bold tracking-widest uppercase bg-[#0066FF]/10 border border-[#0066FF]/30 px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-full mb-1 md:mb-2 inline-block">Best Value Badge</span>
-                    <h3 className="text-sm md:text-2xl font-bold text-[#0A1E3F] mb-0.5 line-clamp-2 md:line-clamp-none leading-snug">Ultimate All-in-One Kit</h3>
-                    <p className="text-[#1A2C4F] text-[9px] md:text-xs font-medium tracking-wide">Every Mount Included</p>
-                  </div>
-                </div>
+        {/* Horizontal Moving Marquee Track */}
+        <div className="relative w-full overflow-hidden">
+          {/* Edge Vignette / Gradient Masks for smooth entry & exit */}
+          <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-r from-[#EBE5D9] to-transparent z-20 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-l from-[#EBE5D9] to-transparent z-20 pointer-events-none" />
 
-                {/* 3D Render Image Placeholder - Using existing combinedImg */}
-                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-1 group-hover:border-[#0066FF]/50 transition-colors relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img src={combinedImg} alt="Ultimate Kit" loading="lazy" decoding="async" className="relative z-20 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)]" />
-                </div>
+          {/* Scrollable Container with Continuous Conveyor */}
+          <div 
+            ref={marqueeContainerRef}
+            className="overflow-x-auto no-scrollbar py-4 px-4 sm:px-8 cursor-grab active:cursor-grabbing"
+          >
+            <div 
+              className={`flex gap-5 sm:gap-6 w-max ${isMarqueePaused ? '' : 'animate-combo-marquee'}`}
+              onMouseEnter={() => setIsMarqueePaused(true)}
+              onMouseLeave={() => setIsMarqueePaused(false)}
+            >
+              {/* Render 2 duplicate sets for smooth infinite loop */}
+              {[...smartCombos, ...smartCombos].map((combo, idx) => {
+                return (
+                  <div
+                    key={`${combo.id}-${idx}`}
+                    className={`w-[290px] sm:w-[320px] md:w-[335px] shrink-0 bg-[#FAF7F0] rounded-none p-4 md:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-2 group shadow-sm hover:shadow-[0_20px_45px_rgba(10,30,63,0.22)] ${
+                      combo.isFlagship 
+                        ? 'border-2 border-[#0A1E3F]' 
+                        : 'border border-[#D6CDB8] hover:border-[#0A1E3F]'
+                    }`}
+                  >
+                    {/* Top Navy Accent Shimmer on hover */}
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                <div className="space-y-1 md:space-y-2 mb-2 md:mb-4">
-                  <div className="flex items-start md:items-center gap-1.5 md:gap-2.5">
-                    <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-[#0066FF] flex-shrink-0 mt-0.5 md:mt-0" />
-                    <span className="text-[9px] md:text-sm text-[#1A2C4F] leading-tight md:leading-normal">Charger (₹1,999) + 5 Mounts</span>
-                  </div>
-                  <div className="flex items-start md:items-center gap-1.5 md:gap-2.5">
-                    <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 text-[#0066FF] flex-shrink-0 mt-0.5 md:mt-0" />
-                    <span className="text-[9px] md:text-sm text-gray-600 leading-tight md:leading-normal">Desk, Wall, Vent, Rear Seat, Car Pad</span>
-                  </div>
-                  
-                  {/* Micro Breakdown Box */}
-                  <div className="bg-[#EBE5D9] border border-[#E2DAC8] rounded-lg md:rounded-xl p-2 md:p-3 mt-2 md:mt-3 hidden sm:block">
-                    <div className="text-[8px] md:text-[9px] text-gray-600 uppercase tracking-widest mb-1 md:mb-1.5 font-bold">Mount Prices Drop</div>
-                    <div className="flex justify-between items-center text-[9px] md:text-[11px]">
-                      <span className="text-gray-600 line-through">₹299 - ₹399 each</span>
-                      <ArrowRight className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-[#0066FF]" />
-                      <span className="text-[#0A1E3F] font-bold">₹99 - ₹149 each</span>
+                    <div className="relative z-10 flex flex-col">
+                      <div className="mb-3">
+                        <span 
+                          className={`text-[9px] font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-none mb-1.5 inline-block transition-colors ${
+                            combo.isFlagship
+                              ? 'bg-[#0A1E3F] text-[#FAF7F0] shadow-sm'
+                              : 'bg-[#0A1E3F]/10 border border-[#0A1E3F]/20 text-[#0A1E3F]'
+                          }`}
+                        >
+                          {combo.tag}
+                        </span>
+                        <h3 className="text-base sm:text-lg font-bold text-[#0A1E3F] leading-snug group-hover:text-[#0A1E3F] transition-colors">
+                          {combo.title}
+                        </h3>
+                        <p className="text-[#1A2C4F] text-[11px] font-medium">{combo.subtitle}</p>
+                      </div>
+
+                      {/* Image container edge-to-edge with no padding */}
+                      <div className="h-44 sm:h-48 w-full bg-transparent rounded-none border border-[#E2DAC8] mb-3.5 flex items-center justify-center overflow-hidden p-0 relative group-hover:border-[#0A1E3F]/40 transition-colors">
+                        <img 
+                          src={combo.img} 
+                          alt={combo.title} 
+                          loading="lazy" 
+                          decoding="async" 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        />
+                      </div>
+
+                      {/* Feature specs with Navy Checkmarks */}
+                      <div className="space-y-1.5 mb-4 text-xs">
+                        {combo.features.map((feat, fIdx) => (
+                          <div key={fIdx} className="flex items-start gap-2 text-[#1A2C4F]">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#0A1E3F] shrink-0 mt-0.5" />
+                            <span className="leading-tight font-medium text-[11.5px]">{feat}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-auto pt-3 border-t border-[#E2DAC8] relative z-10">
+                      <div className="flex items-baseline justify-between mb-2.5">
+                        <div>
+                          <span className="text-gray-500 line-through text-xs block font-medium">{combo.regularPrice}</span>
+                          <span className="text-xl sm:text-2xl font-['Anton'] text-[#0A1E3F] tracking-wide leading-none">{combo.salePrice}</span>
+                        </div>
+                        <span className="bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#15803d] text-[9px] font-bold px-2 py-1 rounded-none uppercase tracking-wider">
+                          {combo.savings}
+                        </span>
+                      </div>
+                      <Link 
+                        to={combo.link} 
+                        className="w-full bg-[#0A1E3F] hover:bg-[#152B52] active:scale-98 text-[#FAF7F0] transition-all duration-200 py-2.5 rounded-none font-bold uppercase tracking-wider text-xs flex items-center justify-center shadow-md text-center group-hover:shadow-[0_4px_16px_rgba(10,30,63,0.35)]"
+                      >
+                        {combo.cta}
+                      </Link>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="mt-auto pt-2 md:pt-4 border-t border-[#E2DAC8] relative z-10">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-2 md:mb-4 gap-1">
-                  <div>
-                    <div className="text-gray-600 line-through text-[10px] md:text-sm mb-0 md:mb-0.5 decoration-red-500 decoration-2 font-medium leading-none">Regular: ₹3,694</div>
-                    <div className="text-lg md:text-3xl lg:text-4xl font-['Anton'] text-[#0A1E3F] tracking-wide leading-none mt-1">₹2,594</div>
-                  </div>
-                  <div className="bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-[8px] md:text-[9px] font-bold px-1.5 py-1 md:px-2 md:py-1.5 rounded md:rounded-lg uppercase text-center shadow-[0_0_15px_rgba(34,197,94,0.15)] mt-1 sm:mt-0 self-start sm:self-auto">
-                    INSTANT ₹1,100 OFF
-                  </div>
-                </div>
-                <button className="w-full bg-[#0066FF] hover:bg-[#152B52] text-[#0A1E3F] hover:text-[#F4F0E6] transition-colors py-2 md:py-3 rounded-lg md:rounded-xl font-bold uppercase tracking-wider text-[9px] md:text-sm shadow-[0_5px_20px_rgba(0,102,255,0.4)] mt-2">
-                  Get Ultimate Kit
-                </button>
-              </div>
+                );
+              })}
             </div>
-
-            {/* Card 2: Car Pack */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl md:rounded-3xl p-3 md:p-5 lg:p-6 flex flex-col relative overflow-hidden group hover:border-[#D6CDB8] transition-all hover:-translate-y-1">
-              <div className="relative z-10 flex flex-col h-full">
-                <div className="mb-2 md:mb-4">
-                  <h3 className="text-sm md:text-2xl font-bold text-[#0A1E3F] mb-0.5 group-hover:text-[#0A1E3F] transition-colors line-clamp-2 md:line-clamp-none leading-snug">Front & Rear Vehicle Charging</h3>
-                  <p className="text-[#0A1E3F] text-[9px] md:text-xs font-bold uppercase tracking-wider mb-1">Car Combo</p>
-                  <p className="text-[#1A2C4F] text-[9px] md:text-xs font-medium tracking-wide leading-relaxed">All-in-one car charger bundle designed for front and rear passengers. Keep your phone locked in place over speed bumps, potholes, and sharp corners while delivering 25W fast charging.</p>
-                </div>
-
-                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-1 relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img src={centerMountImg} alt="Car Pack" loading="lazy" decoding="async" className="relative z-20 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
-                </div>
-
-                <div className="space-y-1 md:space-y-2 mb-2 md:mb-4">
-                  <div className="flex items-start md:items-center gap-1.5 md:gap-2.5">
-                    <CheckCircle2 className="w-3 h-3 md:w-4 h-4 text-gray-600 flex-shrink-0 group-hover:text-[#0A1E3F] transition-colors mt-0.5 md:mt-0" />
-                    <span className="text-[9px] md:text-sm text-[#1A2C4F] leading-tight md:leading-normal">1x Qicdock Core Charger</span>
-                  </div>
-                  <div className="flex items-start md:items-center gap-1.5 md:gap-2.5">
-                    <CheckCircle2 className="w-3 h-3 md:w-4 h-4 text-gray-600 flex-shrink-0 group-hover:text-[#0A1E3F] transition-colors mt-0.5 md:mt-0" />
-                    <span className="text-[9px] md:text-sm text-gray-600 leading-tight md:leading-normal">Car Pad + Air Vent Clip + Rear Seat</span>
-                  </div>
-                  
-                  {/* Micro Breakdown Box */}
-                  <div className="bg-[#EBE5D9] border border-[#E2DAC8] rounded-lg md:rounded-xl p-2 md:p-3 mt-2 md:mt-3 hidden sm:block">
-                    <div className="text-[8px] md:text-[9px] text-gray-600 uppercase tracking-widest mb-1 md:mb-1.5 font-bold">Bundle Advantage</div>
-                    <div className="flex justify-between items-center text-[9px] md:text-[11px]">
-                      <span className="text-[#1A2C4F] font-medium">Equip your entire vehicle</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-auto pt-2 md:pt-4 border-t border-[#E2DAC8] relative z-10">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-2 md:mb-4 gap-1">
-                  <div>
-                    <div className="text-gray-600 line-through text-[10px] md:text-sm mb-0 md:mb-0.5 decoration-red-500 decoration-2 font-medium leading-none">Regular: ₹2,996</div>
-                    <div className="text-lg md:text-3xl lg:text-4xl font-['Anton'] text-[#0A1E3F] tracking-wide leading-none mt-1">₹2,346</div>
-                  </div>
-                  <div className="bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-[8px] md:text-[9px] font-bold px-1.5 py-1 md:px-2 md:py-1.5 rounded md:rounded-lg uppercase text-center shadow-[0_0_15px_rgba(34,197,94,0.15)] mt-1 sm:mt-0 self-start sm:self-auto">
-                    SAVE ₹650
-                  </div>
-                </div>
-                <button className="w-full bg-[#E2DAC8] border border-[#D6CDB8] hover:bg-[#0A1E3F] hover:border-[#0A1E3F] text-[#0A1E3F] hover:text-[#F4F0E6] transition-colors py-2 md:py-3 rounded-lg md:rounded-xl font-bold uppercase tracking-wider text-[9px] md:text-sm mt-2">
-                  Get Car Pack
-                </button>
-              </div>
-            </div>
-
-            {/* Card 3: Mega Pack */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl md:rounded-3xl p-3 md:p-5 lg:p-6 flex flex-col relative overflow-hidden group hover:border-[#D6CDB8] transition-all hover:-translate-y-1 col-span-2 sm:col-span-1 lg:col-span-1 mx-auto w-full max-w-[300px] sm:max-w-none">
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-2 md:mb-4">
-                  <div>
-                    <span className="text-gray-700 text-[8px] md:text-[10px] font-bold tracking-widest uppercase bg-[#152B52]/5 border border-white/10 px-1.5 py-0.5 md:px-2.5 md:py-1 rounded-full mb-1 md:mb-2 inline-block">Special Value</span>
-                    <h3 className="text-sm md:text-2xl font-bold text-[#0A1E3F] mb-0.5 group-hover:text-[#0A1E3F] transition-colors line-clamp-2 md:line-clamp-none leading-snug">Dual Charger + All Mounts</h3>
-                    <p className="text-[#1A2C4F] text-[9px] md:text-xs font-medium tracking-wide">For Home & Car Setups</p>
-                  </div>
-                </div>
-
-                <div className="h-24 md:h-44 w-full bg-[#EBE5D9] rounded-xl md:rounded-2xl border border-[#E2DAC8] mb-2 md:mb-4 flex items-center justify-center overflow-hidden p-1 relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                  <img src={combinedImg} alt="Mega Pack" loading="lazy" decoding="async" className="relative z-20 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_15px_30px_rgba(0,0,0,0.5)] opacity-90" />
-                </div>
-
-                <div className="space-y-1 md:space-y-2 mb-2 md:mb-4">
-                  <div className="flex items-start md:items-center gap-1.5 md:gap-2.5">
-                    <CheckCircle2 className="w-3 h-3 md:w-4 h-4 text-gray-600 flex-shrink-0 group-hover:text-[#0A1E3F] transition-colors mt-0.5 md:mt-0" />
-                    <span className="text-[9px] md:text-sm text-[#1A2C4F] leading-tight md:leading-normal">2x Qicdock Core Chargers</span>
-                  </div>
-                  <div className="flex items-start md:items-center gap-1.5 md:gap-2.5">
-                    <CheckCircle2 className="w-3 h-3 md:w-4 h-4 text-gray-600 flex-shrink-0 group-hover:text-[#0A1E3F] transition-colors mt-0.5 md:mt-0" />
-                    <span className="text-[9px] md:text-sm text-gray-600 leading-tight md:leading-normal">All 5 Universal Mount Bases</span>
-                  </div>
-                  
-                  {/* Micro Breakdown Box */}
-                  <div className="bg-[#EBE5D9] border border-[#E2DAC8] rounded-lg md:rounded-xl p-2 md:p-3 mt-2 md:mt-3 hidden sm:block">
-                    <div className="text-[8px] md:text-[9px] text-gray-600 uppercase tracking-widest mb-1 md:mb-1.5 font-bold">Dual Convenience</div>
-                    <div className="flex justify-between items-center text-[9px] md:text-[11px]">
-                      <span className="text-[#1A2C4F] font-medium">Leave one at home, one in car</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-auto pt-2 md:pt-4 border-t border-[#E2DAC8] relative z-10">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-2 md:mb-4 gap-1">
-                  <div>
-                    <div className="text-gray-600 line-through text-[10px] md:text-sm mb-0 md:mb-0.5 decoration-red-500 decoration-2 font-medium leading-none">Regular: ₹5,693</div>
-                    <div className="text-lg md:text-3xl lg:text-4xl font-['Anton'] text-[#0A1E3F] tracking-wide leading-none mt-1">₹4,293</div>
-                  </div>
-                  <div className="bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#22C55E] text-[8px] md:text-[9px] font-bold px-1.5 py-1 md:px-2 md:py-1.5 rounded md:rounded-lg uppercase text-center shadow-[0_0_15px_rgba(34,197,94,0.15)] mt-1 sm:mt-0 self-start sm:self-auto">
-                    SAVE ₹1,400
-                  </div>
-                </div>
-                <button className="w-full bg-[#E2DAC8] border border-[#D6CDB8] hover:bg-[#0A1E3F] hover:border-[#0A1E3F] text-[#0A1E3F] hover:text-[#F4F0E6] transition-colors py-2 md:py-3 rounded-lg md:rounded-xl font-bold uppercase tracking-wider text-[9px] md:text-sm mt-2">
-                  Get Mega Bundle
-                </button>
-              </div>
-            </div>
-
           </div>
         </div>
       </section>
@@ -795,12 +857,12 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
             
             {/* Step 1 */}
-            <div className="bg-[#FAF7F0] rounded-xl sm:rounded-2xl border border-[#D6CDB8] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F]/50 transition-colors relative overflow-hidden">
+            <div className="bg-[#FAF7F0] rounded-none border-2 border-[#0A1E3F]/40 p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F] transition-colors relative overflow-hidden">
               <div className="absolute -right-2 sm:-right-4 -top-2 sm:-top-4 text-5xl sm:text-7xl md:text-[110px] font-['Anton'] text-[#E2DAC8] opacity-50 z-0 select-none">
                 01
               </div>
               <div className="relative z-10 w-full flex flex-col items-center">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-none bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
                   <Car className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
                 </div>
                 <h3 className="text-xs sm:text-base md:text-lg font-bold text-[#0A1E3F] uppercase tracking-wider mb-1.5 sm:mb-3">Choose Your Car</h3>
@@ -811,12 +873,12 @@ export default function HomePage() {
             </div>
 
             {/* Step 2 */}
-            <div className="bg-[#FAF7F0] rounded-xl sm:rounded-2xl border border-[#D6CDB8] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F]/50 transition-colors relative overflow-hidden">
+            <div className="bg-[#FAF7F0] rounded-none border-2 border-[#0A1E3F]/40 p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F] transition-colors relative overflow-hidden">
               <div className="absolute -right-2 sm:-right-4 -top-2 sm:-top-4 text-5xl sm:text-7xl md:text-[110px] font-['Anton'] text-[#E2DAC8] opacity-50 z-0 select-none">
                 02
               </div>
               <div className="relative z-10 w-full flex flex-col items-center">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-none bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
                   <MonitorSmartphone className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
                 </div>
                 <h3 className="text-xs sm:text-base md:text-lg font-bold text-[#0A1E3F] uppercase tracking-wider mb-1.5 sm:mb-3">Select Your Dock</h3>
@@ -827,12 +889,12 @@ export default function HomePage() {
             </div>
 
             {/* Step 3 */}
-            <div className="bg-[#FAF7F0] rounded-xl sm:rounded-2xl border border-[#D6CDB8] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F]/50 transition-colors relative overflow-hidden">
+            <div className="bg-[#FAF7F0] rounded-none border-2 border-[#0A1E3F]/40 p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F] transition-colors relative overflow-hidden">
               <div className="absolute -right-2 sm:-right-4 -top-2 sm:-top-4 text-5xl sm:text-7xl md:text-[110px] font-['Anton'] text-[#E2DAC8] opacity-50 z-0 select-none">
                 03
               </div>
               <div className="relative z-10 w-full flex flex-col items-center">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-none bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
                   <RefreshCw className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
                 </div>
                 <h3 className="text-xs sm:text-base md:text-lg font-bold text-[#0A1E3F] uppercase tracking-wider mb-1.5 sm:mb-3">Easy Install</h3>
@@ -843,12 +905,12 @@ export default function HomePage() {
             </div>
 
             {/* Step 4 */}
-            <div className="bg-[#FAF7F0] rounded-xl sm:rounded-2xl border border-[#D6CDB8] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F]/50 transition-colors relative overflow-hidden">
+            <div className="bg-[#FAF7F0] rounded-none border-2 border-[#0A1E3F]/40 p-4 sm:p-6 md:p-8 flex flex-col items-center text-center group hover:border-[#0A1E3F] transition-colors relative overflow-hidden">
               <div className="absolute -right-2 sm:-right-4 -top-2 sm:-top-4 text-5xl sm:text-7xl md:text-[110px] font-['Anton'] text-[#E2DAC8] opacity-50 z-0 select-none">
                 04
               </div>
               <div className="relative z-10 w-full flex flex-col items-center">
-                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-none bg-[#0A1E3F]/10 border border-[#0A1E3F]/30 flex items-center justify-center text-[#0A1E3F] mb-3 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform">
                   <Zap className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
                 </div>
                 <h3 className="text-xs sm:text-base md:text-lg font-bold text-[#0A1E3F] uppercase tracking-wider mb-1.5 sm:mb-3">Drive & Charge</h3>
@@ -898,7 +960,7 @@ export default function HomePage() {
                 a: "Not at all. Our docks utilize advanced non-slip silicone surfaces and, for MagSafe/Qi2 models, strong magnetic arrays to ensure your device stays perfectly aligned and secure even under hard acceleration or cornering."
               }
             ].map((faq, i) => (
-              <details key={i} className="bg-[#FAF7F0] border border-[#D6CDB8] rounded-xl group overflow-hidden transition-colors hover:border-[#0A1E3F]/50 [&_summary::-webkit-details-marker]:hidden">
+              <details key={i} className="bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 rounded-none group overflow-hidden transition-colors hover:border-[#0A1E3F] [&_summary::-webkit-details-marker]:hidden">
                 <summary className="p-6 flex justify-between items-center cursor-pointer list-none">
                   <h3 className="text-[#0A1E3F] font-medium text-[15px] group-hover:text-[#0A1E3F] transition-colors pr-8">{faq.q}</h3>
                   <div className="relative w-5 h-5 flex-shrink-0 flex items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] transition-colors">
@@ -914,31 +976,37 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-[#F4F0E6] w-full relative overflow-hidden border-t border-[#111]">
+      {/* CTA Section - Hidden on mobile */}
+      <section className="hidden md:block bg-[#F4F0E6] w-full relative overflow-hidden border-t border-[#111]">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-luminosity"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#F4F0E6] via-[#F4F0E6]/80 to-transparent"></div>
         
-        <div className="max-w-[1400px] mx-auto py-24 px-4 md:px-10 relative z-10">
+        <div className="max-w-[1400px] mx-auto py-16 md:py-24 px-4 md:px-10 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <span className="text-[#0A1E3F] font-bold tracking-[0.2em] text-xs md:text-sm uppercase mb-4 block">Automotive Interior</span>
-            <h2 className="text-4xl md:text-6xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mb-6">
-              UPGRADE YOUR <span className="text-[#0A1E3F]">INTERIOR TODAY</span>
-            </h2>
-            <h3 className="text-xl md:text-2xl font-bold text-[#0A1E3F] mb-4">Your Dashboard Deserves Better.</h3>
-            <p className="text-gray-600 text-sm md:text-base mb-10 max-w-2xl mx-auto leading-relaxed">
+            <span className="text-[#0A1E3F] font-bold tracking-[0.2em] text-xs md:text-sm uppercase mb-4 block">
+              Automotive Interior
+            </span>
+            <p className="text-gray-600 text-sm md:text-base mb-8 max-w-2xl mx-auto leading-relaxed">
               Find a charging solution engineered specifically around the way you drive. Zero messy cables, zero compromise.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-[#0A1E3F] text-[#F4F0E6] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[13px] hover:bg-[#152B52] transition-colors flex items-center justify-center gap-2">
+              <button 
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('openCarFinderChatbot'));
+                }}
+                className="bg-[#0A1E3F] text-[#F4F0E6] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[13px] hover:bg-[#152B52] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+              >
                 FIND YOUR CAR
                 <ArrowRight className="w-4 h-4" />
               </button>
-              <button className="bg-transparent border border-white text-[#0A1E3F] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[13px] hover:bg-[#152B52] hover:text-[#F4F0E6] transition-colors flex items-center justify-center gap-2">
+              <Link 
+                to="/categories" 
+                className="bg-transparent border border-[#0A1E3F] text-[#0A1E3F] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[13px] hover:bg-[#152B52] hover:text-[#F4F0E6] transition-colors flex items-center justify-center gap-2"
+              >
                 SHOP UNIVERSAL
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Search, Car, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
+import { addToCart } from '../lib/cart';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
@@ -48,10 +49,20 @@ export default function VehicleSpecific() {
     return matchesBrand && matchesSearch;
   });
 
-  const handleAddToCart = (id: string) => {
-    setAddedItems(prev => ({ ...prev, [id]: true }));
+  const handleAddToCart = (vehicle: CarModel) => {
+    addToCart({
+      id: `car-${vehicle.id}`,
+      name: vehicle.name,
+      variant: vehicle.slot,
+      price: vehicle.price,
+      originalPrice: Math.round(vehicle.price * 1.45),
+      image: vehicle.image,
+      quantity: 1
+    });
+
+    setAddedItems(prev => ({ ...prev, [vehicle.id]: true }));
     setTimeout(() => {
-      setAddedItems(prev => ({ ...prev, [id]: false }));
+      setAddedItems(prev => ({ ...prev, [vehicle.id]: false }));
     }, 2500);
   };
 
@@ -151,8 +162,11 @@ export default function VehicleSpecific() {
                       </span>
                     </div>
 
-                    {/* Image Stage */}
-                    <div className="h-44 bg-[#F4F0E6] rounded-xl border border-[#E2DAC8] p-2 flex items-center justify-center mb-5 overflow-hidden">
+                    {/* Image Stage - Clickable to Product Page */}
+                    <Link 
+                      to={`/product/${vehicle.id}`} 
+                      className="block h-44 bg-[#F4F0E6] rounded-xl border border-[#E2DAC8] p-2 flex items-center justify-center mb-5 overflow-hidden group-hover:border-[#0A1E3F]/40"
+                    >
                       <img
                         src={vehicle.image}
                         alt={vehicle.name}
@@ -160,16 +174,27 @@ export default function VehicleSpecific() {
                         decoding="async"
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
                       />
-                    </div>
+                    </Link>
 
                     {/* Info */}
-                    <h3 className="font-bold text-base text-[#0A1E3F] group-hover:text-[#0A1E3F] transition-colors mb-1">
-                      {vehicle.name}
-                    </h3>
-                    <p className="text-xs text-gray-600 mb-4 flex items-center gap-1.5">
+                    <Link to={`/product/${vehicle.id}`}>
+                      <h3 className="font-bold text-base text-[#0A1E3F] hover:text-[#152B52] transition-colors mb-1">
+                        {vehicle.name}
+                      </h3>
+                    </Link>
+                    <p className="text-xs text-gray-600 mb-3 flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#0A1E3F]"></span>
                       Fitment: {vehicle.slot}
                     </p>
+
+                    {/* View Details Link */}
+                    <Link 
+                      to={`/product/${vehicle.id}`} 
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#0A1E3F] hover:text-[#152B52] transition-colors uppercase tracking-wider mb-2"
+                    >
+                      <span>View Cockpit Page</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
 
                   {/* Pricing & Add to Cart */}
@@ -186,29 +211,39 @@ export default function VehicleSpecific() {
                       </span>
                     </div>
 
-                    <button
-                      onClick={() => handleAddToCart(vehicle.id)}
-                      disabled={isSoldOut(vehicle.id)}
-                      className={`w-full font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 ${
-                        isSoldOut(vehicle.id)
-                          ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
-                          : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
-                      }`}
-                    >
-                      {isSoldOut(vehicle.id) ? (
-                        <span>Sold Out</span>
-                      ) : isAdded ? (
-                        <>
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                          <span>Added to Cart!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Zap className="w-3.5 h-3.5" />
-                          <span>Add to Cart</span>
-                        </>
-                      )}
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => handleAddToCart(vehicle)}
+                        disabled={isSoldOut(vehicle.id)}
+                        className={`flex-1 font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 ${
+                          isSoldOut(vehicle.id)
+                            ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
+                            : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
+                        }`}
+                      >
+                        {isSoldOut(vehicle.id) ? (
+                          <span>Sold Out</span>
+                        ) : isAdded ? (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            <span>Added!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Zap className="w-3.5 h-3.5" />
+                            <span>Add to Cart</span>
+                          </>
+                        )}
+                      </button>
+
+                      <Link
+                        to={`/product/${vehicle.id}`}
+                        className="px-4 py-3 bg-[#EAE4D5] hover:bg-[#0A1E3F] text-[#0A1E3F] hover:text-[#F4F0E6] font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center"
+                        title="View details"
+                      >
+                        Details
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );

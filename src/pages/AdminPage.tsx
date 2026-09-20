@@ -422,7 +422,7 @@ export default function AdminPage() {
                 <div className="text-3xl font-['Anton'] text-[#0A1E3F] tracking-wide">
                   {analyticsStats?.conversionRate || 0}%
                 </div>
-                <p className="text-[10px] text-gray-500 mt-1">Visitor ➔ Order Conversion</p>
+                <p className="text-[10px] text-gray-500 mt-1">Visitor to Order Conversion</p>
               </div>
             </div>
 
@@ -650,7 +650,7 @@ export default function AdminPage() {
                               )}
                               {evt.eventType === 'add_to_cart' && (
                                 <p className="font-semibold text-amber-800">
-                                  Added to Cart: <strong className="text-[#0A1E3F]">{evt.productName || 'Product'}</strong> (₹{evt.price}) {evt.source === 'assistant' ? '⚡ via Assistant' : ''}
+                                  Added to Cart: <strong className="text-[#0A1E3F]">{evt.productName || 'Product'}</strong> (₹{evt.price}) {evt.source === 'assistant' ? '(via Assistant)' : ''}
                                 </p>
                               )}
                               {evt.eventType === 'combo_upgrade_click' && (
