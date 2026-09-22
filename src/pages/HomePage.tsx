@@ -13,7 +13,9 @@ import RotatingHeadline from '../components/RotatingHeadline';
 
 export default function HomePage() {
   const [isMarqueePaused, setIsMarqueePaused] = useState(false);
+  const [isCategoryMarqueePaused, setIsCategoryMarqueePaused] = useState(false);
   const marqueeContainerRef = useRef<HTMLDivElement>(null);
+  const categoryMarqueeContainerRef = useRef<HTMLDivElement>(null);
 
   const handleScrollMarquee = (direction: 'left' | 'right') => {
     if (marqueeContainerRef.current) {
@@ -21,6 +23,88 @@ export default function HomePage() {
       marqueeContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
+
+  const handleScrollCategoryMarquee = (direction: 'left' | 'right') => {
+    if (categoryMarqueeContainerRef.current) {
+      const scrollAmount = direction === 'left' ? -340 : 340;
+      categoryMarqueeContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const categoriesList = [
+    {
+      id: 'vehicle-specific',
+      title: 'Vehicle Specific Docks',
+      tag: '100% OEM Fit',
+      desc: 'Precision molded for Fronx, Baleno, Swift, Ertiga, 3XO & more.',
+      price: '₹2,098',
+      originalPrice: '₹3,299',
+      badge: 'OEM Direct',
+      img: airVentImg,
+      link: '/category/vehicle-specific',
+      cta: 'Find My Car'
+    },
+    {
+      id: 'home-office',
+      title: 'Home & Office Combo',
+      tag: 'Workstation',
+      desc: 'Weighted metal desk stand + magnetic flush wall plate.',
+      price: 'From ₹2,247',
+      originalPrice: '₹2,697',
+      badge: 'Save ₹450',
+      img: tableStandImg,
+      link: '/category/home-office',
+      cta: 'Explore Desk'
+    },
+    {
+      id: 'all-in-one',
+      title: 'All In One Combo',
+      tag: 'Flagship Bundle',
+      desc: 'Car cockpit + desk workstation + bedside wall dock kit.',
+      price: 'From ₹2,594',
+      originalPrice: '₹3,694',
+      badge: 'Save ₹1,100',
+      img: combinedImg,
+      link: '/category/all-in-one',
+      cta: 'Explore Combo'
+    },
+    {
+      id: 'car-combo',
+      title: 'Car Combo Kit',
+      tag: 'Cockpit Kit',
+      desc: 'Vent clip + console tray pad + rear headrest bracket.',
+      price: 'From ₹2,346',
+      originalPrice: '₹2,996',
+      badge: 'Save ₹650',
+      img: centerMountImg,
+      link: '/category/car-combo',
+      cta: 'Explore Kit'
+    },
+    {
+      id: 'individual',
+      title: 'Universal Charging Pad',
+      tag: 'Universal Pad',
+      desc: 'High-grip anti-slip 25W wireless charging pad for any car.',
+      price: '₹2,098',
+      originalPrice: '₹2,999',
+      badge: 'Universal',
+      img: centerMountImg,
+      link: '/category/individual',
+      cta: 'Explore Pad'
+    },
+    {
+      id: 'stand-alone',
+      title: 'Stand-Alone Mounts',
+      tag: 'Modular Bases',
+      desc: 'Individual vent clips, desk stands & magnetic wall bases.',
+      price: 'From ₹299',
+      originalPrice: '₹599',
+      badge: 'Accessories',
+      img: wallStandImg,
+      link: '/category/stand-alone',
+      cta: 'Explore Mounts'
+    }
+  ];
 
   const smartCombos = [
     {
@@ -128,27 +212,14 @@ export default function HomePage() {
                 layout="stacked"
                 align="left"
                 staticText="Designed to"
+                words={['Charge', 'Mount', 'Drive', 'Adapt', 'Align', 'Connect', 'Power']}
                 staticTextClassName="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[1.0] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight"
                 dynamicTextClassName="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[1.0] font-['Anton'] tracking-tight"
                 gradientClassName="text-[#0A1E3F]"
               />
             </div>
-
-            {/* Small Images Row */}
-            <div className="flex gap-4 lg:gap-6 max-w-[420px] mb-8">
-              <div className="rounded-none border-2 border-[#0A1E3F]/40 p-0 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
-                <div className="w-full h-full overflow-hidden">
-                  <img src={tableStandImg} alt="Workspace mounting" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
-                </div>
-              </div>
-              <div className="rounded-none border-2 border-[#0A1E3F]/40 p-0 bg-[#FAF7F0] aspect-[4/3] w-1/2 shadow-lg relative group overflow-hidden">
-                <div className="w-full h-full overflow-hidden">
-                  <img src={airVentImg} alt="Car mounting" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" />
-                </div>
-              </div>
-            </div>
             
-            {/* Action button - brought down */}
+            {/* Action button */}
             <div className="mt-2 lg:mt-4">
               <Link to="/categories" className="inline-flex items-center justify-center bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest px-10 py-4 rounded-none shadow-xl shadow-[#0A1E3F]/20 transition-all hover:-translate-y-1">
                 Explore Categories
@@ -165,6 +236,7 @@ export default function HomePage() {
                 layout="stacked"
                 align="center"
                 staticText="Designed to"
+                words={['Charge', 'Mount', 'Drive', 'Adapt', 'Align', 'Connect', 'Power']}
                 staticTextClassName="text-[12.5vw] xs:text-[46px] leading-[1.05] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase"
                 dynamicTextClassName="text-[12.5vw] xs:text-[46px] leading-[1.05] font-['Anton'] tracking-tight"
                 gradientClassName="text-[#0A1E3F]"
@@ -181,7 +253,7 @@ export default function HomePage() {
               className="w-[88%] sm:w-[78%] md:w-[95%] lg:w-[90%] xl:w-[82%] max-w-[360px] sm:max-w-[440px] md:max-w-none max-h-[44vh] sm:max-h-[50vh] md:max-h-[540px] lg:max-h-[600px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] md:drop-shadow-[-30px_30px_60px_rgba(0,0,0,0.8)] transform -rotate-[8deg] md:-rotate-[12deg] pointer-events-none my-2 md:my-0" 
             />
             
-            {/* Mobile-Only Subtitle and Button - brought down with proper spacing */}
+            {/* Mobile-Only Subtitle and Button */}
             <div className="md:hidden flex flex-col items-center text-center mt-6 sm:mt-8 z-30">
               <Link
                 to="/categories"
@@ -195,460 +267,138 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* Integrated Solutions Section */}
-      <section className="bg-[#F4F0E6] text-[#0A1E3F] w-full py-16 md:py-24 px-4 sm:px-6 lg:px-10">
-        <div className="max-w-[1400px] mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-10 md:gap-16">
-          {/* Left Content */}
-          <div className="flex-1 space-y-8 md:space-y-12 max-w-2xl w-full">
-            <h2 className="text-3xl md:text-[40px] leading-tight font-medium tracking-tight text-[#0A1E3F]">
-              Integrated Solutions for <span className="text-[#0A1E3F]">Every Space</span>
+      {/* Shop By Categories Section - Horizontal Glide Theme */}
+      <section className="bg-[#EBE5D9] w-full py-16 md:py-24 border-t border-[#0A1E3F]/20 relative overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-10">
+          {/* Header */}
+          <div className="text-center space-y-3 mb-8 md:mb-12 flex flex-col items-center">
+            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/25 px-4 py-2 rounded-none backdrop-blur-sm inline-block shadow-sm">
+              EXPLORE OUR ECOSYSTEM
+            </span>
+            <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mt-2">
+              Shop By <span className="text-[#0A1E3F] relative inline-block">
+                Categories
+                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F]/40 to-transparent" />
+              </span>
             </h2>
-            
-            <div className="grid grid-cols-2 gap-x-4 sm:gap-x-12 gap-y-6 sm:gap-y-10">
-              {/* Feature 1 */}
-              <div className="space-y-3 sm:space-y-4 border-2 border-[#0A1E3F]/40 hover:border-[#0A1E3F] p-4 sm:p-5 rounded-none bg-[#FAF7F0] shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(10,30,63,0.1)] group">
-                <div className="w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300">
-                  <Smartphone className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] stroke-[2]" />
-                </div>
-                <h3 className="text-sm sm:text-[18px] font-semibold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">On-Desk Adaptability</h3>
-                <p className="text-gray-600 leading-relaxed text-xs sm:text-[15px]">
-                  From a simple phone stand to a full workstation, the desk base adapts to your needs.
-                </p>
+            <p className="text-[#1A2C4F] text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium">
+              From modular all-in-one kits to vehicle-specific molded docks and workstation stands.
+            </p>
+
+            {/* Interactive Control Pill */}
+            <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 pt-2">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] shadow-sm text-[11px] font-semibold text-[#0A1E3F]">
+                <span className={`w-2 h-2 rounded-full ${isCategoryMarqueePaused ? 'bg-amber-500' : 'bg-[#0A1E3F] animate-pulse'}`} />
+                <span>{isCategoryMarqueePaused ? 'Motion Paused' : 'Continuous Horizontal Glide'}</span>
+                <span className="text-gray-500 font-normal hidden sm:inline">• Hover cards to pause</span>
               </div>
 
-              {/* Feature 2 */}
-              <div className="space-y-3 sm:space-y-4 border-2 border-[#0A1E3F]/40 hover:border-[#0A1E3F] p-4 sm:p-5 rounded-none bg-[#FAF7F0] shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(10,30,63,0.1)] group">
-                <div className="w-[36px] h-[36px] sm:w-[42px] sm:h-[42px] rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300">
-                  <Car className="w-[18px] h-[18px] sm:w-[22px] sm:h-[22px] stroke-[2]" />
-                </div>
-                <h3 className="text-sm sm:text-[18px] font-semibold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">Seamless Car &amp; Wall Integration</h3>
-                <p className="text-gray-600 leading-relaxed text-xs sm:text-[15px]">
-                  Easily transition from desk to car with specialized vents and wall mounts.
-                </p>
-              </div>
-            </div>
-          </div>
+              {/* Pause / Play Toggle */}
+              <button
+                onClick={() => setIsCategoryMarqueePaused(prev => !prev)}
+                className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
+                title={isCategoryMarqueePaused ? "Resume Motion" : "Pause Motion"}
+                aria-label={isCategoryMarqueePaused ? "Resume Motion" : "Pause Motion"}
+              >
+                {isCategoryMarqueePaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5 fill-current" />}
+              </button>
 
-          {/* Right Content - Image */}
-          <div className="flex-1 w-full flex justify-end">
-            <div className="w-full max-w-[650px] rounded-none overflow-hidden bg-[#111] aspect-[16/9] lg:aspect-[1.8] relative shadow-2xl border-2 border-[#0A1E3F]/40">
-               <img 
-                 src={combinedImg} 
-                 alt="Combined solutions" 
-                 loading="lazy"
-                 decoding="async"
-                 className="w-full h-full object-cover"
-               />
+              {/* Scroll Controls */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleScrollCategoryMarquee('left')}
+                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
+                  title="Scroll Left"
+                  aria-label="Scroll Left"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => handleScrollCategoryMarquee('right')}
+                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
+                  title="Scroll Right"
+                  aria-label="Scroll Right"
+                >
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <Link
+                to="/categories"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-none bg-[#0A1E3F] text-[#FAF7F0] hover:bg-[#152B52] transition-colors text-[11px] font-bold uppercase tracking-wider"
+              >
+                <span>All Categories</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Configurator Section */}
-      <section className="bg-[#F4F0E6] w-full py-24 px-4 md:px-10 relative overflow-hidden border-t border-[#111]">
-        <div className="max-w-[1400px] mx-auto">
-          {/* Header */}
-          <div className="text-center space-y-3 mb-16 relative z-20">
-            <h2 className="text-4xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
-              THE <span className="text-[#0A1E3F]">QICDOCK</span> CONFIGURATOR
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base font-medium">
-              High-resolution charging module, or dynamically changes on click
-            </p>
-          </div>
+        {/* Horizontal Moving Marquee Track for Categories */}
+        <div className="relative w-full overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-r from-[#EBE5D9] to-transparent z-20 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-l from-[#EBE5D9] to-transparent z-20 pointer-events-none" />
 
-          {/* Main Stage */}
-          <div className="relative w-full max-w-[1000px] mx-auto mt-6 md:mt-16">
-            
-            {/* MOBILE VIEW ONLY: The Dynamic Bento Box (Asymmetric Grid) */}
-            <div className="block md:hidden">
-              <div className="grid grid-cols-2 gap-3">
-                
-                {/* 1. HERO BENTO CARD: 25W Qi2 Core Engine (Span 2 Cols) */}
-                <div className="col-span-2 bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-none p-4 shadow-md relative overflow-hidden">
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase bg-[#0A1E3F] text-[#F4F0E6]">
-                      <Sparkles className="w-3 h-3 text-[#F4F0E6]" />
-                      25W Core Engine
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 border border-emerald-200">
-                      <Zap className="w-3 h-3 text-emerald-600" />
-                      Qi2 Fast Wireless
-                    </span>
-                  </div>
+          <div 
+            ref={categoryMarqueeContainerRef}
+            className="overflow-x-auto no-scrollbar py-4 px-4 sm:px-8 cursor-grab active:cursor-grabbing"
+          >
+            <div 
+              className={`flex gap-5 sm:gap-6 w-max ${isCategoryMarqueePaused ? '' : 'animate-combo-marquee'}`}
+              onMouseEnter={() => setIsCategoryMarqueePaused(true)}
+              onMouseLeave={() => setIsCategoryMarqueePaused(false)}
+            >
+              {[...categoriesList, ...categoriesList].map((category, idx) => (
+                <div
+                  key={`${category.id}-${idx}`}
+                  className="w-[290px] sm:w-[320px] md:w-[335px] shrink-0 bg-[#FAF7F0] rounded-none p-4 md:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-2 group shadow-sm hover:shadow-[0_20px_45px_rgba(10,30,63,0.22)] border border-[#D6CDB8] hover:border-[#0A1E3F]"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-24 h-24 flex-shrink-0 relative overflow-hidden flex items-center justify-center">
-                      <img 
-                        src={centerMountTransparentImg} 
-                        alt="Qicdock Core Module" 
-                        loading="lazy" 
-                        decoding="async" 
-                        className="w-full h-full object-contain relative z-10 drop-shadow-md"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-['Anton'] text-lg text-[#0A1E3F] uppercase tracking-wide leading-tight">
-                        ONE CORE. EVERY DOCK.
+                  <div className="relative z-10 flex flex-col">
+                    <div className="mb-3">
+                      <span className="text-[9px] font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-none mb-1.5 inline-block bg-[#0A1E3F]/10 border border-[#0A1E3F]/20 text-[#0A1E3F]">
+                        {category.tag}
+                      </span>
+                      <h3 className="text-base sm:text-lg font-bold text-[#0A1E3F] leading-snug group-hover:text-[#0A1E3F] transition-colors">
+                        {category.title}
                       </h3>
-                      <p className="text-[11px] text-gray-600 mt-1 leading-snug">
-                        Hot-swappable magnetic puck clicks seamlessly into car vents, console trays, desk stands, and wall brackets.
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 mt-2">
-                        <span className="text-[9px] font-bold px-2 py-0.5 bg-[#EBE5D9] text-[#0A1E3F]">
-                          Neodymium Lock
-                        </span>
-                        <span className="text-[9px] font-bold px-2 py-0.5 bg-[#EBE5D9] text-[#0A1E3F]">
-                          360° Rotate
-                        </span>
-                      </div>
+                      <p className="text-[#1A2C4F] text-[11px] font-medium line-clamp-2 mt-0.5">{category.desc}</p>
                     </div>
+
+                    <div className="w-full h-48 bg-transparent rounded-none border border-[#E2DAC8] mb-3.5 flex items-center justify-center overflow-hidden p-0 relative group-hover:border-[#0A1E3F]/40 transition-colors">
+                      <img 
+                        src={category.img} 
+                        alt={category.title} 
+                        loading="lazy" 
+                        decoding="async" 
+                        className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-auto pt-3 border-t border-[#E2DAC8] relative z-10">
+                    <div className="flex items-baseline justify-between mb-2.5">
+                      <div>
+                        {category.originalPrice && (
+                          <span className="text-gray-500 line-through text-xs block font-medium">{category.originalPrice}</span>
+                        )}
+                        <span className="text-xl sm:text-2xl font-['Anton'] text-[#0A1E3F] tracking-wide leading-none">{category.price}</span>
+                      </div>
+                      <span className="bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#15803d] text-[9px] font-bold px-2 py-1 rounded-none uppercase tracking-wider">
+                        {category.badge}
+                      </span>
+                    </div>
+                    <Link 
+                      to={category.link} 
+                      className="w-full bg-[#0A1E3F] hover:bg-[#152B52] active:scale-98 text-[#FAF7F0] transition-all duration-200 py-2.5 rounded-none font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-1.5 shadow-md text-center group-hover:shadow-[0_4px_16px_rgba(10,30,63,0.35)]"
+                    >
+                      <span>{category.cta}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
                 </div>
-
-                {/* 2. FLAGSHIP BENTO CARD: All in One Combo (Span 2 Cols) */}
-                <Link 
-                  to="/category/all-in-one" 
-                  className="col-span-2 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm hover:shadow-md transition-all active:scale-[0.99] group overflow-hidden flex flex-col"
-                >
-                  <div className="w-full h-44 sm:h-48 relative overflow-hidden bg-transparent">
-                    <img 
-                      src={combinedImg} 
-                      alt="All in one combo" 
-                      loading="lazy" 
-                      decoding="async" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                    />
-                    <div className="absolute top-2.5 left-2.5 flex items-center gap-2">
-                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-amber-100 text-amber-900 border border-amber-300">
-                        Most Popular
-                      </span>
-                      <span className="text-[10px] font-bold text-white bg-emerald-700 px-2 py-0.5">Save ₹1,100</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h4 className="font-['Anton'] text-lg text-[#0A1E3F] uppercase tracking-wide leading-tight group-hover:text-[#152B52] transition-colors">
-                      ALL IN ONE COMBO
-                    </h4>
-                    <p className="text-[11px] text-gray-600 mt-0.5 line-clamp-1">
-                      Car Cockpit + Desk Stand + Bedside Wall Kit
-                    </p>
-                    <div className="flex items-baseline gap-2 mt-2">
-                      <span className="text-base font-['Anton'] text-[#0A1E3F]">From ₹2,594</span>
-                      <span className="text-xs text-gray-400 line-through">₹3,694</span>
-                      <span className="ml-auto text-xs font-bold text-[#0A1E3F] inline-flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-                        Configure <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-
-                {/* 3. VERTICAL BENTO CARD: Car Combo (Span 1 Col) */}
-                <Link 
-                  to="/category/car-combo" 
-                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
-                >
-                  <div>
-                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
-                      <img 
-                        src={centerMountImg} 
-                        alt="Car combo" 
-                        loading="lazy" 
-                        decoding="async" 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                      />
-                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
-                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-blue-900 border border-blue-200">
-                          Cockpit
-                        </span>
-                        <Car className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
-                      </div>
-                    </div>
-                    <div className="p-3">
-                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
-                        Car Combo
-                      </h4>
-                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
-                        Vent + Headrest + Console
-                      </p>
-                    </div>
-                  </div>
-                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
-                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">From ₹2,346</span>
-                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
-                  </div>
-                </Link>
-
-                {/* 4. VERTICAL BENTO CARD: Home & Office (Span 1 Col) */}
-                <Link 
-                  to="/category/home-office" 
-                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
-                >
-                  <div>
-                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
-                      <img 
-                        src={tableStandImg} 
-                        alt="Home and office Combo" 
-                        loading="lazy" 
-                        decoding="async" 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                      />
-                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
-                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-purple-900 border border-purple-200">
-                          Workstation
-                        </span>
-                        <Home className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
-                      </div>
-                    </div>
-                    <div className="p-3">
-                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
-                        Home & Office
-                      </h4>
-                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
-                        Desk Stand + Wall Dock
-                      </p>
-                    </div>
-                  </div>
-                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
-                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">From ₹2,247</span>
-                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
-                  </div>
-                </Link>
-
-                {/* 5. VERTICAL BENTO CARD: Vehicle Specific (Span 1 Col) */}
-                <Link 
-                  to="/category/vehicle-specific" 
-                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
-                >
-                  <div>
-                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
-                      <img 
-                        src={airVentImg} 
-                        alt="Vehicle Specific" 
-                        loading="lazy" 
-                        decoding="async" 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                      />
-                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
-                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-emerald-900 border border-emerald-200">
-                          OEM Fit
-                        </span>
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
-                      </div>
-                    </div>
-                    <div className="p-3">
-                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
-                        Vehicle Specific
-                      </h4>
-                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
-                        Fronx, Baleno, Swift, 3XO...
-                      </p>
-                    </div>
-                  </div>
-                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
-                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">₹2,098 Flat</span>
-                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
-                  </div>
-                </Link>
-
-                {/* 6. VERTICAL BENTO CARD: Universal Charging Pad (Span 1 Col) */}
-                <Link 
-                  to="/category/individual" 
-                  className="col-span-1 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex flex-col justify-between group transition-all active:scale-[0.98] overflow-hidden"
-                >
-                  <div>
-                    <div className="w-full h-36 relative overflow-hidden bg-transparent">
-                      <img 
-                        src={centerMountImg} 
-                        alt="Universal car charging pad" 
-                        loading="lazy" 
-                        decoding="async" 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                      />
-                      <div className="absolute top-2 left-2 flex items-center justify-between w-[calc(100%-16px)]">
-                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/95 text-[#0A1E3F] border border-[#0A1E3F]/20">
-                          Any Car
-                        </span>
-                        <BatteryCharging className="w-3.5 h-3.5 text-[#0A1E3F] bg-white/95 p-0.5" />
-                      </div>
-                    </div>
-                    <div className="p-3">
-                      <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors leading-tight">
-                        Universal Pad
-                      </h4>
-                      <p className="text-[10px] text-gray-500 mt-0.5 line-clamp-1">
-                        Grip Dash & Center Console
-                      </p>
-                    </div>
-                  </div>
-                  <div className="px-3 pb-3 pt-1 border-t border-[#E2DAC8] flex items-baseline justify-between">
-                    <span className="font-['Anton'] text-sm text-[#0A1E3F]">₹2,098</span>
-                    <ArrowRight className="w-3 h-3 text-[#0A1E3F]" />
-                  </div>
-                </Link>
-
-                {/* 7. FOOTER BENTO STRIP: Stand-Alone Mounts & Brackets (Span 2 Cols) */}
-                <Link 
-                  to="/category/stand-alone" 
-                  className="col-span-2 bg-[#FAF7F0] border-2 border-[#0A1E3F]/40 active:border-[#0A1E3F] rounded-none shadow-sm flex items-center justify-between group transition-all active:scale-[0.99] overflow-hidden"
-                >
-                  <div className="w-24 h-24 flex-shrink-0 relative overflow-hidden bg-transparent">
-                    <img 
-                      src={wallStandImg} 
-                      alt="Modular mounts" 
-                      loading="lazy" 
-                      decoding="async" 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0 p-3">
-                    <div className="flex items-center gap-1.5 mb-0.5">
-                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-[#EBE5D9] text-[#0A1E3F]">
-                        Modular Mounts
-                      </span>
-                      <span className="text-[10px] font-bold text-gray-600">From ₹299</span>
-                    </div>
-                    <h4 className="font-bold text-xs text-[#0A1E3F] group-hover:text-[#152B52] transition-colors">
-                      Stand-Alone Brackets & Bases
-                    </h4>
-                    <p className="text-[10px] text-gray-500 truncate">
-                      Extra vent clips, desk stands & flush wall plates
-                    </p>
-                  </div>
-                  <div className="w-7 h-7 bg-[#EBE5D9] flex items-center justify-center text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#F4F0E6] transition-colors flex-shrink-0 mr-3">
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </Link>
-
-              </div>
-            </div>
-
-            {/* DESKTOP VIEW ONLY: The 3-Column Connector Stage */}
-            <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-12 items-center relative z-10">
-              
-              {/* Left Column */}
-              <div className="flex flex-col gap-6 md:gap-8 items-center md:items-end">
-                {/* 1. All in One */}
-                <Link to="/category/all-in-one" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto">
-                  <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
-                      <img src={combinedImg} alt="All in one" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                    <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
-                      <Layers className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
-                      <div className="absolute top-1/2 -translate-y-1/2 left-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-left rotate-[18deg]">
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:mr-[48px] lg:mr-[56px] group-hover:text-[#0A1E3F] transition-colors">All in one</span>
-                </Link>
-                
-                {/* 2. Car Combo */}
-                <Link to="/category/car-combo" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
-                  <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
-                      <img src={centerMountImg} alt="Car combo" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                    <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
-                      <Car className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
-                      <div className="absolute top-1/2 -translate-y-1/2 left-full w-6 md:w-12 lg:w-16 h-[1px] bg-[#555] -z-10 origin-left rotate-[-2deg]">
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:mr-[48px] lg:mr-[56px] group-hover:text-[#0A1E3F] transition-colors">Car combo</span>
-                </Link>
-
-                {/* 3. Home and office Combo */}
-                <Link to="/category/home-office" className="flex flex-col items-center md:items-end group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
-                  <div className="flex items-center gap-0 w-full sm:w-auto justify-center md:justify-end">
-                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
-                      <img src={tableStandImg} alt="Home and office Combo" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                    <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
-                      <Home className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
-                      <div className="absolute top-1/2 -translate-y-1/2 left-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-left rotate-[-20deg]">
-                        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:mr-[48px] lg:mr-[56px] group-hover:text-[#0A1E3F] transition-colors text-center max-w-[140px] md:max-w-full">Home & Office Combo</span>
-                </Link>
-              </div>
-
-              {/* Center Column */}
-              <div className="flex flex-col items-center justify-center relative py-10 md:py-0">
-                <div className="relative">
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 bg-[#0A1E3F] blur-[70px] opacity-25 rounded-full mix-blend-screen pointer-events-none"></div>
-                  <img 
-                    src={centerMountTransparentImg} 
-                    alt="Core Module" 
-                    loading="lazy" 
-                    decoding="async" 
-                    className="w-[220px] md:w-[320px] object-contain relative z-10 drop-shadow-[0_0_20px_rgba(4,217,255,0.5)]"
-                  />
-                </div>
-              </div>
-
-              {/* Right Column */}
-              <div className="flex flex-col gap-6 md:gap-8 items-center md:items-start">
-                {/* 4. Car Charger */}
-                <Link to="/category/vehicle-specific" className="flex flex-col items-center md:items-start group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
-                  <div className="flex items-center gap-0 flex-row-reverse md:flex-row w-full sm:w-auto justify-center md:justify-start">
-                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
-                      <Zap className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
-                      <div className="absolute top-1/2 -translate-y-1/2 right-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-right rotate-[-18deg]">
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
-                      </div>
-                    </div>
-                    <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
-                      <img src={airVentImg} alt="Car Charger" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  </div>
-                  <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Car Charger</span>
-                </Link>
-                
-                {/* 5. Universal car charging pad */}
-                <Link to="/category/individual" className="flex flex-col items-center md:items-start group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
-                  <div className="flex items-center gap-0 flex-row-reverse md:flex-row w-full sm:w-auto justify-center md:justify-start">
-                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
-                      <BatteryCharging className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
-                      <div className="absolute top-1/2 -translate-y-1/2 right-full w-6 md:w-12 lg:w-16 h-[1px] bg-[#555] -z-10 origin-right rotate-[2deg]">
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
-                      </div>
-                    </div>
-                    <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
-                      <img src={centerMountImg} alt="Universal car charging pad" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  </div>
-                  <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors text-center max-w-[140px] md:max-w-full">Universal Charging Pad</span>
-                </Link>
-
-                {/* 6. Only stand */}
-                <Link to="/category/stand-alone" className="flex flex-col items-center md:items-start group cursor-pointer w-full sm:w-auto mt-4 sm:mt-0">
-                  <div className="flex items-center gap-0 flex-row-reverse md:flex-row w-full sm:w-auto justify-center md:justify-start">
-                    <div className="hidden md:flex w-8 h-8 rounded-none border border-[#0A1E3F]/40 bg-[#FAF7F0] items-center justify-center text-gray-600 group-hover:text-[#0A1E3F] group-hover:border-[#0A1E3F] transition-colors relative z-20">
-                      <MonitorSmartphone className="w-4 h-4 relative z-10 bg-[#FAF7F0]" />
-                      <div className="absolute top-1/2 -translate-y-1/2 right-full w-10 md:w-16 lg:w-24 h-[1px] bg-[#555] -z-10 origin-right rotate-[20deg]">
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#555]"></div>
-                      </div>
-                    </div>
-                    <div className="hidden md:block w-4 lg:w-6 h-[1px] bg-[#555]"></div>
-                    <div className="w-[42vw] sm:w-[190px] md:w-[200px] aspect-video rounded-none border-2 border-[#0A1E3F]/40 group-hover:border-[#0A1E3F] bg-transparent shadow-lg transition-colors relative z-10 overflow-hidden">
-                      <img src={wallStandImg} alt="Only stand" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  </div>
-                  <span className="text-[13px] md:text-sm font-bold font-['Ubuntu'] text-[#0A1E3F] mt-2 md:ml-[48px] lg:ml-[56px] group-hover:text-[#0A1E3F] transition-colors">Only Stand</span>
-                </Link>
-              </div>
-              
+              ))}
             </div>
           </div>
         </div>
@@ -680,6 +430,99 @@ export default function HomePage() {
             >
               <span>Launch Car Assistant</span>
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Highlight Section */}
+      <section className="bg-[#FAF7F0] w-full py-16 md:py-20 px-4 md:px-10 border-t border-[#0A1E3F]/20">
+        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
+          <div className="space-y-4 max-w-2xl text-center lg:text-left">
+            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/25 px-3.5 py-1.5 rounded-none inline-block">
+              ABOUT QICDOCK
+            </span>
+            <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
+              PRECISION WIRELESS. <span className="text-[#0A1E3F]">ZERO CABLE CLUTTER.</span>
+            </h2>
+            <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
+              We engineer modular 25W Qi2 wireless charging systems designed to transition effortlessly between your vehicle, office workstation, and bedside. Built with aerospace-grade neodymium magnets and precision OEM molded bases.
+            </p>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0A1E3F]">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>100% Fit Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0A1E3F]">
+                <Zap className="w-4 h-4 text-[#0A1E3F]" />
+                <span>25W Qi2 Fast Wireless</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-bold text-[#0A1E3F]">
+                <CheckCircle2 className="w-4 h-4 text-[#0A1E3F]" />
+                <span>1-Year Instant Replacement</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 items-center shrink-0">
+            <Link
+              to="/about"
+              className="inline-flex items-center gap-2 bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] px-8 py-4 rounded-none font-bold uppercase tracking-widest text-xs sm:text-sm shadow-xl shadow-[#0A1E3F]/20 transition-all hover:-translate-y-0.5"
+            >
+              <span>Learn More About Us</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Integrated Solutions Section (Clean, without side image) - Positioned below About QicDock */}
+      <section className="bg-[#F4F0E6] text-[#0A1E3F] w-full py-16 md:py-20 px-4 sm:px-6 lg:px-10 border-t border-[#0A1E3F]/15">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="text-center space-y-3 mb-12 max-w-3xl mx-auto">
+            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/25 px-4 py-2 rounded-none inline-block">
+              ENGINEERED ECOSYSTEM
+            </span>
+            <h2 className="text-3xl md:text-5xl leading-tight font-['Anton'] tracking-tight text-[#0A1E3F] uppercase">
+              Integrated Solutions for <span className="text-[#0A1E3F]">Every Space</span>
+            </h2>
+            <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+              One universal 25W Qi2 charging engine designed to transition effortlessly between your vehicle cockpit, office desk, and wall.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Feature 1 */}
+            <div className="space-y-3 border-2 border-[#0A1E3F]/40 hover:border-[#0A1E3F] p-6 rounded-none bg-[#FAF7F0] shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(10,30,63,0.1)] group">
+              <div className="w-12 h-12 rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300 mb-2">
+                <Smartphone className="w-6 h-6 stroke-[2]" />
+              </div>
+              <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">On-Desk Adaptability</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                From a minimal phone stand to a full ergonomic workstation dock, the heavy aluminum base keeps your workspace wire-free.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="space-y-3 border-2 border-[#0A1E3F]/40 hover:border-[#0A1E3F] p-6 rounded-none bg-[#FAF7F0] shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(10,30,63,0.1)] group">
+              <div className="w-12 h-12 rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300 mb-2">
+                <Car className="w-6 h-6 stroke-[2]" />
+              </div>
+              <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">Seamless Automotive Fit</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                Custom molded to fit your car console cavity or secure air vents with zero vibration, zero loose wires, and plug-and-play ease.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="space-y-3 border-2 border-[#0A1E3F]/40 hover:border-[#0A1E3F] p-6 rounded-none bg-[#FAF7F0] shadow-sm transition-all duration-300 hover:shadow-[0_10px_25px_rgba(10,30,63,0.1)] group">
+              <div className="w-12 h-12 rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300 mb-2">
+                <Zap className="w-6 h-6 stroke-[2]" />
+              </div>
+              <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">25W Qi2 Thermal Architecture</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">
+                Advanced heat dissipation and magnetic auto-alignment ensure optimal charging speeds without overheating your smartphone.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -794,13 +637,13 @@ export default function HomePage() {
                       </div>
 
                       {/* Image container edge-to-edge with no padding */}
-                      <div className="h-44 sm:h-48 w-full bg-transparent rounded-none border border-[#E2DAC8] mb-3.5 flex items-center justify-center overflow-hidden p-0 relative group-hover:border-[#0A1E3F]/40 transition-colors">
+                      <div className="w-full h-48 bg-transparent rounded-none border border-[#E2DAC8] mb-3.5 flex items-center justify-center overflow-hidden p-0 relative group-hover:border-[#0A1E3F]/40 transition-colors">
                         <img 
                           src={combo.img} 
                           alt={combo.title} 
                           loading="lazy" 
                           decoding="async" 
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                          className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500" 
                         />
                       </div>
 

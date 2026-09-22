@@ -113,9 +113,9 @@ export default function CarCombo() {
           
           {/* Left Column: Automotive Gallery Showcase (5 cols) */}
           <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-28">
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-6 sm:p-8 relative overflow-hidden group">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 sm:p-8 relative overflow-hidden group">
               <div className="flex items-center justify-between mb-4">
-                <span className="px-3 py-1 rounded-full bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
+                <span className="px-3 py-1 rounded-none bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
                   <Zap className="w-3 h-3" /> Cockpit & Cabin Bundle
                 </span>
                 <span className="text-xs text-gray-600 font-medium">
@@ -124,14 +124,14 @@ export default function CarCombo() {
               </div>
 
               {/* Main Active Image */}
-              <div className="w-full h-64 sm:h-80 rounded-2xl bg-[#F4F0E6] border border-[#E2DAC8] flex items-center justify-center p-4 overflow-hidden mb-4">
+              <div className="w-full h-64 sm:h-80 rounded-none bg-[#F4F0E6] border border-[#E2DAC8] flex items-center justify-center p-0 overflow-hidden mb-4">
                 <img 
                   src={galleryImages[activeImageIndex].src} 
                   alt="Car Combo Configuration" 
                   loading="eager"
                   fetchPriority="high"
                   decoding="sync"
-                  className="max-h-full max-w-full object-contain rounded-lg drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" 
+                  className="w-full h-full object-cover rounded-none transition-all duration-300 group-hover:scale-105" 
                 />
               </div>
 
@@ -141,37 +141,37 @@ export default function CarCombo() {
                   <button
                     key={i}
                     onClick={() => setActiveImageIndex(i)}
-                    className={`h-16 rounded-xl border p-1 bg-[#F4F0E6] flex items-center justify-center overflow-hidden transition-all ${
+                    className={`h-16 rounded-none border p-0 bg-[#F4F0E6] flex items-center justify-center overflow-hidden transition-all ${
                       activeImageIndex === i 
                         ? 'border-[#0A1E3F] shadow-[0_0_12px_rgba(4,217,255,0.3)]' 
                         : 'border-[#E2DAC8] opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={img.src} alt={img.label} loading="lazy" decoding="async" className="h-full object-contain" />
+                    <img src={img.src} alt={img.label} loading="lazy" decoding="async" className="w-full h-full object-cover rounded-none" />
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Quick Specs */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-5 text-xs text-gray-600 space-y-2">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-5 text-xs text-gray-600 space-y-2">
               <div className="text-[#0A1E3F] font-bold text-xs uppercase tracking-wider mb-2">
                 AUTOMOTIVE INTERIOR SPECIFICATIONS
               </div>
               <div className="grid grid-cols-2 gap-2 text-[11px]">
-                <div className="p-2.5 rounded-lg bg-[#152B52]/[0.02]">
+                <div className="p-2.5 rounded-none bg-[#152B52]/[0.02]">
                   <span className="text-gray-600 block">Magnetic Array</span>
                   <span className="text-[#0A1E3F] font-semibold">16x N52 Neodymium</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#152B52]/[0.02]">
+                <div className="p-2.5 rounded-none bg-[#152B52]/[0.02]">
                   <span className="text-gray-600 block">Thermal Venting</span>
                   <span className="text-[#0A1E3F] font-semibold">Passive Heat Sink</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#152B52]/[0.02]">
+                <div className="p-2.5 rounded-none bg-[#152B52]/[0.02]">
                   <span className="text-gray-600 block">Input Voltage</span>
                   <span className="text-[#0A1E3F] font-semibold">9V/2A, 12V/1.67A</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[#152B52]/[0.02]">
+                <div className="p-2.5 rounded-none bg-[#152B52]/[0.02]">
                   <span className="text-gray-600 block">Warranty</span>
                   <span className="text-[#0A1E3F] font-semibold">1-Year Direct Swap</span>
                 </div>
@@ -194,9 +194,9 @@ export default function CarCombo() {
             </div>
 
             {/* Core Unit Box */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-5 sm:p-6 flex items-center justify-between">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-5 sm:p-6 flex items-center justify-between">
               <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
+                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-none bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
                   CORE MODULE INCLUDED
                 </span>
                 <h2 className="font-bold text-lg text-[#0A1E3F]">Qicdock 25W Automotive Charger</h2>
@@ -238,7 +238,7 @@ export default function CarCombo() {
                     <div
                       key={addon.id}
                       onClick={() => toggleAddon(addon.id)}
-                      className={`p-4 rounded-xl border transition-all cursor-pointer select-none flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
+                      className={`p-4 rounded-none border transition-all cursor-pointer select-none flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
                         isSelected 
                           ? 'bg-[#0A1E3F]/[0.06] border-[#0A1E3F]/70 shadow-[0_0_15px_rgba(4,217,255,0.1)]' 
                           : 'bg-[#FAF7F0] border-[#E2DAC8] hover:border-[#D6CDB8] opacity-75'
@@ -246,7 +246,7 @@ export default function CarCombo() {
                     >
                       <div className="flex items-center gap-3.5">
                         <div 
-                          className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors flex-shrink-0 ${
+                          className={`w-6 h-6 rounded-none flex items-center justify-center transition-colors flex-shrink-0 ${
                             isSelected 
                               ? 'bg-[#0A1E3F] text-[#F4F0E6]' 
                               : 'border border-[#D6CDB8] bg-transparent'
@@ -257,7 +257,7 @@ export default function CarCombo() {
                         <div>
                           <div className="flex items-center gap-2">
                             <h4 className="text-sm font-bold text-[#0A1E3F]">{addon.name}</h4>
-                            <span className="text-[10px] px-2 py-0.5 rounded bg-[#152B52]/5 text-gray-600 border border-white/10">
+                            <span className="text-[10px] px-2 py-0.5 rounded-none bg-[#152B52]/5 text-gray-600 border border-white/10">
                               {addon.location}
                             </span>
                           </div>
@@ -282,7 +282,7 @@ export default function CarCombo() {
             </div>
 
             {/* Price Box */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 relative overflow-hidden">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 relative overflow-hidden">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-6 border-b border-[#E2DAC8]">
                 <div>
                   <p className="text-gray-600 text-xs font-medium uppercase tracking-wider mb-1">
@@ -291,7 +291,7 @@ export default function CarCombo() {
                   <p className="text-gray-600 line-through text-lg font-bold">
                     ₹{totalReg.toLocaleString('en-IN')}
                   </p>
-                  <span className="inline-block mt-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  <span className="inline-block mt-1 text-[11px] font-bold text-emerald-700 bg-emerald-500/10 px-2 py-0.5 rounded-none border border-emerald-500/20">
                     Bundle Savings: ₹{totalSavings.toLocaleString('en-IN')}
                   </span>
                 </div>
@@ -312,7 +312,7 @@ export default function CarCombo() {
               <button
                 onClick={handleAddToCart}
                 disabled={comboSoldOut}
-                className={`w-full font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
+                className={`w-full font-bold text-sm uppercase tracking-widest py-4 rounded-none transition-all duration-300 flex items-center justify-center gap-2 ${
                   comboSoldOut
                     ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed shadow-none'
                     : 'bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] shadow-[0_0_25px_rgba(4,217,255,0.3)] cursor-pointer'

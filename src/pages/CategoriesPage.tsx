@@ -11,6 +11,30 @@ import combinedImg from '../assets/images/3in1 copy.webp';
 
 const categoriesData = [
   {
+    productId: "vehicle-specific",
+    badgeText: "OEM INTEGRATION",
+    badgeIcon: ShieldCheck,
+    title: "VEHICLE SPECIFIC DOCKS",
+    subtitle: "Precision Molded For Your Car",
+    description: "Custom-fit wireless charging docks engineered specifically for Fronx, Baleno, Glanza, Ertiga, Swift, and more.",
+    price: "₹2,098 Flat",
+    savings: "100% Fit Guarantee",
+    image: centerMountTransparentImg,
+    link: "/category/vehicle-specific"
+  },
+  {
+    productId: "home-office-combo",
+    badgeText: "WORKSTATION",
+    badgeIcon: MonitorSmartphone,
+    title: "HOME & OFFICE COMBO",
+    subtitle: "Desk Stand & Wall Mount",
+    description: "High-stability weighted aluminum desktop dock paired with an ultra-slim flush wall bracket for clutter-free charging.",
+    price: "From ₹2,247",
+    savings: "Save ₹450",
+    image: tableStandImg,
+    link: "/category/home-office"
+  },
+  {
     productId: "ultimate-kit",
     badgeText: "MOST POPULAR",
     badgeIcon: Layers,
@@ -35,18 +59,6 @@ const categoriesData = [
     link: "/category/car-combo"
   },
   {
-    productId: "home-office-combo",
-    badgeText: "WORKSTATION",
-    badgeIcon: MonitorSmartphone,
-    title: "HOME & OFFICE COMBO",
-    subtitle: "Desk Stand & Wall Mount",
-    description: "High-stability weighted aluminum desktop dock paired with an ultra-slim flush wall bracket for clutter-free charging.",
-    price: "From ₹2,247",
-    savings: "Save ₹450",
-    image: tableStandImg,
-    link: "/category/home-office"
-  },
-  {
     productId: "individual",
     badgeText: "MODULAR SETUPS",
     badgeIcon: Magnet,
@@ -57,18 +69,6 @@ const categoriesData = [
     savings: "Special Pricing",
     image: headrestMountImg,
     link: "/category/individual"
-  },
-  {
-    productId: "vehicle-specific",
-    badgeText: "OEM INTEGRATION",
-    badgeIcon: ShieldCheck,
-    title: "VEHICLE SPECIFIC DOCKS",
-    subtitle: "Precision Molded For Your Car",
-    description: "Custom-fit wireless charging docks engineered specifically for Fronx, Baleno, Glanza, Ertiga, Swift, and more.",
-    price: "₹2,098 Flat",
-    savings: "100% Fit Guarantee",
-    image: centerMountTransparentImg,
-    link: "/category/vehicle-specific"
   },
   {
     productId: "stand-alone",

@@ -23,13 +23,13 @@ export interface RotatingHeadlineProps {
 }
 
 const DEFAULT_WORDS = [
+  'Charge',
+  'Mount',
+  'Drive',
   'Adapt',
+  'Align',
   'Connect',
   'Power',
-  'Mount',
-  'Dock',
-  'Charge',
-  'Go',
 ];
 
 export default function RotatingHeadline({

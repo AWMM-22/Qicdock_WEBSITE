@@ -129,7 +129,7 @@ export default function VehicleSpecific() {
 
         {/* Vehicle Cards Grid */}
         {filteredVehicles.length === 0 ? (
-          <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-12 text-center my-8">
+          <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-12 text-center my-8">
             <Car className="w-12 h-12 text-[#0A1E3F] mx-auto mb-4 opacity-70" />
             <h3 className="text-xl font-bold text-[#0A1E3F] mb-2 uppercase">No exact match found</h3>
             <p className="text-gray-600 text-sm max-w-md mx-auto mb-6">
@@ -137,7 +137,7 @@ export default function VehicleSpecific() {
             </p>
             <button
               onClick={() => { setSearchQuery(''); setSelectedBrand('All'); }}
-              className="px-6 py-2.5 rounded-xl bg-[#EBE5D9] border border-[#D6CDB8] text-xs font-bold uppercase tracking-wider text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#F4F0E6] transition-all"
+              className="px-6 py-2.5 rounded-none bg-[#EBE5D9] border border-[#D6CDB8] text-xs font-bold uppercase tracking-wider text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#F4F0E6] transition-all"
             >
               Reset Filters
             </button>
@@ -149,12 +149,12 @@ export default function VehicleSpecific() {
               return (
                 <div
                   key={vehicle.id}
-                  className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 hover:border-[#0A1E3F]/70 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(4,217,255,0.1)]"
+                  className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 hover:border-[#0A1E3F]/70 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(4,217,255,0.1)]"
                 >
                   <div>
                     {/* Badge */}
                     <div className="flex items-center justify-between gap-2 mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-none bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
                         {vehicle.badge}
                       </span>
                       <span className="text-[11px] font-semibold text-gray-600">
@@ -165,14 +165,14 @@ export default function VehicleSpecific() {
                     {/* Image Stage - Clickable to Product Page */}
                     <Link 
                       to={`/product/${vehicle.id}`} 
-                      className="block h-44 bg-[#F4F0E6] rounded-xl border border-[#E2DAC8] p-2 flex items-center justify-center mb-5 overflow-hidden group-hover:border-[#0A1E3F]/40"
+                      className="block w-full h-48 bg-[#F4F0E6] rounded-none border border-[#E2DAC8] p-0 flex items-center justify-center mb-5 overflow-hidden group-hover:border-[#0A1E3F]/40"
                     >
                       <img
                         src={vehicle.image}
                         alt={vehicle.name}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
+                        className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                       />
                     </Link>
 
@@ -183,7 +183,7 @@ export default function VehicleSpecific() {
                       </h3>
                     </Link>
                     <p className="text-xs text-gray-600 mb-3 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#0A1E3F]"></span>
+                      <span className="w-1.5 h-1.5 bg-[#0A1E3F]"></span>
                       Fitment: {vehicle.slot}
                     </p>
 
@@ -215,7 +215,7 @@ export default function VehicleSpecific() {
                       <button
                         onClick={() => handleAddToCart(vehicle)}
                         disabled={isSoldOut(vehicle.id)}
-                        className={`flex-1 font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 ${
+                        className={`flex-1 font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-2 ${
                           isSoldOut(vehicle.id)
                             ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
                             : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
@@ -238,7 +238,7 @@ export default function VehicleSpecific() {
 
                       <Link
                         to={`/product/${vehicle.id}`}
-                        className="px-4 py-3 bg-[#EAE4D5] hover:bg-[#0A1E3F] text-[#0A1E3F] hover:text-[#F4F0E6] font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center"
+                        className="px-4 py-3 bg-[#EAE4D5] hover:bg-[#0A1E3F] text-[#0A1E3F] hover:text-[#F4F0E6] font-bold text-xs uppercase tracking-wider rounded-none transition-all flex items-center justify-center"
                         title="View details"
                       >
                         Details

@@ -79,10 +79,10 @@ export default function Header() {
   ];
 
   const categoryQuickLinks = [
+    { name: 'Vehicle-Specific Docks', path: '/category/vehicle-specific', tag: 'OEM Fit' },
+    { name: 'Home & Office Combo', path: '/category/home-office', tag: 'Desk & Wall' },
     { name: 'All-In-One Combo', path: '/category/all-in-one', tag: 'Best Value' },
     { name: 'Car Combo Bundle', path: '/category/car-combo', tag: 'Automotive' },
-    { name: 'Home & Office Combo', path: '/category/home-office', tag: 'Desk & Wall' },
-    { name: 'Vehicle-Specific Docks', path: '/category/vehicle-specific', tag: 'OEM Fit' },
     { name: 'Individual Setups', path: '/category/individual', tag: 'Modular' },
     { name: 'Stand-Alone Bases', path: '/category/stand-alone', tag: 'Mounts' },
   ];

@@ -97,25 +97,25 @@ export default function HomeOfficeCombo() {
           
           {/* Visual Showcase (5 cols) */}
           <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-28">
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-6 sm:p-8 relative overflow-hidden group">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 sm:p-8 relative overflow-hidden group">
               <div className="flex items-center justify-between mb-4">
-                <span className="px-3 py-1 rounded-full bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
+                <span className="px-3 py-1 rounded-none bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
                   <MonitorSmartphone className="w-3 h-3" /> Desk & Wall Combo
                 </span>
-                <span className="text-xs text-emerald-400 font-bold">
+                <span className="text-xs text-emerald-600 font-bold">
                   Save ₹{totalSavings}
                 </span>
               </div>
 
               {/* Main Image */}
-              <div className="w-full h-64 sm:h-80 rounded-2xl bg-[#F4F0E6] border border-[#E2DAC8] flex items-center justify-center p-6 overflow-hidden mb-4">
+              <div className="w-full h-64 sm:h-80 rounded-none bg-[#F4F0E6] border border-[#E2DAC8] flex items-center justify-center p-0 overflow-hidden mb-4">
                 <img 
                   src={activeView === 'table' ? tableStandImg : wallStandImg} 
                   alt="Home and Office Combo" 
                   loading="eager"
                   fetchPriority="high"
                   decoding="sync"
-                  className="max-h-full max-w-full object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 group-hover:scale-105" 
+                  className="w-full h-full object-cover rounded-none transition-all duration-300 group-hover:scale-105" 
                 />
               </div>
 
@@ -123,7 +123,7 @@ export default function HomeOfficeCombo() {
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setActiveView('table')}
-                  className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all ${
+                  className={`py-2 px-3 rounded-none border text-xs font-bold transition-all ${
                     activeView === 'table'
                       ? 'border-[#0A1E3F] bg-[#0A1E3F]/10 text-[#0A1E3F]'
                       : 'border-[#E2DAC8] bg-[#F4F0E6] text-gray-600 hover:text-[#0A1E3F]'
@@ -133,7 +133,7 @@ export default function HomeOfficeCombo() {
                 </button>
                 <button
                   onClick={() => setActiveView('wall')}
-                  className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all ${
+                  className={`py-2 px-3 rounded-none border text-xs font-bold transition-all ${
                     activeView === 'wall'
                       ? 'border-[#0A1E3F] bg-[#0A1E3F]/10 text-[#0A1E3F]'
                       : 'border-[#E2DAC8] bg-[#F4F0E6] text-gray-600 hover:text-[#0A1E3F]'
@@ -144,7 +144,7 @@ export default function HomeOfficeCombo() {
               </div>
             </div>
 
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-5 text-xs text-gray-600 space-y-2">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-5 text-xs text-gray-600 space-y-2">
               <div className="text-[#0A1E3F] font-bold text-xs uppercase tracking-wider mb-2">
                 WORKBENCH & BEDROOM HIGHLIGHTS
               </div>
@@ -180,9 +180,9 @@ export default function HomeOfficeCombo() {
             </div>
 
             {/* Core Unit */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-4 sm:p-5 flex items-center justify-between">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-4 sm:p-5 flex items-center justify-between">
               <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
+                <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-none bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
                   CORE MODULE INCLUDED
                 </span>
                 <h2 className="font-bold text-base text-[#0A1E3F]">25W Qi2 Charger</h2>
@@ -215,26 +215,26 @@ export default function HomeOfficeCombo() {
                   return (
                     <div
                       key={addon.id}
-                      className={`flex items-center gap-4 p-3 rounded-xl border transition-all ${
+                      className={`flex items-center gap-4 p-3 rounded-none border transition-all ${
                         isSelected 
                           ? 'bg-[#E2DAC8] border-[#D6CDB8]' 
                           : 'bg-[#FAF7F0] border-[#E2DAC8] opacity-70'
                       }`}
                     >
-                      <div className="w-16 h-16 rounded-lg bg-[#EBE5D9] border border-[#E2DAC8] p-2 flex shrink-0">
-                         <img src={addon.image} alt={addon.name} loading="lazy" decoding="async" className="w-full h-full object-contain" />
+                      <div className="w-16 h-16 rounded-none bg-[#EBE5D9] border border-[#E2DAC8] p-0 flex shrink-0 overflow-hidden">
+                         <img src={addon.image} alt={addon.name} loading="lazy" decoding="async" className="w-full h-full object-cover rounded-none" />
                       </div>
                       <div className="flex-1">
                          <h4 className="text-sm font-bold text-[#0A1E3F] leading-tight">{addon.name}</h4>
                          <p className="text-[11px] text-gray-600 leading-tight mt-1 line-clamp-1">{addon.description}</p>
                          <div className="flex items-center gap-2 mt-1">
-                           <span className={`text-[12px] font-bold ${isSelected ? 'text-[#0A1E3F]' : 'text-gray-600'}`}>+₹{addon.add}</span>
-                           <span className="text-[10px] text-gray-600 line-through">₹{addon.reg}</span>
+                            <span className={`text-[12px] font-bold ${isSelected ? 'text-[#0A1E3F]' : 'text-gray-600'}`}>+₹{addon.add}</span>
+                            <span className="text-[10px] text-gray-600 line-through">₹{addon.reg}</span>
                          </div>
                       </div>
                       <button 
                         onClick={() => toggleAddon(addon.id)}
-                        className={`w-9 h-9 rounded-full flex items-center justify-center border transition-colors shrink-0 ${
+                        className={`w-9 h-9 rounded-none flex items-center justify-center border transition-colors shrink-0 ${
                           isSelected 
                             ? 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20' 
                             : 'bg-[#0A1E3F]/10 border-[#0A1E3F]/30 text-[#0A1E3F] hover:bg-[#0A1E3F]/20'
@@ -250,7 +250,7 @@ export default function HomeOfficeCombo() {
 
 
             {/* Price Box */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 relative overflow-hidden">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 relative overflow-hidden">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-6 border-b border-[#E2DAC8]">
                 <div>
                   <p className="text-gray-600 text-xs font-medium uppercase tracking-wider mb-1">
@@ -259,7 +259,7 @@ export default function HomeOfficeCombo() {
                   <p className="text-gray-600 line-through text-lg font-bold">
                     ₹{totalReg.toLocaleString('en-IN')}
                   </p>
-                  <span className="inline-block mt-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  <span className="inline-block mt-1 text-[11px] font-bold text-emerald-700 bg-emerald-500/10 px-2 py-0.5 rounded-none border border-emerald-500/20">
                     Combo Savings: ₹{totalSavings.toLocaleString('en-IN')}
                   </span>
                 </div>
@@ -280,7 +280,7 @@ export default function HomeOfficeCombo() {
               <button
                 onClick={handleAddToCart}
                 disabled={comboSoldOut}
-                className={`w-full font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
+                className={`w-full font-bold text-sm uppercase tracking-widest py-4 rounded-none transition-all duration-300 flex items-center justify-center gap-2 ${
                   comboSoldOut
                     ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed shadow-none'
                     : 'bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] shadow-[0_0_25px_rgba(4,217,255,0.3)] cursor-pointer'

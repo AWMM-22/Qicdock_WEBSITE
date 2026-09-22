@@ -89,39 +89,39 @@ export default function AllInOneCombo() {
           
           {/* Left Column: Visual Showcase & Specifications (5 cols) */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-3 sm:p-8 relative overflow-hidden group">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-3 sm:p-8 relative overflow-hidden group">
               <div className="absolute top-4 left-4 z-10 flex flex-wrap gap-2">
-                <span className="px-3 py-1 rounded-full bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
+                <span className="px-3 py-1 rounded-none bg-[#0A1E3F]/15 border border-[#0A1E3F]/40 text-[#0A1E3F] text-[10px] font-bold tracking-widest uppercase flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3" /> Ultimate Bundle
                 </span>
-                <span className="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[10px] font-bold tracking-widest uppercase">
+                <span className="px-3 py-1 rounded-none bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 text-[10px] font-bold tracking-widest uppercase">
                   Save ₹{totalSavings}
                 </span>
               </div>
 
               {/* Product Image Stage */}
-              <div className="w-full h-80 sm:h-96 flex items-center justify-center p-0 overflow-hidden">
+              <div className="w-full h-80 sm:h-96 flex items-center justify-center p-0 overflow-hidden rounded-none border border-[#E2DAC8]">
                 <img 
                   src={combinedImg} 
                   alt="Qicdock All In One Combo Package" 
                   loading="eager"
                   fetchPriority="high"
                   decoding="sync"
-                  className="max-h-full max-w-full object-contain filter drop-shadow-[0_15px_35px_rgba(0,0,0,0.9)] group-hover:scale-105 transition-transform duration-500" 
+                  className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500" 
                 />
               </div>
 
               {/* Badges footer */}
               <div className="grid grid-cols-3 gap-2 pt-6 border-t border-[#E2DAC8] text-center">
-                <div className="p-2 rounded-xl bg-[#152B52]/[0.02]">
+                <div className="p-2 rounded-none bg-[#152B52]/[0.02]">
                   <span className="text-xs font-bold text-[#0A1E3F] block">25W Qi2</span>
                   <span className="text-[10px] text-gray-600 uppercase tracking-wider">Fast Wireless</span>
                 </div>
-                <div className="p-2 rounded-xl bg-[#152B52]/[0.02]">
+                <div className="p-2 rounded-none bg-[#152B52]/[0.02]">
                   <span className="text-xs font-bold text-[#0A1E3F] block">5 Mounts</span>
                   <span className="text-[10px] text-gray-600 uppercase tracking-wider">Car / Desk / Wall</span>
                 </div>
-                <div className="p-2 rounded-xl bg-[#152B52]/[0.02]">
+                <div className="p-2 rounded-none bg-[#152B52]/[0.02]">
                   <span className="text-xs font-bold text-[#0A1E3F] block">1-Yr Repl.</span>
                   <span className="text-[10px] text-gray-600 uppercase tracking-wider">Full Warranty</span>
                 </div>
@@ -129,7 +129,7 @@ export default function AllInOneCombo() {
             </div>
 
             {/* In-the-box summary */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-5 text-xs text-gray-600 space-y-2.5">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-5 text-xs text-gray-600 space-y-2.5">
               <div className="flex items-center justify-between text-[#0A1E3F] font-bold pb-2 border-b border-[#E2DAC8]">
                 <span>PACKAGE CONTENTS</span>
                 <span className="text-[#0A1E3F]">{selectedAddons.length + 1} ITEMS INCLUDED</span>
@@ -140,7 +140,7 @@ export default function AllInOneCombo() {
               </p>
               {initialAddons.filter(a => selectedAddons.includes(a.id)).map(addon => (
                 <p key={addon.id} className="flex items-center gap-2 text-gray-700">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                   <span>1x {addon.name}</span>
                 </p>
               ))}
@@ -169,10 +169,10 @@ export default function AllInOneCombo() {
             </div>
 
             {/* Core Product Box */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-4 sm:p-5 flex items-center justify-between">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-4 sm:p-5 flex items-center justify-between">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
+                  <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-none bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
                     CORE PRODUCT (REQUIRED)
                   </span>
                 </div>
@@ -207,26 +207,26 @@ export default function AllInOneCombo() {
                   return (
                     <div
                       key={addon.id}
-                      className={`flex items-center gap-3 sm:gap-4 p-3 rounded-xl border transition-all ${
+                      className={`flex items-center gap-3 sm:gap-4 p-3 rounded-none border transition-all ${
                         isSelected 
                           ? 'bg-[#E2DAC8] border-[#D6CDB8]' 
                           : 'bg-[#FAF7F0] border-[#E2DAC8] opacity-70'
                       }`}
                     >
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-[#FAF7F0] border border-[#E2DAC8] p-1 flex shrink-0 overflow-hidden shadow-sm items-center justify-center">
-                         <img src={addon.image} alt={addon.name} loading="lazy" decoding="async" className="w-full h-full object-contain" />
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-none bg-[#FAF7F0] border border-[#E2DAC8] p-0 flex shrink-0 overflow-hidden shadow-sm items-center justify-center">
+                         <img src={addon.image} alt={addon.name} loading="lazy" decoding="async" className="w-full h-full object-cover rounded-none" />
                       </div>
                       <div className="flex-1">
                          <h4 className="text-sm font-bold text-[#0A1E3F] leading-tight">{addon.name}</h4>
                          <p className="text-[11px] text-gray-600 leading-tight mt-1 line-clamp-1">{addon.description}</p>
                          <div className="flex items-center gap-2 mt-1">
-                           <span className={`text-[12px] font-bold ${isSelected ? 'text-[#0A1E3F]' : 'text-gray-600'}`}>+₹{addon.addonPrice}</span>
-                           <span className="text-[10px] text-gray-600 line-through">₹{addon.mrp}</span>
+                            <span className={`text-[12px] font-bold ${isSelected ? 'text-[#0A1E3F]' : 'text-gray-600'}`}>+₹{addon.addonPrice}</span>
+                            <span className="text-[10px] text-gray-600 line-through">₹{addon.mrp}</span>
                          </div>
                       </div>
                       <button 
                         onClick={() => toggleAddon(addon.id)}
-                        className={`w-9 h-9 rounded-full flex items-center justify-center border transition-colors shrink-0 ${
+                        className={`w-9 h-9 rounded-none flex items-center justify-center border transition-colors shrink-0 ${
                           isSelected 
                             ? 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/20' 
                             : 'bg-[#0A1E3F]/10 border-[#0A1E3F]/30 text-[#0A1E3F] hover:bg-[#0A1E3F]/20'
@@ -241,7 +241,7 @@ export default function AllInOneCombo() {
             </div>
 
             {/* Total Bundle Price Box */}
-            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 relative overflow-hidden">
+            <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-48 h-48 bg-[#0A1E3F]/10 rounded-full blur-2xl pointer-events-none"></div>
 
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-6 border-b border-[#E2DAC8]">
@@ -252,7 +252,7 @@ export default function AllInOneCombo() {
                   <p className="text-gray-600 line-through text-lg font-bold">
                     ₹{totalMrp.toLocaleString('en-IN')}
                   </p>
-                  <span className="inline-block mt-1 text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  <span className="inline-block mt-1 text-[11px] font-bold text-emerald-700 bg-emerald-500/10 px-2 py-0.5 rounded-none border border-emerald-500/20">
                     Instant Savings: ₹{totalSavings.toLocaleString('en-IN')}
                   </span>
                 </div>
@@ -274,7 +274,7 @@ export default function AllInOneCombo() {
               <button
                 onClick={handleAddToCart}
                 disabled={addedToCart || comboSoldOut}
-                className={`w-full ${comboSoldOut ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0A1E3F] hover:bg-[#152B52] shadow-[0_0_25px_rgba(4,217,255,0.3)]'} text-[#F4F0E6] font-bold text-sm uppercase tracking-widest py-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-80`}
+                className={`w-full ${comboSoldOut ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0A1E3F] hover:bg-[#152B52] shadow-[0_0_25px_rgba(4,217,255,0.3)]'} text-[#F4F0E6] font-bold text-sm uppercase tracking-widest py-4 rounded-none transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-80`}
               >
                 {comboSoldOut ? (
                   <span>Currently Sold Out</span>

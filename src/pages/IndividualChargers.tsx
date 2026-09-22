@@ -154,27 +154,27 @@ export default function IndividualChargers() {
             return (
               <div 
                 key={product.id} 
-                className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl overflow-hidden hover:border-[#0A1E3F]/60 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(4,217,255,0.1)]"
+                className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none overflow-hidden hover:border-[#0A1E3F]/60 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(4,217,255,0.1)]"
               >
                 <div>
                   {/* Top Badge Row */}
                   <div className="p-4 pb-0 flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-[#152B52]/5 border border-white/10 text-gray-700">
+                    <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-none bg-[#152B52]/5 border border-white/10 text-gray-700">
                       {product.mountType}
                     </span>
-                    <span className="text-[10px] font-bold text-emerald-400">
+                    <span className="text-[10px] font-bold text-emerald-600">
                       {product.savings}
                     </span>
                   </div>
 
                   {/* Image Showcase */}
-                  <div className="h-52 bg-[#F4F0E6] p-2 m-3 rounded-xl border border-[#E2DAC8] flex items-center justify-center overflow-hidden">
+                  <div className="w-full h-48 bg-[#F4F0E6] p-0 my-3 rounded-none border-y border-[#E2DAC8] flex items-center justify-center overflow-hidden">
                     <img 
                       src={product.img} 
                       alt={product.name} 
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]" 
+                      loading="lazy" 
+                      decoding="async" 
+                      className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500" 
                     />
                   </div>
 
@@ -187,7 +187,7 @@ export default function IndividualChargers() {
                     {/* Spec tags */}
                     <div className="flex flex-wrap gap-1.5 mb-4">
                       {product.specs.map((sp, i) => (
-                        <span key={i} className="text-[10px] bg-[#152B52]/[0.03] text-gray-600 border border-white/5 px-2 py-0.5 rounded">
+                        <span key={i} className="text-[10px] bg-[#152B52]/[0.03] text-gray-600 border border-[#0A1E3F]/10 px-2 py-0.5 rounded-none">
                           {sp}
                         </span>
                       ))}
@@ -206,7 +206,7 @@ export default function IndividualChargers() {
                         ₹{product.specialPrice}
                       </span>
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#0A1E3F] bg-[#0A1E3F]/10 px-2 py-1 rounded border border-[#0A1E3F]/20">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#0A1E3F] bg-[#0A1E3F]/10 px-2 py-1 rounded-none border border-[#0A1E3F]/20">
                       Special Rate
                     </span>
                   </div>
@@ -214,7 +214,7 @@ export default function IndividualChargers() {
                   <button
                     onClick={() => handleAddToCart(product.id)}
                     disabled={isAdded || isSoldOut(product.id)}
-                    className={`w-full ${isSoldOut(product.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0A1E3F] hover:bg-[#152B52]'} text-[#F4F0E6] border border-transparent font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-80`}
+                    className={`w-full ${isSoldOut(product.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0A1E3F] hover:bg-[#152B52]'} text-[#F4F0E6] border border-transparent font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-80`}
                   >
                     {isSoldOut(product.id) ? (
                       <span>Sold Out</span>

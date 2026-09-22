@@ -159,12 +159,12 @@ export default function StandAloneMounts() {
             return (
               <div
                 key={item.id}
-                className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-2xl p-6 hover:border-[#0A1E3F]/70 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(4,217,255,0.1)]"
+                className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 hover:border-[#0A1E3F]/70 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(4,217,255,0.1)]"
               >
                 <div>
                   {/* Category & Badge */}
                   <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-none bg-[#0A1E3F]/10 text-[#0A1E3F] border border-[#0A1E3F]/30">
                       {item.badge}
                     </span>
                     <span className="text-[11px] text-gray-600 font-medium">
@@ -173,13 +173,13 @@ export default function StandAloneMounts() {
                   </div>
 
                   {/* Image */}
-                  <div className="h-44 bg-[#F4F0E6] rounded-xl border border-[#E2DAC8] p-2 flex items-center justify-center mb-5 overflow-hidden">
+                  <div className="w-full h-48 bg-[#F4F0E6] rounded-none border border-[#E2DAC8] p-0 flex items-center justify-center mb-5 overflow-hidden">
                     <img
                       src={item.img}
                       alt={item.name}
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
+                      className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
 
@@ -204,11 +204,11 @@ export default function StandAloneMounts() {
                       </span>
                     </div>
                     {isSoldOut(item.id) ? (
-                      <span className="text-[11px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+                      <span className="text-[11px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-none border border-red-200">
                         Sold Out
                       </span>
                     ) : (
-                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-none border border-emerald-200">
                         Save ₹{item.originalPrice - item.price}
                       </span>
                     )}
@@ -217,7 +217,7 @@ export default function StandAloneMounts() {
                   <button
                     onClick={() => handleAddToCart(item.id)}
                     disabled={isSoldOut(item.id)}
-                    className={`w-full font-bold uppercase tracking-wider py-3 rounded-xl text-xs transition-all flex items-center justify-center gap-2 shadow-sm ${
+                    className={`w-full font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-2 shadow-sm ${
                       isSoldOut(item.id)
                         ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
                         : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'

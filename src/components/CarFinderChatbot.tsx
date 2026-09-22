@@ -12,6 +12,7 @@ import swiftDzireImg from '../assets/images/Dzire and Swift.webp';
 import threeXoImg from '../assets/images/3XO.webp';
 import universalPadImg from '../assets/images/Universal_.webp';
 import tableStandImg from '../assets/images/table_stand_mount.webp';
+import qicdockLogo from '../assets/images/qicdocklogo.png';
 
 export interface CarProduct {
   id: string;
@@ -570,38 +571,39 @@ export default function CarFinderChatbot() {
 
   return (
     <>
-      {/* Floating Trigger Button (Lifted on Mobile to prevent overlap) */}
-      <div className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 md:z-50 flex flex-col items-end gap-2">
-        {/* Helper pulse badge if closed */}
-        {!isOpen && !hasOpenedBefore && (
-          <div 
-            onClick={() => { setIsOpen(true); setHasOpenedBefore(true); }}
-            className="bg-[#FAF7F0] border border-[#0A1E3F]/30 text-[#0A1E3F] text-xs font-bold px-3.5 py-2 rounded-2xl shadow-xl flex items-center gap-2 cursor-pointer animate-bounce transition-all hover:bg-white"
-          >
-            <span>Find your car dock here!</span>
-            <X 
-              className="w-3.5 h-3.5 text-gray-400 hover:text-gray-700 ml-1" 
-              onClick={(e) => { e.stopPropagation(); setHasOpenedBefore(true); }} 
-            />
-          </div>
-        )}
-
+      {/* Floating Trigger Button (Compact pill with circular logo badge, positioned cleanly in the bottom corner) */}
+      <div className="fixed bottom-[74px] md:bottom-6 right-3 sm:right-6 z-40 md:z-50 pointer-events-none">
         <button
           onClick={() => { setIsOpen(!isOpen); setHasOpenedBefore(true); }}
-          className={`flex items-center gap-2 px-4 py-3.5 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer select-none ${
+          className={`pointer-events-auto flex items-center gap-2 shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer select-none rounded-full border-2 ${
             isOpen 
-              ? 'bg-[#0A1E3F] text-white rotate-0' 
-              : 'bg-[#0A1E3F] text-[#F4F0E6] shadow-[0_0_25px_rgba(4,217,255,0.4)]'
+              ? 'bg-[#0A1E3F] border-[#FAF7F0]/40 text-[#F4F0E6] px-3.5 py-2' 
+              : 'bg-[#FAF7F0] hover:bg-white border-[#0A1E3F] text-[#0A1E3F] pl-1.5 pr-3.5 py-1.5 shadow-[0_8px_25px_rgba(10,30,63,0.25)] hover:shadow-[0_12px_30px_rgba(10,30,63,0.35)]'
           }`}
-          aria-label="Car Finder Assistant"
+          aria-label="Find Your Car Assistant"
         >
           {isOpen ? (
-            <>
-              <X className="w-5 h-5" />
-              <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Close</span>
-            </>
+            <div className="flex items-center gap-1.5">
+              <X className="w-4 h-4 text-[#F4F0E6]" />
+              <span className="text-xs font-bold uppercase tracking-wider text-[#F4F0E6]">Close</span>
+            </div>
           ) : (
-            <span className="text-xs font-bold uppercase tracking-wider">Find Your Car</span>
+            <div className="flex items-center gap-2">
+              {/* Circular Logo Container */}
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white border border-[#0A1E3F]/30 flex items-center justify-center p-0.5 relative overflow-hidden shrink-0 shadow-inner">
+                <img 
+                  src={qicdockLogo} 
+                  alt="QicDock" 
+                  className="w-full h-full object-contain rounded-full"
+                />
+                <span className="absolute top-0 right-0 w-2 h-2 bg-emerald-500 border border-white rounded-full animate-pulse" />
+              </div>
+              
+              {/* Beside Text */}
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#0A1E3F] whitespace-nowrap leading-none">
+                Find Your Car
+              </span>
+            </div>
           )}
         </button>
       </div>

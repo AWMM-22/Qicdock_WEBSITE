@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, LayoutGrid, Layers, Car, ShoppingBag } from 'lucide-react';
+import { Home, LayoutGrid, Layers, Info, ShoppingBag } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { getCartCount } from '../lib/cart';
@@ -8,6 +8,10 @@ export default function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
   const [cartCount, setCartCount] = useState<number>(() => getCartCount());
+  const [isVisible, setIsVisible] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    return location.pathname !== '/' || window.scrollY > 280;
+  });
 
   useEffect(() => {
     const handleCartUpdate = () => {
@@ -16,6 +20,23 @@ export default function BottomNav() {
     window.addEventListener('cartUpdated', handleCartUpdate);
     return () => window.removeEventListener('cartUpdated', handleCartUpdate);
   }, []);
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setIsVisible(true);
+      return;
+    }
+
+    const handleScroll = () => {
+      // Hero section threshold: display bottom nav after scrolling past hero section 1
+      const threshold = Math.min(window.innerHeight * 0.4, 280);
+      setIsVisible(window.scrollY > threshold);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
 
   const navItems = [
     {
@@ -43,31 +64,16 @@ export default function BottomNav() {
         pathname.startsWith('/category/home-office')
     },
     {
-      id: 'find-car',
-      name: 'Find Car',
-      path: '/category/vehicle-specific',
-      icon: Car,
-      match: (pathname: string) => 
-        pathname.startsWith('/category/vehicle-specific') || 
-        pathname.startsWith('/product') || 
-        pathname.startsWith('/car-product') ||
-        location.hash.includes('compatibility')
+      id: 'about',
+      name: 'About Us',
+      path: '/about',
+      icon: Info,
+      match: (pathname: string) => pathname.startsWith('/about')
     }
   ];
 
   const handleNavClick = (e: React.MouseEvent, item: typeof navItems[0]) => {
     e.preventDefault();
-    if (item.id === 'find-car') {
-      if (location.pathname === '/') {
-        const el = document.getElementById('compatibility');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-          return;
-        }
-      }
-      navigate('/category/vehicle-specific');
-      return;
-    }
     if (item.id === 'home') {
       if (location.pathname === '/') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -78,13 +84,24 @@ export default function BottomNav() {
   };
 
   return (
-    <div 
+    <motion.div 
       aria-label="Floating Mobile Navigation"
+      initial={false}
+      animate={{
+        y: isVisible ? 0 : 100,
+        opacity: isVisible ? 1 : 0,
+      }}
+      transition={{
+        type: 'spring',
+        stiffness: 380,
+        damping: 30,
+        mass: 0.8
+      }}
       className="md:hidden fixed bottom-3.5 sm:bottom-5 left-0 right-0 z-50 px-3.5 flex justify-center pointer-events-none"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
       {/* Floating Curved Container */}
-      <nav className="pointer-events-auto w-full max-w-[420px] bg-[#0A1E3F]/95 backdrop-blur-xl border-2 border-[#D6CDB8] rounded-full p-1.5 shadow-[0_14px_36px_rgba(10,30,63,0.38)] relative flex items-center justify-between gap-1 transition-all duration-300">
+      <nav className={`w-full max-w-[420px] bg-[#0A1E3F]/95 backdrop-blur-xl border-2 border-[#D6CDB8] rounded-full p-1.5 shadow-[0_14px_36px_rgba(10,30,63,0.38)] relative flex items-center justify-between gap-1 transition-all duration-300 ${isVisible ? 'pointer-events-auto' : 'pointer-events-none'}`}>
         
         {/* Subtle dual-color ambient shimmer line */}
         <div className="absolute top-0 left-8 right-8 h-[1px] bg-gradient-to-r from-transparent via-[#FAF7F0]/40 to-transparent pointer-events-none" />
@@ -149,6 +166,6 @@ export default function BottomNav() {
           );
         })}
       </nav>
-    </div>
+    </motion.div>
   );
 }

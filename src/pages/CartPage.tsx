@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2, CreditCard, Sparkles } from 'lucide-react';
+import { Minus, Plus, Trash2, Tag, ShieldCheck, Truck, ArrowRight, Zap, CheckCircle2, CreditCard, Sparkles, Car } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getCartItems, saveCartItems, getAppliedCoupon, setAppliedCoupon, clearAppliedCoupon } from '../lib/cart';
@@ -61,7 +61,10 @@ export default function CartPage() {
     addressLine: '',
     state: '',
     country: 'India',
-    pincode: ''
+    pincode: '',
+    carBrand: '',
+    carModel: '',
+    modelYear: ''
   });
   const [cartItems, setCartItems] = useState<any[]>(() => {
     const saved = getCartItems();
@@ -188,10 +191,55 @@ export default function CartPage() {
     }
 
     if (checkoutStep === 'CART') {
-      // Pre-fill email from user if not set
-      if (!addressDetails.email) {
-        setAddressDetails(prev => ({ ...prev, email: user.email || '' }));
+      let detectedBrand = addressDetails.carBrand;
+      let detectedModel = addressDetails.carModel;
+      
+      // Auto-detect from cart items or localStorage if not already set
+      if (!detectedBrand || !detectedModel) {
+        try {
+          const storedVehicle = localStorage.getItem('qicdock_selected_vehicle');
+          if (storedVehicle) {
+            const parsed = JSON.parse(storedVehicle);
+            if (parsed.brand) detectedBrand = detectedBrand || parsed.brand;
+            if (parsed.model) detectedModel = detectedModel || parsed.model;
+          }
+        } catch (e) {}
+
+        if (!detectedBrand || !detectedModel) {
+          const carItem = cartItems.find(i => 
+            i.name?.toLowerCase().includes('fronx') ||
+            i.name?.toLowerCase().includes('baleno') ||
+            i.name?.toLowerCase().includes('swift') ||
+            i.name?.toLowerCase().includes('ertiga') ||
+            i.name?.toLowerCase().includes('3xo') ||
+            i.name?.toLowerCase().includes('glanza') ||
+            i.name?.toLowerCase().includes('taisor') ||
+            i.variant?.toLowerCase().includes('fronx') ||
+            i.variant?.toLowerCase().includes('baleno')
+          );
+          if (carItem) {
+            const lower = `${carItem.name} ${carItem.variant}`.toLowerCase();
+            if (lower.includes('fronx')) { detectedBrand = 'Maruti Suzuki'; detectedModel = 'Fronx'; }
+            else if (lower.includes('baleno')) { detectedBrand = 'Maruti Suzuki'; detectedModel = 'Baleno'; }
+            else if (lower.includes('swift')) { detectedBrand = 'Maruti Suzuki'; detectedModel = 'Swift'; }
+            else if (lower.includes('ertiga')) { detectedBrand = 'Maruti Suzuki'; detectedModel = 'Ertiga'; }
+            else if (lower.includes('3xo')) { detectedBrand = 'Mahindra'; detectedModel = 'XUV 3XO'; }
+            else if (lower.includes('glanza')) { detectedBrand = 'Toyota'; detectedModel = 'Glanza'; }
+            else if (lower.includes('taisor')) { detectedBrand = 'Toyota'; detectedModel = 'Urban Cruiser Taisor'; }
+          }
+        }
       }
+
+      // Default pre-fill if still empty
+      if (!detectedBrand) detectedBrand = 'Maruti Suzuki';
+      if (!detectedModel) detectedModel = 'Fronx';
+
+      setAddressDetails(prev => ({
+        ...prev,
+        email: prev.email || user.email || '',
+        carBrand: prev.carBrand || detectedBrand,
+        carModel: prev.carModel || detectedModel
+      }));
       setCheckoutStep('ADDRESS');
       return;
     }
@@ -199,6 +247,11 @@ export default function CartPage() {
     // Basic validation before payment
     if (!addressDetails.name || !addressDetails.phone || !addressDetails.addressLine || !addressDetails.state || !addressDetails.pincode) {
       alert("Please fill in all required address fields");
+      return;
+    }
+
+    if (!addressDetails.modelYear || !addressDetails.modelYear.trim()) {
+      alert("Please enter your Car Model Year (Compulsory field for 100% Fit Guarantee)");
       return;
     }
 
@@ -667,6 +720,66 @@ export default function CartPage() {
                         readOnly
                         className="w-full bg-[#EBE5D9]/50 border border-[#D6CDB8]/50 rounded-xl px-4 py-3 text-sm font-medium text-gray-500 cursor-not-allowed"
                       />
+                    </div>
+
+                    {/* Vehicle Fitment Section (Car Brand, Model, Model Year) */}
+                    <div className="mt-6 pt-6 border-t border-[#D6CDB8] space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Car className="w-4 h-4 text-[#0A1E3F]" />
+                          <h3 className="text-sm font-bold text-[#0A1E3F] uppercase tracking-wider">
+                            Vehicle Details (For 100% Fit Guarantee)
+                          </h3>
+                        </div>
+                        <span className="text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
+                          Fit Verified
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-600">
+                        We customize the dock housing & connector harness to your vehicle console specifications.
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">
+                            Car Brand <span className="text-gray-400 font-normal">(Prefilled)</span>
+                          </label>
+                          <input 
+                            type="text"
+                            value={addressDetails.carBrand}
+                            onChange={e => setAddressDetails(p => ({ ...p, carBrand: e.target.value }))}
+                            placeholder="e.g. Maruti Suzuki, Toyota, Mahindra"
+                            className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">
+                            Car Model <span className="text-gray-400 font-normal">(Prefilled)</span>
+                          </label>
+                          <input 
+                            type="text"
+                            value={addressDetails.carModel}
+                            onChange={e => setAddressDetails(p => ({ ...p, carModel: e.target.value }))}
+                            placeholder="e.g. Fronx, Baleno, XUV 3XO"
+                            className="w-full bg-[#EBE5D9] border border-[#D6CDB8] rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-[#0A1E3F]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-[#0A1E3F] uppercase tracking-wider pl-1 mb-1.5">
+                            Model Year <span className="text-red-500 font-bold">* Compulsory</span>
+                          </label>
+                          <input 
+                            type="text"
+                            required
+                            value={addressDetails.modelYear}
+                            onChange={e => setAddressDetails(p => ({ ...p, modelYear: e.target.value }))}
+                            placeholder="e.g. 2024, 2025"
+                            className="w-full bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-xl px-4 py-3 text-sm font-bold text-[#0A1E3F] focus:outline-none focus:ring-2 focus:ring-[#0A1E3F]/30 placeholder:text-gray-400 placeholder:font-normal"
+                          />
+                        </div>
+                      </div>
                     </div>
 
                     {/* Payment Method Selector */}
