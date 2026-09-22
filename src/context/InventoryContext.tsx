@@ -14,18 +14,37 @@ const InventoryContext = createContext<InventoryContextType>({
 
 export const useInventory = () => useContext(InventoryContext);
 
+const INVENTORY_CACHE_KEY = 'qic_inventory_status';
+
 export const InventoryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [inventory, setInventory] = useState<Record<string, boolean>>({});
+  const [inventory, setInventory] = useState<Record<string, boolean>>(() => {
+    try {
+      const cached = localStorage.getItem(INVENTORY_CACHE_KEY);
+      return cached ? JSON.parse(cached) : {};
+    } catch {
+      return {};
+    }
+  });
 
   const refreshInventory = async () => {
     try {
-      const res = await fetch('/api/inventory');
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
+      
+      const res = await fetch('/api/inventory', { signal: controller.signal });
+      clearTimeout(timeoutId);
+
       if (res.ok) {
         const data = await res.json();
         setInventory(data);
+        try {
+          localStorage.setItem(INVENTORY_CACHE_KEY, JSON.stringify(data));
+        } catch {
+          // ignore localStorage errors
+        }
       }
-    } catch (err) {
-      console.error('Failed to fetch inventory:', err);
+    } catch {
+      // Graceful offline fallback: rely on initialized state/localStorage
     }
   };
 

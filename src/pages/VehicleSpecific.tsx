@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Search, Car, ChevronRight } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Zap, Shield, CheckCircle2, Search, Car, ChevronRight, Filter, Sparkles, SlidersHorizontal, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import { addToCart } from '../lib/cart';
-import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
 import ertigaImg from '../assets/images/Ertiga.webp';
@@ -14,40 +13,83 @@ import threeXoImg from '../assets/images/3XO.webp';
 interface CarModel {
   id: string;
   name: string;
-  brand: 'Maruti Suzuki' | 'Toyota' | 'Hyundai' | 'Mahindra' | 'Universal';
+  modelName: string;
+  brand: 'Maruti Suzuki' | 'Toyota' | 'Mahindra' | 'Universal';
   years: string;
   slot: string;
   price: number;
   badge: string;
   image: string;
+  isCustomFit?: boolean;
 }
 
 const vehicleModels: CarModel[] = [
-  { id: '3xo', name: 'Mahindra XUV 3XO', brand: 'Mahindra', years: '2024 - 2025', slot: 'Center Console Tray', price: 2098, badge: 'New Arrival', image: threeXoImg },
-  { id: 'fronx', name: 'Maruti Suzuki Fronx', brand: 'Maruti Suzuki', years: '2023 - 2025', slot: 'Center Console Tray', price: 2098, badge: 'Best Seller', image: fronxEtcImg },
-  { id: 'baleno', name: 'Maruti Suzuki Baleno', brand: 'Maruti Suzuki', years: '2022 - 2025', slot: 'Cup Holder & Storage Cavity', price: 2098, badge: 'Direct OEM Fit', image: fronxEtcImg },
-  { id: 'taisor', name: 'Toyota Urban Cruiser Taisor', brand: 'Toyota', years: '2024 - 2025', slot: 'Under-Dashboard Console Tray', price: 2098, badge: 'New Release', image: fronxEtcImg },
-  { id: 'glanza', name: 'Toyota Glanza', brand: 'Toyota', years: '2022 - 2025', slot: 'Gear Lever Lower Storage', price: 2098, badge: 'Direct OEM Fit', image: fronxEtcImg },
-  { id: 'ertiga', name: 'Maruti Suzuki Ertiga', brand: 'Maruti Suzuki', years: '2019 - 2025', slot: 'Center Console Cooled Cup Space', price: 2098, badge: 'High Demand', image: ertigaImg },
-  { id: 'swift-2024', name: 'Maruti Suzuki Swift (4th Gen)', brand: 'Maruti Suzuki', years: '2024 - 2025', slot: 'Dedicated Wireless Tray', price: 2098, badge: 'Latest Gen', image: swiftDzireImg },
-  { id: 'dzire', name: 'Maruti Suzuki Swift Dzire', brand: 'Maruti Suzuki', years: '2020 - 2025', slot: 'Center Console Lower Pocket', price: 2098, badge: 'Direct OEM Fit', image: swiftDzireImg },
-  { id: 'universal', name: 'Universal Automotive Charging Pad', brand: 'Universal', years: 'All Models', slot: 'Flat Dash & Console Surfaces', price: 2098, badge: 'Universal Fit', image: universalPadImg },
+  // Maruti Suzuki
+  { id: 'fronx', name: 'Maruti Suzuki Fronx', modelName: 'Fronx', brand: 'Maruti Suzuki', years: '2023 - 2025', slot: 'Center Console Lower Tray', price: 2349, badge: 'Best Seller', image: fronxEtcImg },
+  { id: 'baleno', name: 'Maruti Suzuki Baleno', modelName: 'Baleno', brand: 'Maruti Suzuki', years: '2022 - 2025', slot: 'Cup Holder & Storage Cavity', price: 2349, badge: 'Direct OEM Fit', image: fronxEtcImg },
+  { id: 'swift-2024', name: 'Maruti Suzuki Swift (4th Gen)', modelName: 'Swift', brand: 'Maruti Suzuki', years: '2024 - 2025', slot: 'Dedicated Wireless Tray', price: 2349, badge: 'Latest Gen', image: swiftDzireImg },
+  { id: 'dzire', name: 'Maruti Suzuki Swift Dzire', modelName: 'Dzire', brand: 'Maruti Suzuki', years: '2020 - 2025', slot: 'Center Console Lower Pocket', price: 2349, badge: 'Direct OEM Fit', image: swiftDzireImg },
+  { id: 'ertiga', name: 'Maruti Suzuki Ertiga', modelName: 'Ertiga', brand: 'Maruti Suzuki', years: '2019 - 2025', slot: 'Center Console Cooled Cup Space', price: 2349, badge: 'High Demand', image: ertigaImg },
+  { id: 'brezza', name: 'Maruti Suzuki Brezza', modelName: 'Brezza', brand: 'Maruti Suzuki', years: '2022 - 2025', slot: 'Under-AC Console Storage Pocket', price: 2349, badge: 'OEM 3D Scan', image: fronxEtcImg },
+  { id: 'grand-vitara', name: 'Maruti Suzuki Grand Vitara', modelName: 'Grand Vitara', brand: 'Maruti Suzuki', years: '2022 - 2025', slot: 'Front Console Wireless Bay', price: 2349, badge: 'OEM 3D Scan', image: fronxEtcImg },
+
+  // Toyota
+  { id: 'taisor', name: 'Toyota Urban Cruiser Taisor', modelName: 'Taisor', brand: 'Toyota', years: '2024 - 2025', slot: 'Under-Dashboard Console Tray', price: 2349, badge: 'New Release', image: fronxEtcImg },
+  { id: 'glanza', name: 'Toyota Glanza', modelName: 'Glanza', brand: 'Toyota', years: '2022 - 2025', slot: 'Gear Lever Lower Storage', price: 2349, badge: 'Direct OEM Fit', image: fronxEtcImg },
+  { id: 'hyryder', name: 'Toyota Urban Cruiser Hyryder', modelName: 'Hyryder', brand: 'Toyota', years: '2022 - 2025', slot: 'Center Console Phone Deck', price: 2349, badge: 'OEM 3D Scan', image: fronxEtcImg },
+  { id: 'innova-hycross', name: 'Toyota Innova Hycross', modelName: 'Innova Hycross', brand: 'Toyota', years: '2023 - 2025', slot: 'Bridge Console Storage Cavity', price: 2349, badge: 'OEM 3D Scan', image: fronxEtcImg },
+
+  // Mahindra
+  { id: '3xo', name: 'Mahindra XUV 3XO', modelName: 'XUV 3XO', brand: 'Mahindra', years: '2024 - 2025', slot: 'Center Console Tray', price: 2349, badge: 'New Arrival', image: threeXoImg },
+
+  // Universal
+  { id: 'universal', name: 'Universal Automotive Charging Pad', modelName: 'Universal Pad', brand: 'Universal', years: 'All Makes & Models', slot: 'Flat Dash & Console Surfaces', price: 2098, badge: 'Universal Fit', image: universalPadImg },
 ];
+
+const brandModelMap: Record<string, string[]> = {
+  'Maruti Suzuki': ['Fronx', 'Baleno', 'Swift', 'Dzire', 'Ertiga', 'Brezza', 'Grand Vitara'],
+  'Toyota': ['Taisor', 'Glanza', 'Hyryder', 'Innova Hycross'],
+  'Mahindra': ['XUV 3XO'],
+  'Universal': ['Universal Pad'],
+};
 
 export default function VehicleSpecific() {
   const { isSoldOut } = useInventory();
   const [selectedBrand, setSelectedBrand] = useState<string>('All');
+  const [selectedModel, setSelectedModel] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [addedItems, setAddedItems] = useState<{ [key: string]: boolean }>({});
 
   const brands = ['All', 'Maruti Suzuki', 'Toyota', 'Mahindra', 'Universal'];
 
-  const filteredVehicles = vehicleModels.filter(v => {
-    const matchesBrand = selectedBrand === 'All' || v.brand === selectedBrand;
-    const matchesSearch = v.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          v.years.includes(searchQuery);
-    return matchesBrand && matchesSearch;
-  });
+  // Available models based on selected brand
+  const availableModels = useMemo(() => {
+    if (selectedBrand === 'All') {
+      const all = new Set<string>();
+      Object.values(brandModelMap).forEach(models => models.forEach(m => all.add(m)));
+      return Array.from(all);
+    }
+    return brandModelMap[selectedBrand] || [];
+  }, [selectedBrand]);
+
+  const handleBrandChange = (brand: string) => {
+    setSelectedBrand(brand);
+    setSelectedModel('All'); // reset model when brand changes
+  };
+
+  const filteredVehicles = useMemo(() => {
+    return vehicleModels.filter(v => {
+      const matchesBrand = selectedBrand === 'All' || v.brand === selectedBrand;
+      const matchesModel = selectedModel === 'All' || v.modelName.toLowerCase() === selectedModel.toLowerCase();
+      const matchesSearch = searchQuery === '' || 
+        v.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        v.modelName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        v.years.includes(searchQuery) ||
+        v.slot.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      return matchesBrand && matchesModel && matchesSearch;
+    });
+  }, [selectedBrand, selectedModel, searchQuery]);
 
   const handleAddToCart = (vehicle: CarModel) => {
     addToCart({
@@ -64,6 +106,12 @@ export default function VehicleSpecific() {
     setTimeout(() => {
       setAddedItems(prev => ({ ...prev, [vehicle.id]: false }));
     }, 2500);
+  };
+
+  const resetAllFilters = () => {
+    setSelectedBrand('All');
+    setSelectedModel('All');
+    setSearchQuery('');
   };
 
   return (
@@ -84,16 +132,16 @@ export default function VehicleSpecific() {
         </div>
 
         {/* Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 gap-6">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-8 gap-6">
           <div className="max-w-2xl space-y-3">
             <span className="text-[#0A1E3F] text-xs md:text-sm font-bold tracking-[0.2em] uppercase block">
-              OEM Precision Integration
+              OEM Precision Fitment
             </span>
             <h1 className="text-3xl sm:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
               Vehicle Specific & <span className="text-[#0A1E3F]">Custom Fit</span>
             </h1>
             <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-              3D scanned to match your vehicle's factory interior console geometry down to 0.2mm. Enjoy zero rattles, no dangling wires, and instant 25W Qi2 charging.
+              3D laser-scanned to snap flush into your car's factory interior console cavity down to 0.2mm. Zero rattles, zero dangling wires, and 25W Qi2 MagSafe wireless fast charging.
             </p>
           </div>
 
@@ -105,42 +153,131 @@ export default function VehicleSpecific() {
               placeholder="Search car model or year..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#FAF7F0] border border-[#D6CDB8] focus:border-[#0A1E3F] rounded-xl pl-11 pr-4 py-3 text-xs sm:text-sm text-[#0A1E3F] placeholder-gray-500 focus:outline-none transition-colors"
+              className="w-full bg-[#FAF7F0] border border-[#D6CDB8] focus:border-[#0A1E3F] rounded-none pl-11 pr-4 py-3 text-xs sm:text-sm text-[#0A1E3F] placeholder-gray-500 focus:outline-none transition-colors"
             />
           </div>
         </div>
 
-        {/* Brand Filter Pills */}
-        <div className="flex items-center gap-2 mb-10 overflow-x-auto pb-2">
-          {brands.map((brand) => (
-            <button
-              key={brand}
-              onClick={() => setSelectedBrand(brand)}
-              className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
-                selectedBrand === brand
-                  ? 'bg-[#0A1E3F] text-[#F4F0E6] shadow-[0_0_15px_rgba(4,217,255,0.3)]'
-                  : 'bg-[#FAF7F0] text-gray-600 border border-[#E2DAC8] hover:border-[#D6CDB8] hover:text-[#0A1E3F]'
-              }`}
-            >
-              {brand === 'All' ? 'All Vehicles' : brand}
-            </button>
-          ))}
+        {/* Interactive Vehicle Selector & Matcher Control Hub */}
+        <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-none p-5 sm:p-6 mb-10 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-3 border-b border-[#E2DAC8]">
+            <div className="flex items-center gap-2">
+              <Car className="w-5 h-5 text-[#0A1E3F]" />
+              <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#0A1E3F]">
+                Select Vehicle Brand & Model
+              </h2>
+            </div>
+            
+            {(selectedBrand !== 'All' || selectedModel !== 'All' || searchQuery !== '') && (
+              <button
+                onClick={resetAllFilters}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-600 hover:text-[#0A1E3F] uppercase tracking-wider transition-colors cursor-pointer self-start sm:self-auto"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Reset Selection</span>
+              </button>
+            )}
+          </div>
+
+          {/* Brand Buttons */}
+          <div className="space-y-2.5">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-gray-600">
+              Select Brand:
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {brands.map((brand) => {
+                const isSelected = selectedBrand === brand;
+                return (
+                  <button
+                    key={brand}
+                    onClick={() => handleBrandChange(brand)}
+                    className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all cursor-pointer rounded-none ${
+                      isSelected
+                        ? 'bg-[#0A1E3F] text-[#FAF7F0] shadow-md'
+                        : 'bg-[#F4F0E6] text-[#0A1E3F] border border-[#D6CDB8] hover:border-[#0A1E3F] hover:bg-[#EBE5D9]'
+                    }`}
+                  >
+                    {brand === 'All' ? 'All Brands' : brand}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Model Selection Row (Shows when a brand or all is selected) */}
+          {availableModels.length > 0 && (
+            <div className="mt-5 pt-4 border-t border-[#E2DAC8] space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#0A1E3F] flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-[#0A1E3F]" />
+                  <span>
+                    {selectedBrand === 'All' ? 'Choose Car Model:' : `Choose ${selectedBrand} Model:`}
+                  </span>
+                </span>
+                {selectedModel !== 'All' && (
+                  <button
+                    onClick={() => setSelectedModel('All')}
+                    className="text-[10px] uppercase font-bold text-gray-600 hover:text-[#0A1E3F] transition-colors cursor-pointer"
+                  >
+                    Show All {selectedBrand !== 'All' ? selectedBrand : ''} Models
+                  </button>
+                )}
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedModel('All')}
+                  className={`px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer rounded-none ${
+                    selectedModel === 'All'
+                      ? 'bg-[#0A1E3F] text-[#FAF7F0]'
+                      : 'bg-[#FAF7F0] text-gray-700 border border-[#D6CDB8] hover:border-[#0A1E3F]'
+                  }`}
+                >
+                  All {selectedBrand !== 'All' ? selectedBrand : 'Models'}
+                </button>
+                {availableModels.map((model) => {
+                  const isSelected = selectedModel.toLowerCase() === model.toLowerCase();
+                  return (
+                    <button
+                      key={model}
+                      onClick={() => setSelectedModel(model)}
+                      className={`px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer rounded-none ${
+                        isSelected
+                          ? 'bg-[#0A1E3F] text-[#FAF7F0] font-bold shadow-sm'
+                          : 'bg-[#FAF7F0] text-gray-700 border border-[#D6CDB8] hover:border-[#0A1E3F] hover:bg-[#EAE4D5]'
+                      }`}
+                    >
+                      {model}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Vehicle Cards Grid */}
         {filteredVehicles.length === 0 ? (
-          <div className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-12 text-center my-8">
+          <div className="bg-[#FAF7F0] border-2 border-[#D6CDB8] rounded-none p-12 text-center my-8">
             <Car className="w-12 h-12 text-[#0A1E3F] mx-auto mb-4 opacity-70" />
-            <h3 className="text-xl font-bold text-[#0A1E3F] mb-2 uppercase">No exact match found</h3>
+            <h3 className="text-xl font-bold text-[#0A1E3F] mb-2 uppercase">No exact dock found for this filter</h3>
             <p className="text-gray-600 text-sm max-w-md mx-auto mb-6">
-              We engineer custom docks for all car models. You can also use our Universal Charging Pad or request a custom 3D scan.
+              We fabricate custom 3D docks for all car models. You can also order our Universal Charging Pad or request a custom scan.
             </p>
-            <button
-              onClick={() => { setSearchQuery(''); setSelectedBrand('All'); }}
-              className="px-6 py-2.5 rounded-none bg-[#EBE5D9] border border-[#D6CDB8] text-xs font-bold uppercase tracking-wider text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#F4F0E6] transition-all"
-            >
-              Reset Filters
-            </button>
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
+                onClick={resetAllFilters}
+                className="px-6 py-2.5 rounded-none bg-[#0A1E3F] text-[#FAF7F0] text-xs font-bold uppercase tracking-wider hover:bg-[#152B52] transition-all"
+              >
+                Reset All Filters
+              </button>
+              <a
+                href="mailto:support@qicdock.com?subject=Custom%20Dock%20Request"
+                className="px-6 py-2.5 rounded-none bg-[#FAF7F0] border border-[#0A1E3F] text-xs font-bold uppercase tracking-wider text-[#0A1E3F] hover:bg-[#EBE5D9] transition-all"
+              >
+                Request Custom 3D Scan
+              </a>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -149,7 +286,7 @@ export default function VehicleSpecific() {
               return (
                 <div
                   key={vehicle.id}
-                  className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 hover:border-[#0A1E3F]/70 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(4,217,255,0.1)]"
+                  className="bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-6 hover:border-[#0A1E3F] transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div>
                     {/* Badge */}
@@ -162,7 +299,7 @@ export default function VehicleSpecific() {
                       </span>
                     </div>
 
-                    {/* Image Stage - Clickable to Product Page */}
+                    {/* Image Stage - Edge-to-Edge and Clickable */}
                     <Link 
                       to={`/product/${vehicle.id}`} 
                       className="block w-full h-48 bg-[#F4F0E6] rounded-none border border-[#E2DAC8] p-0 flex items-center justify-center mb-5 overflow-hidden group-hover:border-[#0A1E3F]/40"
@@ -215,10 +352,10 @@ export default function VehicleSpecific() {
                       <button
                         onClick={() => handleAddToCart(vehicle)}
                         disabled={isSoldOut(vehicle.id)}
-                        className={`flex-1 font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-2 ${
+                        className={`flex-1 font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-2 cursor-pointer ${
                           isSoldOut(vehicle.id)
                             ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
-                            : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
+                            : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent'
                         }`}
                       >
                         {isSoldOut(vehicle.id) ? (
@@ -252,20 +389,20 @@ export default function VehicleSpecific() {
         )}
 
         {/* Custom Request Banner */}
-        <div className="mt-16 bg-[#FAF7F0] border border-[#E2DAC8] rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mt-16 bg-[#FAF7F0] border border-[#E2DAC8] rounded-none p-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2">
             <h3 className="text-xl sm:text-2xl font-['Anton'] uppercase text-[#0A1E3F] tracking-wide">
-              Don't see your car listed?
+              Don't see your specific car model?
             </h3>
             <p className="text-gray-600 text-sm max-w-xl">
-              We produce custom bespoke 3D-scanned docks for luxury and performance cars upon request. Send us your console photo and our engineering team will fabricate your custom dock.
+              We fabricate bespoke 3D-scanned docks for all Indian & international vehicles. Send us your console photos and our engineering team will manufacture your custom-fit wireless dock.
             </p>
           </div>
           <a
             href="mailto:support@qicdock.com?subject=Custom%20Dock%20Request"
-            className="whitespace-nowrap px-6 py-3.5 rounded-xl bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(4,217,255,0.3)]"
+            className="whitespace-nowrap px-6 py-3.5 rounded-none bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-widest transition-all shadow-md"
           >
-            Request Custom Fit Dock
+            Request Custom 3D Scan
           </a>
         </div>
 
@@ -273,3 +410,4 @@ export default function VehicleSpecific() {
     </div>
   );
 }
+

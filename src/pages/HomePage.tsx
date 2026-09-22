@@ -284,53 +284,6 @@ export default function HomePage() {
             <p className="text-[#1A2C4F] text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium">
               From modular all-in-one kits to vehicle-specific molded docks and workstation stands.
             </p>
-
-            {/* Interactive Control Pill */}
-            <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 pt-2">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] shadow-sm text-[11px] font-semibold text-[#0A1E3F]">
-                <span className={`w-2 h-2 rounded-full ${isCategoryMarqueePaused ? 'bg-amber-500' : 'bg-[#0A1E3F] animate-pulse'}`} />
-                <span>{isCategoryMarqueePaused ? 'Motion Paused' : 'Continuous Horizontal Glide'}</span>
-                <span className="text-gray-500 font-normal hidden sm:inline">• Hover cards to pause</span>
-              </div>
-
-              {/* Pause / Play Toggle */}
-              <button
-                onClick={() => setIsCategoryMarqueePaused(prev => !prev)}
-                className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
-                title={isCategoryMarqueePaused ? "Resume Motion" : "Pause Motion"}
-                aria-label={isCategoryMarqueePaused ? "Resume Motion" : "Pause Motion"}
-              >
-                {isCategoryMarqueePaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5 fill-current" />}
-              </button>
-
-              {/* Scroll Controls */}
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => handleScrollCategoryMarquee('left')}
-                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
-                  title="Scroll Left"
-                  aria-label="Scroll Left"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => handleScrollCategoryMarquee('right')}
-                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
-                  title="Scroll Right"
-                  aria-label="Scroll Right"
-                >
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <Link
-                to="/categories"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-none bg-[#0A1E3F] text-[#FAF7F0] hover:bg-[#152B52] transition-colors text-[11px] font-bold uppercase tracking-wider"
-              >
-                <span>All Categories</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
           </div>
         </div>
 
@@ -349,9 +302,10 @@ export default function HomePage() {
               onMouseLeave={() => setIsCategoryMarqueePaused(false)}
             >
               {[...categoriesList, ...categoriesList].map((category, idx) => (
-                <div
+                <Link
                   key={`${category.id}-${idx}`}
-                  className="w-[290px] sm:w-[320px] md:w-[335px] shrink-0 bg-[#FAF7F0] rounded-none p-4 md:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-2 group shadow-sm hover:shadow-[0_20px_45px_rgba(10,30,63,0.22)] border border-[#D6CDB8] hover:border-[#0A1E3F]"
+                  to={category.link}
+                  className="w-[290px] sm:w-[320px] md:w-[335px] shrink-0 bg-[#FAF7F0] rounded-none p-4 md:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-2 group shadow-sm hover:shadow-[0_20px_45px_rgba(10,30,63,0.22)] border border-[#D6CDB8] hover:border-[#0A1E3F] block"
                 >
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
@@ -389,18 +343,28 @@ export default function HomePage() {
                         {category.badge}
                       </span>
                     </div>
-                    <Link 
-                      to={category.link} 
-                      className="w-full bg-[#0A1E3F] hover:bg-[#152B52] active:scale-98 text-[#FAF7F0] transition-all duration-200 py-2.5 rounded-none font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-1.5 shadow-md text-center group-hover:shadow-[0_4px_16px_rgba(10,30,63,0.35)]"
+                    <div 
+                      className="w-full bg-[#0A1E3F] group-hover:bg-[#152B52] active:scale-98 text-[#FAF7F0] transition-all duration-200 py-2.5 rounded-none font-bold uppercase tracking-wider text-xs flex items-center justify-center gap-1.5 shadow-md text-center group-hover:shadow-[0_4px_16px_rgba(10,30,63,0.35)]"
                     >
                       <span>{category.cta}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Arrow Button Below Horizontal Animation taking to Categories Page */}
+        <div className="mt-8 md:mt-12 text-center flex justify-center px-4 relative z-10">
+          <Link
+            to="/categories"
+            className="inline-flex items-center justify-center gap-3 bg-[#0A1E3F] hover:bg-[#152B52] active:scale-95 text-[#FAF7F0] font-bold text-xs sm:text-sm uppercase tracking-widest px-8 sm:px-10 py-4 rounded-none shadow-xl shadow-[#0A1E3F]/20 transition-all group"
+          >
+            <span>Explore All Categories</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+          </Link>
         </div>
       </section>
 

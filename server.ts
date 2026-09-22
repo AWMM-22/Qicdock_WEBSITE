@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import { createServer as createViteServer } from "vite";
 import { createClient } from "@supabase/supabase-js";
-import { ShiprocketService } from "./src/services/shiprocketService.js";
+import { ShiprocketService } from "./src/services/shiprocketService";
 
 dotenv.config();
 
