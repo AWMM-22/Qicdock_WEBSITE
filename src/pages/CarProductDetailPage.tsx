@@ -115,12 +115,21 @@ export default function CarProductDetailPage() {
               Home
             </Link>
             <span className="text-gray-600">/</span>
-            <Link to="/category/vehicle-specific" className="hover:text-[#00C8EC] transition-colors">
-              Car Specific
+            <Link 
+              to={
+                product.category === 'Home & Office' 
+                  ? '/category/home-office' 
+                  : product.category === 'Car Specific' 
+                  ? '/category/vehicle-specific' 
+                  : '/categories'
+              } 
+              className="hover:text-[#00C8EC] transition-colors"
+            >
+              {product.category || 'Products'}
             </Link>
             <span className="text-gray-600">/</span>
             <span className="text-gray-200 font-medium truncate max-w-[280px] sm:max-w-md lg:max-w-lg">
-              {product.name}
+              {product.shortName || product.name}
             </span>
           </nav>
 
@@ -134,8 +143,8 @@ export default function CarProductDetailPage() {
               <ChevronLeft className="w-4 h-4" />
             </Link>
             <Link 
-              to="/category/vehicle-specific"
-              title="All Car Specific Models"
+              to="/categories"
+              title="All Categories & Docks"
               className="p-2 hover:text-[#00C8EC] hover:bg-white/5 rounded-lg transition-colors"
             >
               <LayoutGrid className="w-4 h-4" />
@@ -440,6 +449,69 @@ export default function CarProductDetailPage() {
             </div>
 
           </div>
+        </div>
+
+        {/* Product Description Section */}
+        {product.description && (
+          <div className="bg-[#181D26] border border-white/10 rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
+            <div className="border-b border-white/10 pb-4 mb-5">
+              <h2 className="text-xl sm:text-2xl font-['Anton'] tracking-wide text-white uppercase flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-[#00C8EC] inline-block" />
+                Description
+              </h2>
+            </div>
+            <div className="space-y-4 text-gray-300 text-sm sm:text-base leading-relaxed">
+              {product.description.split('\n\n').map((para, pIdx) => (
+                <p key={pIdx} className="text-gray-300">
+                  {para}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* About This Item Section */}
+        <div className="bg-[#181D26] border border-white/10 rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
+          <div className="border-b border-white/10 pb-4 mb-5">
+            <h2 className="text-xl sm:text-2xl font-['Anton'] tracking-wide text-white uppercase flex items-center gap-2">
+              <span className="w-2.5 h-2.5 bg-[#00C8EC] inline-block" />
+              About This Item
+            </h2>
+          </div>
+          <ul className="space-y-4 text-sm sm:text-base">
+            {(product.aboutThisItem || product.features).map((item, idx) => {
+              const boldMatch = item.match(/^(?:•\s*)?\*\*(.*?)\*\*\s*(.*)$/);
+              if (boldMatch) {
+                return (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-2 h-2 rounded-full bg-[#00C8EC] mt-2 flex-shrink-0 shadow-[0_0_8px_rgba(0,200,236,0.6)]" />
+                    <span className="leading-relaxed">
+                      <strong className="text-white font-bold">{boldMatch[1]} </strong>
+                      <span className="text-gray-300">{boldMatch[2]}</span>
+                    </span>
+                  </li>
+                );
+              }
+              const colonMatch = item.match(/^(?:•\s*)?([^:]+):\s*(.*)$/);
+              if (colonMatch) {
+                return (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-2 h-2 rounded-full bg-[#00C8EC] mt-2 flex-shrink-0 shadow-[0_0_8px_rgba(0,200,236,0.6)]" />
+                    <span className="leading-relaxed">
+                      <strong className="text-white font-bold">{colonMatch[1]}: </strong>
+                      <span className="text-gray-300">{colonMatch[2]}</span>
+                    </span>
+                  </li>
+                );
+              }
+              return (
+                <li key={idx} className="flex items-start gap-3">
+                  <span className="w-2 h-2 rounded-full bg-[#00C8EC] mt-2 flex-shrink-0 shadow-[0_0_8px_rgba(0,200,236,0.6)]" />
+                  <span className="text-gray-300 leading-relaxed">{item.replace(/^•\s*/, '')}</span>
+                </li>
+              );
+            })}
+          </ul>
         </div>
 
         {/* Technical Specifications & Fitment Details */}

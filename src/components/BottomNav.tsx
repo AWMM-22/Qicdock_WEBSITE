@@ -54,16 +54,6 @@ export default function BottomNav() {
       match: (pathname: string) => pathname.startsWith('/categories')
     },
     {
-      id: 'combo',
-      name: 'Combo',
-      path: '/category/all-in-one',
-      icon: Layers,
-      match: (pathname: string) => 
-        pathname.startsWith('/category/all-in-one') || 
-        pathname.startsWith('/category/car-combo') || 
-        pathname.startsWith('/category/home-office')
-    },
-    {
       id: 'about',
       name: 'About Us',
       path: '/about',

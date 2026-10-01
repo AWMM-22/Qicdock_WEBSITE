@@ -198,6 +198,63 @@ export const SEARCH_CATALOG: SearchItem[] = [
     tags: ['3xo', 'mahindra 3xo', 'xuv 3xo', 'mahindra', 'suv dock', 'console tray'],
     compatibility: ['Mahindra XUV 3XO', '3XO 2024', '3XO 2025']
   },
+  // Dedicated Charger Stand Setups
+  {
+    id: 'prod-wall-stand',
+    name: 'QicDock Wall Stand with 25W Wireless Charger',
+    category: 'Home & Office',
+    type: 'Charger',
+    description: 'QicDock Wall Stand with 25W Wireless Charging Pad + Wall Mount Phone Stand. Magnetic Safe iPhone Charger and space-saving charging dock.',
+    price: '₹2,098',
+    oldPrice: '₹2,298',
+    savings: 'Save ₹200',
+    image: wallStandImg,
+    link: '/product/wall-stand',
+    tags: ['wall stand', 'wall charger', '25w wireless', 'magsafe', 'iphone charger', 'space saving', 'home office', 'bedside'],
+    compatibility: ['Wall', 'Bedside', 'Office', 'All iPhones', 'Qi Devices']
+  },
+  {
+    id: 'prod-table-stand',
+    name: 'QicDock Table Stand with 25W Wireless Charger',
+    category: 'Home & Office',
+    type: 'Charger',
+    description: 'QicDock Table Stand with 25W Wireless Charging Pad + Desktop Phone Stand. Magnetic Safe iPhone Charger for home, office & bedside.',
+    price: '₹2,148',
+    oldPrice: '₹2,398',
+    savings: 'Save ₹250',
+    image: tableStandImg,
+    link: '/product/table-stand',
+    tags: ['table stand', 'desktop stand', '25w wireless', 'magsafe', 'iphone charger', 'workstation', 'bedside dock'],
+    compatibility: ['Desk', 'Workstation', 'Table', 'Bedside', 'All iPhones', 'Qi Devices']
+  },
+  {
+    id: 'prod-air-vent-stand',
+    name: 'QicDock Air Vent Stand with 25W Wireless Charger',
+    category: 'Car Navigation',
+    type: 'Charger',
+    description: 'QicDock Air Vent Stand with 25W Wireless Charging Pad + Car Vent Phone Mount. Magnetic Safe iPhone Charger for car navigation.',
+    price: '₹2,098',
+    oldPrice: '₹2,298',
+    savings: 'Save ₹200',
+    image: airVentImg,
+    link: '/product/air-vent-stand',
+    tags: ['air vent stand', 'car vent mount', '25w wireless', 'navigation dock', 'magsafe', 'iphone charger', 'car mount'],
+    compatibility: ['Air Vents', 'All Cars', 'All iPhones', 'Qi Devices']
+  },
+  {
+    id: 'prod-rear-passenger-stand',
+    name: 'QicDock Rear Passenger Seat Stand with 25W Wireless Charger',
+    category: 'Car Back Seat',
+    type: 'Charger',
+    description: 'QicDock Rear Passenger Seat Stand with 25W Wireless Charging Pad + Back Seat Phone Mount for family drives and road trips.',
+    price: '₹2,148',
+    oldPrice: '₹2,398',
+    savings: 'Save ₹250',
+    image: headrestMountImg,
+    link: '/product/rear-passenger-stand',
+    tags: ['rear passenger stand', 'back seat phone mount', 'headrest mount', '25w wireless', 'car charging dock', 'road trip'],
+    compatibility: ['Headrest Posts', 'Back Seat', 'All Cars', 'All iPhones', 'Qi Devices']
+  },
   {
     id: 'car-universal',
     name: 'Universal Automotive Charging Pad',

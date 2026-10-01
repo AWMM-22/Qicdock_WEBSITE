@@ -101,28 +101,32 @@ export default function RotatingHeadline({
 
   const currentWord = words[currentIndex] || '';
   const isGradient = gradientClassName.includes('gradient') || gradientClassName.includes('bg-');
+  const cleanStaticText = staticText.trim();
+
+  // In inline layout, dynamic word must pin to the start edge to prevent extra gap on shorter words
+  const dynamicJustifyClasses = layout === 'inline' ? 'justify-start text-left' : justifyClasses;
 
   return (
     <div
       id="rotating-headline-container"
       className={`select-none ${
         layout === 'stacked'
-          ? 'flex flex-col gap-2 sm:gap-3 md:gap-4'
-          : 'inline-flex flex-wrap items-baseline gap-x-2.5'
-      } ${alignmentClasses} ${className}`}
+          ? `flex flex-col gap-2 sm:gap-3 md:gap-4 ${alignmentClasses}`
+          : `inline-flex flex-nowrap items-baseline gap-x-1.5 sm:gap-x-2 md:gap-x-2.5 whitespace-nowrap ${alignmentClasses}`
+      } ${className}`}
     >
       {/* Static Text */}
       <span
         id="rotating-headline-static"
-        className={`tracking-tight ${staticTextClassName}`}
+        className={`tracking-tight shrink-0 ${staticTextClassName}`}
       >
-        {staticText}
+        {cleanStaticText}
       </span>
 
-      {/* Dynamic Rotating Word Container with generous breathing room and guaranteed width/height constraints */}
+      {/* Dynamic Rotating Word Container with guaranteed width/height constraints */}
       <span
         id="rotating-headline-dynamic-wrapper"
-        className={`relative inline-flex items-center ${justifyClasses} overflow-visible ${
+        className={`relative inline-flex items-center ${dynamicJustifyClasses} overflow-visible ${
           layout === 'stacked' ? 'mt-1 sm:mt-1.5 md:mt-2' : ''
         } h-[1.18em] leading-[1.05]`}
       >
@@ -142,7 +146,7 @@ export default function RotatingHeadline({
             initial="initial"
             animate="animate"
             exit="exit"
-            className={`absolute inset-0 flex items-center ${justifyClasses} overflow-visible`}
+            className={`absolute inset-0 flex items-center ${dynamicJustifyClasses} overflow-visible`}
             style={{
               willChange: 'transform, opacity, filter',
             }}

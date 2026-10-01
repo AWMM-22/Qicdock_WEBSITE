@@ -12,17 +12,8 @@ import combinedImg from '../assets/images/3in1 copy.webp';
 import RotatingHeadline from '../components/RotatingHeadline';
 
 export default function HomePage() {
-  const [isMarqueePaused, setIsMarqueePaused] = useState(false);
   const [isCategoryMarqueePaused, setIsCategoryMarqueePaused] = useState(false);
-  const marqueeContainerRef = useRef<HTMLDivElement>(null);
   const categoryMarqueeContainerRef = useRef<HTMLDivElement>(null);
-
-  const handleScrollMarquee = (direction: 'left' | 'right') => {
-    if (marqueeContainerRef.current) {
-      const scrollAmount = direction === 'left' ? -340 : 340;
-      marqueeContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
 
   const handleScrollCategoryMarquee = (direction: 'left' | 'right') => {
     if (categoryMarqueeContainerRef.current) {
@@ -106,77 +97,6 @@ export default function HomePage() {
     }
   ];
 
-  const smartCombos = [
-    {
-      id: 'ultimate-kit',
-      title: 'Ultimate All-in-One Kit',
-      subtitle: 'Every Mount Included',
-      tag: 'Best Value',
-      isFlagship: true,
-      img: combinedImg,
-      features: [
-        'Charger (₹1,999) + 5 Mounts',
-        'Desk, Wall, Vent, Rear Seat, Pad'
-      ],
-      regularPrice: 'Regular ₹3,694',
-      salePrice: '₹2,594',
-      savings: 'SAVE ₹1,100',
-      link: '/category/all-in-one',
-      cta: 'Get Ultimate Kit'
-    },
-    {
-      id: 'car-combo',
-      title: 'Car Combo Bundle',
-      subtitle: 'Front & Rear Vehicle Charging',
-      tag: 'Cockpit Ready',
-      isFlagship: false,
-      img: centerMountImg,
-      features: [
-        '1x Qicdock Core Charger',
-        'Console Pad + Vent Clip + Headrest'
-      ],
-      regularPrice: 'Regular ₹2,996',
-      salePrice: '₹2,346',
-      savings: 'SAVE ₹650',
-      link: '/category/car-combo',
-      cta: 'Get Car Pack'
-    },
-    {
-      id: 'home-office',
-      title: 'Home & Office Combo',
-      subtitle: 'Desk & Wall Mount Package',
-      tag: 'Workstation Setup',
-      isFlagship: false,
-      img: tableStandImg,
-      features: [
-        '1x Qicdock Core Charger',
-        'Weighted Stand + Magnetic Wall Base'
-      ],
-      regularPrice: 'Regular ₹2,697',
-      salePrice: '₹2,247',
-      savings: 'SAVE ₹450',
-      link: '/category/home-office',
-      cta: 'Get Workstation'
-    },
-    {
-      id: 'dual-charger',
-      title: 'Dual Charger Mega Pack',
-      subtitle: 'For Home & Car Setups',
-      tag: 'Special Value',
-      isFlagship: false,
-      img: combinedImg,
-      features: [
-        '2x Qicdock Core Chargers',
-        'All 5 Universal Mount Bases'
-      ],
-      regularPrice: 'Regular ₹5,693',
-      salePrice: '₹4,293',
-      savings: 'SAVE ₹1,400',
-      link: '/category/all-in-one',
-      cta: 'Get Mega Bundle'
-    }
-  ];
-
   useEffect(() => {
     trackPageView('Home');
   }, []);
@@ -202,19 +122,19 @@ export default function HomePage() {
         </div>
 
         {/* Foreground Content */}
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-10 flex flex-col md:flex-row justify-start md:justify-between items-center h-full gap-3 md:gap-8 mt-1 sm:mt-2 md:my-auto pt-0.5 sm:pt-1 md:pt-2">
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-10 flex flex-col md:flex-row justify-start md:justify-between items-center h-full gap-4 md:gap-8 mt-1 sm:mt-2 md:my-auto pt-0.5 sm:pt-1 md:pt-2">
           
           {/* Left Column (Desktop Only) */}
-          <div className="hidden md:flex flex-col justify-center w-1/2 z-20 md:pr-4 lg:pr-10 pt-0">
-            {/* Huge Stacked Text with Framer Motion Dynamic Rotating Words */}
+          <div className="hidden md:flex flex-col justify-center w-1/2 z-20 md:pr-2 lg:pr-6 pt-0">
+            {/* Single Line Text with Framer Motion Dynamic Rotating Words */}
             <div className="flex flex-col mb-8 lg:mb-10">
               <RotatingHeadline
-                layout="stacked"
+                layout="inline"
                 align="left"
                 staticText="Designed to"
                 words={['Charge', 'Mount', 'Drive', 'Adapt', 'Align', 'Connect', 'Power']}
-                staticTextClassName="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[1.0] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight"
-                dynamicTextClassName="text-[6.5vw] lg:text-[80px] xl:text-[95px] leading-[1.0] font-['Anton'] tracking-tight"
+                staticTextClassName="text-[4.8vw] lg:text-[68px] xl:text-[84px] leading-[1.0] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight whitespace-nowrap"
+                dynamicTextClassName="text-[4.8vw] lg:text-[68px] xl:text-[84px] leading-[1.0] font-['Anton'] tracking-tight whitespace-nowrap"
                 gradientClassName="text-[#0A1E3F]"
               />
             </div>
@@ -230,15 +150,15 @@ export default function HomePage() {
           {/* Right/Center Image & Mobile Layout */}
           <div className="flex-1 w-full md:w-1/2 flex flex-col items-center justify-center relative z-30">
             
-            {/* Mobile Title Stack with Framer Motion Dynamic Rotating Words */}
-            <div className="md:hidden flex flex-col items-center text-center w-full mb-3">
+            {/* Mobile Title in 1 line with Framer Motion Dynamic Rotating Words */}
+            <div className="md:hidden flex flex-col items-center text-center w-full mb-3 px-1">
               <RotatingHeadline
-                layout="stacked"
+                layout="inline"
                 align="center"
                 staticText="Designed to"
                 words={['Charge', 'Mount', 'Drive', 'Adapt', 'Align', 'Connect', 'Power']}
-                staticTextClassName="text-[12.5vw] xs:text-[46px] leading-[1.05] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase"
-                dynamicTextClassName="text-[12.5vw] xs:text-[46px] leading-[1.05] font-['Anton'] tracking-tight"
+                staticTextClassName="text-[9.5vw] xs:text-[38px] sm:text-[46px] leading-[1.05] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase whitespace-nowrap"
+                dynamicTextClassName="text-[9.5vw] xs:text-[38px] sm:text-[46px] leading-[1.05] font-['Anton'] tracking-tight whitespace-nowrap"
                 gradientClassName="text-[#0A1E3F]"
               />
             </div>
@@ -250,7 +170,7 @@ export default function HomePage() {
               loading="eager"
               fetchPriority="high"
               decoding="sync"
-              className="w-[88%] sm:w-[78%] md:w-[95%] lg:w-[90%] xl:w-[82%] max-w-[360px] sm:max-w-[440px] md:max-w-none max-h-[44vh] sm:max-h-[50vh] md:max-h-[540px] lg:max-h-[600px] object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.6)] md:drop-shadow-[-30px_30px_60px_rgba(0,0,0,0.8)] transform -rotate-[8deg] md:-rotate-[12deg] pointer-events-none my-2 md:my-0" 
+              className="w-[94%] sm:w-[86%] md:w-[105%] lg:w-[100%] xl:w-[96%] max-w-[420px] sm:max-w-[480px] md:max-w-[620px] lg:max-w-[700px] max-h-[50vh] sm:max-h-[56vh] md:max-h-[620px] lg:max-h-[680px] object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.65)] md:drop-shadow-[-35px_35px_70px_rgba(0,0,0,0.85)] transform -rotate-[8deg] md:-rotate-[12deg] pointer-events-none my-1 md:my-0" 
             />
             
             {/* Mobile-Only Subtitle and Button */}
@@ -272,9 +192,6 @@ export default function HomePage() {
         <div className="max-w-[1400px] mx-auto px-4 md:px-10">
           {/* Header */}
           <div className="text-center space-y-3 mb-8 md:mb-12 flex flex-col items-center">
-            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/25 px-4 py-2 rounded-none backdrop-blur-sm inline-block shadow-sm">
-              EXPLORE OUR ECOSYSTEM
-            </span>
             <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mt-2">
               Shop By <span className="text-[#0A1E3F] relative inline-block">
                 Categories
@@ -282,7 +199,7 @@ export default function HomePage() {
               </span>
             </h2>
             <p className="text-[#1A2C4F] text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium">
-              From modular all-in-one kits to vehicle-specific molded docks and workstation stands.
+              Need just a stand, a charger or the whole setup? Find what fits your space, your car and your everyday.
             </p>
           </div>
         </div>
@@ -362,7 +279,7 @@ export default function HomePage() {
             to="/categories"
             className="inline-flex items-center justify-center gap-3 bg-[#0A1E3F] hover:bg-[#152B52] active:scale-95 text-[#FAF7F0] font-bold text-xs sm:text-sm uppercase tracking-widest px-8 sm:px-10 py-4 rounded-none shadow-xl shadow-[#0A1E3F]/20 transition-all group"
           >
-            <span>Explore All Categories</span>
+            <span>Find your Qicdock</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
           </Link>
         </div>
@@ -379,7 +296,7 @@ export default function HomePage() {
                 AI-Guided Model Matcher
               </div>
               <h3 className="text-2xl sm:text-3xl font-['Anton'] text-[#0A1E3F] uppercase">
-                Need Help Matching Your Car?
+                Need help matching your Qicdock Wireless Dock?
               </h3>
               <p className="text-gray-600 text-xs sm:text-sm max-w-xl">
                 Chat with our assistant to match your exact console cavity and add the 25W Qi2 wireless dock directly to cart in seconds!
@@ -408,9 +325,14 @@ export default function HomePage() {
             <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
               PRECISION WIRELESS. <span className="text-[#0A1E3F]">ZERO CABLE CLUTTER.</span>
             </h2>
-            <p className="text-gray-700 text-sm sm:text-base leading-relaxed">
-              We engineer modular 25W Qi2 wireless charging systems designed to transition effortlessly between your vehicle, office workstation, and bedside. Built with aerospace-grade neodymium magnets and precision OEM molded bases.
-            </p>
+            <div className="space-y-3 text-gray-700 text-sm sm:text-base leading-relaxed">
+              <p>
+                Our everyday spaces are filled with things that make life more complicated than they need to be. Wires, separate accessories, multiple mounts and products that solve one problem while creating another.
+              </p>
+              <p>
+                QicDock was created to make things simpler. We wanted to bring together functionality, convenience and a premium feel without making everyday charging unnecessarily complicated or expensive.
+              </p>
+            </div>
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
               <div className="flex items-center gap-2 text-xs font-bold text-[#0A1E3F]">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
@@ -443,15 +365,9 @@ export default function HomePage() {
       <section className="bg-[#F4F0E6] text-[#0A1E3F] w-full py-16 md:py-20 px-4 sm:px-6 lg:px-10 border-t border-[#0A1E3F]/15">
         <div className="max-w-[1400px] mx-auto">
           <div className="text-center space-y-3 mb-12 max-w-3xl mx-auto">
-            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/25 px-4 py-2 rounded-none inline-block">
-              ENGINEERED ECOSYSTEM
-            </span>
             <h2 className="text-3xl md:text-5xl leading-tight font-['Anton'] tracking-tight text-[#0A1E3F] uppercase">
               Integrated Solutions for <span className="text-[#0A1E3F]">Every Space</span>
             </h2>
-            <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-              One universal 25W Qi2 charging engine designed to transition effortlessly between your vehicle cockpit, office desk, and wall.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -460,9 +376,9 @@ export default function HomePage() {
               <div className="w-12 h-12 rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300 mb-2">
                 <Smartphone className="w-6 h-6 stroke-[2]" />
               </div>
-              <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">On-Desk Adaptability</h3>
+              <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">Home + Office Versatility</h3>
               <p className="text-gray-600 leading-relaxed text-sm">
-                From a minimal phone stand to a full ergonomic workstation dock, the heavy aluminum base keeps your workspace wire-free.
+                Designed for both home and office setups. Switch QICDOCK between the wall mount and desk stand for convenient wireless charging wherever you work, relax or unwind.
               </p>
             </div>
 
@@ -473,7 +389,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">Seamless Automotive Fit</h3>
               <p className="text-gray-600 leading-relaxed text-sm">
-                Custom molded to fit your car console cavity or secure air vents with zero vibration, zero loose wires, and plug-and-play ease.
+                Take the same QICDOCK charger on the road. Switch between the AC vent, console dock and rear-seat mount for a setup that fits every journey.
               </p>
             </div>
 
@@ -482,166 +398,10 @@ export default function HomePage() {
               <div className="w-12 h-12 rounded-none bg-[#0A1E3F]/10 flex items-center justify-center border border-[#0A1E3F]/25 text-[#0A1E3F] group-hover:bg-[#0A1E3F] group-hover:text-[#FAF7F0] transition-colors duration-300 mb-2">
                 <Zap className="w-6 h-6 stroke-[2]" />
               </div>
-              <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">25W Qi2 Thermal Architecture</h3>
+              <h3 className="text-lg font-bold font-['Ubuntu'] tracking-wide text-[#0A1E3F]">Smarter Thermal Design</h3>
               <p className="text-gray-600 leading-relaxed text-sm">
-                Advanced heat dissipation and magnetic auto-alignment ensure optimal charging speeds without overheating your smartphone.
+                Designed for better heat management, QICDOCK places the PCB circuitry in the end connector rather than inside the main charging body, helping reduce heat around the charging pad during use.
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Best Value Combos Section */}
-      <section className="bg-[#EBE5D9] w-full py-16 md:py-24 border-t border-[#0A1E3F]/20 relative overflow-hidden">
-        {/* Ambient Navy subtle backlight */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-[#0A1E3F]/[0.03] rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-[1400px] mx-auto px-4 md:px-10">
-          {/* Header */}
-          <div className="text-center space-y-3 mb-8 md:mb-12 flex flex-col items-center">
-            <span className="text-[#0A1E3F] text-xs font-bold tracking-[0.2em] uppercase bg-[#0A1E3F]/10 border border-[#0A1E3F]/25 px-4 py-2 rounded-none backdrop-blur-sm inline-block shadow-sm">
-              SAVE UP TO ₹1,400 WITH BUNDLES
-            </span>
-            <h2 className="text-3xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase mt-2">
-              Smart Combos. <span className="text-[#0A1E3F] relative inline-block">
-                Bigger Savings.
-                <span className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F]/40 to-transparent" />
-              </span>
-            </h2>
-            <p className="text-[#1A2C4F] text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium">
-              Unlock instant discounts on mounts and accessories when you buy them together.
-            </p>
-
-            {/* Interactive Control Pill with Navy Blue theme */}
-            <div className="flex items-center justify-center gap-2 sm:gap-3 mt-4 pt-2">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] shadow-sm text-[11px] font-semibold text-[#0A1E3F]">
-                <span className={`w-2 h-2 rounded-full ${isMarqueePaused ? 'bg-amber-500' : 'bg-[#0A1E3F] animate-pulse'}`} />
-                <span>{isMarqueePaused ? 'Motion Paused' : 'Continuous Horizontal Glide'}</span>
-                <span className="text-gray-500 font-normal hidden sm:inline">• Hover cards to pause</span>
-              </div>
-
-              {/* Pause / Play Toggle */}
-              <button
-                onClick={() => setIsMarqueePaused(prev => !prev)}
-                className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
-                title={isMarqueePaused ? "Resume Motion" : "Pause Motion"}
-                aria-label={isMarqueePaused ? "Resume Motion" : "Pause Motion"}
-              >
-                {isMarqueePaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5 fill-current" />}
-              </button>
-
-              {/* Scroll Controls */}
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => handleScrollMarquee('left')}
-                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
-                  title="Scroll Left"
-                  aria-label="Scroll Left"
-                >
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => handleScrollMarquee('right')}
-                  className="p-1.5 rounded-none bg-[#FAF7F0] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
-                  title="Scroll Right"
-                  aria-label="Scroll Right"
-                >
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Horizontal Moving Marquee Track */}
-        <div className="relative w-full overflow-hidden">
-          {/* Edge Vignette / Gradient Masks for smooth entry & exit */}
-          <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-r from-[#EBE5D9] to-transparent z-20 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 md:w-28 bg-gradient-to-l from-[#EBE5D9] to-transparent z-20 pointer-events-none" />
-
-          {/* Scrollable Container with Continuous Conveyor */}
-          <div 
-            ref={marqueeContainerRef}
-            className="overflow-x-auto no-scrollbar py-4 px-4 sm:px-8 cursor-grab active:cursor-grabbing"
-          >
-            <div 
-              className={`flex gap-5 sm:gap-6 w-max ${isMarqueePaused ? '' : 'animate-combo-marquee'}`}
-              onMouseEnter={() => setIsMarqueePaused(true)}
-              onMouseLeave={() => setIsMarqueePaused(false)}
-            >
-              {/* Render 2 duplicate sets for smooth infinite loop */}
-              {[...smartCombos, ...smartCombos].map((combo, idx) => {
-                return (
-                  <div
-                    key={`${combo.id}-${idx}`}
-                    className={`w-[290px] sm:w-[320px] md:w-[335px] shrink-0 bg-[#FAF7F0] rounded-none p-4 md:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-2 group shadow-sm hover:shadow-[0_20px_45px_rgba(10,30,63,0.22)] ${
-                      combo.isFlagship 
-                        ? 'border-2 border-[#0A1E3F]' 
-                        : 'border border-[#D6CDB8] hover:border-[#0A1E3F]'
-                    }`}
-                  >
-                    {/* Top Navy Accent Shimmer on hover */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                    <div className="relative z-10 flex flex-col">
-                      <div className="mb-3">
-                        <span 
-                          className={`text-[9px] font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-none mb-1.5 inline-block transition-colors ${
-                            combo.isFlagship
-                              ? 'bg-[#0A1E3F] text-[#FAF7F0] shadow-sm'
-                              : 'bg-[#0A1E3F]/10 border border-[#0A1E3F]/20 text-[#0A1E3F]'
-                          }`}
-                        >
-                          {combo.tag}
-                        </span>
-                        <h3 className="text-base sm:text-lg font-bold text-[#0A1E3F] leading-snug group-hover:text-[#0A1E3F] transition-colors">
-                          {combo.title}
-                        </h3>
-                        <p className="text-[#1A2C4F] text-[11px] font-medium">{combo.subtitle}</p>
-                      </div>
-
-                      {/* Image container edge-to-edge with no padding */}
-                      <div className="w-full h-48 bg-transparent rounded-none border border-[#E2DAC8] mb-3.5 flex items-center justify-center overflow-hidden p-0 relative group-hover:border-[#0A1E3F]/40 transition-colors">
-                        <img 
-                          src={combo.img} 
-                          alt={combo.title} 
-                          loading="lazy" 
-                          decoding="async" 
-                          className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500" 
-                        />
-                      </div>
-
-                      {/* Feature specs with Navy Checkmarks */}
-                      <div className="space-y-1.5 mb-4 text-xs">
-                        {combo.features.map((feat, fIdx) => (
-                          <div key={fIdx} className="flex items-start gap-2 text-[#1A2C4F]">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#0A1E3F] shrink-0 mt-0.5" />
-                            <span className="leading-tight font-medium text-[11.5px]">{feat}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-auto pt-3 border-t border-[#E2DAC8] relative z-10">
-                      <div className="flex items-baseline justify-between mb-2.5">
-                        <div>
-                          <span className="text-gray-500 line-through text-xs block font-medium">{combo.regularPrice}</span>
-                          <span className="text-xl sm:text-2xl font-['Anton'] text-[#0A1E3F] tracking-wide leading-none">{combo.salePrice}</span>
-                        </div>
-                        <span className="bg-[#22C55E]/10 border border-[#22C55E]/30 text-[#15803d] text-[9px] font-bold px-2 py-1 rounded-none uppercase tracking-wider">
-                          {combo.savings}
-                        </span>
-                      </div>
-                      <Link 
-                        to={combo.link} 
-                        className="w-full bg-[#0A1E3F] hover:bg-[#152B52] active:scale-98 text-[#FAF7F0] transition-all duration-200 py-2.5 rounded-none font-bold uppercase tracking-wider text-xs flex items-center justify-center shadow-md text-center group-hover:shadow-[0_4px_16px_rgba(10,30,63,0.35)]"
-                      >
-                        {combo.cta}
-                      </Link>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </div>
         </div>

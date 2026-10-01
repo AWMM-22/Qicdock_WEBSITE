@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Filter } from 'lucide-react';
+import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Filter, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
+import { addToCart } from '../lib/cart';
 import airVentImg from '../assets/images/air_vent_mount.webp';
 import rearSeatImg from '../assets/images/headrest_mount.webp';
 import tableStandImg from '../assets/images/table_stand_mount.webp';
@@ -10,6 +11,7 @@ import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 
 interface ProductSetup {
   id: string;
+  slug: string;
   name: string;
   category: 'Car' | 'Workspace' | 'Home';
   fullPrice: string;
@@ -22,59 +24,64 @@ interface ProductSetup {
 
 const individualSetups: ProductSetup[] = [
   {
-    id: 'car-pad',
-    name: 'Car Charger + Center Console Pad',
-    category: 'Car',
-    fullPrice: '2,298',
-    specialPrice: '2,098',
-    savings: 'Save ₹200',
-    img: centerMountImg,
-    mountType: 'Direct Console Pad',
-    specs: ['25W Qi2 Core', 'High-Grip Silicone', 'Zero Wire Cut']
-  },
-  {
-    id: 'car-vent',
-    name: 'Car Air Vent 360° Magnetic Charger',
-    category: 'Car',
-    fullPrice: '2,298',
-    specialPrice: '2,098',
-    savings: 'Save ₹200',
-    img: airVentImg,
-    mountType: 'Air Vent Clip',
-    specs: ['Steel Vent Clamp', '360° Ball Pivot', 'Fast Cooling']
-  },
-  {
-    id: 'car-rear',
-    name: 'Car Rear Passenger Headrest Charger',
-    category: 'Car',
-    fullPrice: '2,398',
-    specialPrice: '2,148',
-    savings: 'Save ₹250',
-    img: rearSeatImg,
-    mountType: 'Headrest Post Mount',
-    specs: ['Solid Post Clamp', 'Landscape Mode', 'Passenger Ready']
-  },
-  {
-    id: 'table-stand',
-    name: 'Heavyweight Aluminum Table Stand Charger',
-    category: 'Workspace',
-    fullPrice: '2,398',
-    specialPrice: '2,148',
-    savings: 'Save ₹250',
-    img: tableStandImg,
-    mountType: 'Desk Stand Base',
-    specs: ['Solid Aluminum', '65° Viewing Angle', 'StandBy Ready']
-  },
-  {
-    id: 'wall-charger',
-    name: 'Ultra-Slim Magnetic Wall Charger',
+    id: 'wall-stand',
+    slug: 'wall-stand',
+    name: 'QicDock Wall Stand with 25W Wireless Charger',
     category: 'Home',
     fullPrice: '2,298',
     specialPrice: '2,098',
     savings: 'Save ₹200',
     img: wallStandImg,
-    mountType: 'Wall Flush Mount',
-    specs: ['3M VHB Tape Base', 'Bedside Friendly', 'Zero Footprint']
+    mountType: 'Wall Mount Stand',
+    specs: ['25W Qi2 Core', 'Magnetic Safe', 'Space Saving']
+  },
+  {
+    id: 'table-stand',
+    slug: 'table-stand',
+    name: 'QicDock Table Stand with 25W Wireless Charger',
+    category: 'Workspace',
+    fullPrice: '2,398',
+    specialPrice: '2,148',
+    savings: 'Save ₹250',
+    img: tableStandImg,
+    mountType: 'Desktop Phone Stand',
+    specs: ['Solid Aluminum', 'Upright Position', 'Home & Office']
+  },
+  {
+    id: 'air-vent-stand',
+    slug: 'air-vent-stand',
+    name: 'QicDock Air Vent Stand with 25W Wireless Charger',
+    category: 'Car',
+    fullPrice: '2,298',
+    specialPrice: '2,098',
+    savings: 'Save ₹200',
+    img: airVentImg,
+    mountType: 'Car Vent Mount',
+    specs: ['360° Ball Joint', 'Magnetic Alignment', 'For Navigation']
+  },
+  {
+    id: 'rear-passenger-stand',
+    slug: 'rear-passenger-stand',
+    name: 'QicDock Rear Passenger Seat Stand with 25W Wireless Charger',
+    category: 'Car',
+    fullPrice: '2,398',
+    specialPrice: '2,148',
+    savings: 'Save ₹250',
+    img: rearSeatImg,
+    mountType: 'Back Seat Mount',
+    specs: ['Headrest Post Clamp', 'Rear Passenger', 'Road Trips']
+  },
+  {
+    id: 'universal',
+    slug: 'universal',
+    name: 'Universal Automotive Wireless Phone Charger',
+    category: 'Car',
+    fullPrice: '3,299',
+    specialPrice: '2,098',
+    savings: 'Save ₹1,201',
+    img: centerMountImg,
+    mountType: 'Direct Console Pad',
+    specs: ['25W Qi2 Core', 'High-Grip Silicone', 'Zero Wire Cut']
   },
 ];
 
@@ -83,10 +90,20 @@ export default function IndividualChargers() {
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [addedItems, setAddedItems] = useState<{ [key: string]: boolean }>({});
 
-  const handleAddToCart = (id: string) => {
-    setAddedItems(prev => ({ ...prev, [id]: true }));
+  const handleAddToCart = (product: ProductSetup) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      variant: product.mountType,
+      price: parseInt(product.specialPrice.replace(/,/g, ''), 10) || 2098,
+      originalPrice: parseInt(product.fullPrice.replace(/,/g, ''), 10) || 2298,
+      quantity: 1,
+      image: product.img
+    });
+
+    setAddedItems(prev => ({ ...prev, [product.id]: true }));
     setTimeout(() => {
-      setAddedItems(prev => ({ ...prev, [id]: false }));
+      setAddedItems(prev => ({ ...prev, [product.id]: false }));
     }, 2500);
   };
 
@@ -168,7 +185,10 @@ export default function IndividualChargers() {
                   </div>
 
                   {/* Image Showcase */}
-                  <div className="w-full h-48 bg-[#F4F0E6] p-0 my-3 rounded-none border-y border-[#E2DAC8] flex items-center justify-center overflow-hidden">
+                  <Link 
+                    to={`/product/${product.slug}`}
+                    className="w-full h-48 bg-[#F4F0E6] p-0 my-3 rounded-none border-y border-[#E2DAC8] flex items-center justify-center overflow-hidden block group-hover:border-[#0A1E3F]/40 transition-colors"
+                  >
                     <img 
                       src={product.img} 
                       alt={product.name} 
@@ -176,13 +196,15 @@ export default function IndividualChargers() {
                       decoding="async" 
                       className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500" 
                     />
-                  </div>
+                  </Link>
 
                   {/* Info */}
                   <div className="px-5 pt-2 pb-4">
-                    <h3 className="font-bold text-sm sm:text-base text-[#0A1E3F] group-hover:text-[#0A1E3F] transition-colors leading-snug mb-3">
-                      {product.name}
-                    </h3>
+                    <Link to={`/product/${product.slug}`}>
+                      <h3 className="font-bold text-sm sm:text-base text-[#0A1E3F] group-hover:text-[#0A1E3F] transition-colors leading-snug mb-3">
+                        {product.name}
+                      </h3>
+                    </Link>
 
                     {/* Spec tags */}
                     <div className="flex flex-wrap gap-1.5 mb-4">
@@ -196,8 +218,8 @@ export default function IndividualChargers() {
                 </div>
 
                 {/* Bottom Pricing & Action */}
-                <div className="p-5 pt-0 border-t border-[#E2DAC8] mt-auto">
-                  <div className="flex items-baseline justify-between pt-3 mb-4">
+                <div className="p-5 pt-0 border-t border-[#E2DAC8] mt-auto space-y-2.5">
+                  <div className="flex items-baseline justify-between pt-3 mb-1">
                     <div>
                       <span className="text-[11px] text-gray-600 line-through block">
                         ₹{product.fullPrice}
@@ -212,7 +234,7 @@ export default function IndividualChargers() {
                   </div>
 
                   <button
-                    onClick={() => handleAddToCart(product.id)}
+                    onClick={() => handleAddToCart(product)}
                     disabled={isAdded || isSoldOut(product.id)}
                     className={`w-full ${isSoldOut(product.id) ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0A1E3F] hover:bg-[#152B52]'} text-[#F4F0E6] border border-transparent font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-80`}
                   >
@@ -230,6 +252,14 @@ export default function IndividualChargers() {
                       </>
                     )}
                   </button>
+
+                  <Link
+                    to={`/product/${product.slug}`}
+                    className="w-full text-center py-2 rounded-none text-[11px] font-bold uppercase tracking-wider text-[#0A1E3F] hover:bg-[#0A1E3F]/5 border border-[#0A1E3F]/20 transition-all flex items-center justify-center gap-1"
+                  >
+                    <span>View Product Details</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
                 </div>
               </div>
             );

@@ -7,6 +7,10 @@ import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
 import leftCarMountImg from '../assets/images/left_car_mount_1788721155876.webp';
 import rightCarMountImg from '../assets/images/right_car_mount_1788721169113.webp';
+import wallStandImg from '../assets/images/wall_stand_mount.webp';
+import tableStandImg from '../assets/images/table_stand_mount.webp';
+import airVentImg from '../assets/images/air_vent_mount.webp';
+import headrestMountImg from '../assets/images/headrest_mount.webp';
 
 export interface CarProduct {
   id: string;
@@ -26,6 +30,7 @@ export interface CarProduct {
   category: string;
   tags: string[];
   description: string;
+  aboutThisItem?: string[];
   features: string[];
   specs: {
     chargingSpeed: string;
@@ -378,12 +383,201 @@ export const CAR_PRODUCTS: CarProduct[] = [
       installation: 'Nano-Suction Surface Stick (Residue Free)',
       warranty: '1 Year Official Replacement Guarantee'
     }
+  },
+  {
+    id: 'wall-stand',
+    slug: 'wall-stand',
+    name: 'QicDock Wall Stand with 25W Wireless Charger | Charging Pad + Wall Mount Phone Stand | Magnetic Safe iPhone Charger | Space Saving Charging Dock for Home & Office',
+    shortName: 'QicDock Wall Stand 25W',
+    brand: 'Universal',
+    subtitle: 'Charging Pad + Wall Mount Phone Stand | Magnetic Safe iPhone Charger | Space Saving Charging Dock for Home & Office',
+    price: 2098,
+    originalPrice: 2298,
+    discountPercentage: '-9%',
+    isHot: false,
+    years: 'Bedside, Office & Home Walls',
+    slot: 'Dedicated Wall Mount Setup',
+    badge: 'Space Saving',
+    images: [
+      wallStandImg,
+      centerMountImg,
+      tableStandImg
+    ],
+    category: 'Home & Office',
+    tags: ['Wall Stand', 'Wireless Charger', 'Charging Pad', 'Wall Mount', 'Magnetic Safe', 'iPhone Charger', 'Space Saving', 'Home & Office'],
+    description: 'The QicDock Wall Stand with 25W Wireless Charging Pad creates a dedicated charging spot without taking up valuable desk or table space. The charging pad fits securely into the Wall Stand, giving you a clean setup for your home, office, bedside area, study space or any convenient wall location. Keep your phone in one familiar place instead of leaving it loose around the room.\n\nThe 25W wireless charging pad uses magnetic alignment to help position a compatible phone correctly on the charging surface. The wall-mounted setup keeps the phone visible and easy to access while charging, making it convenient for checking notifications or picking up your phone when needed. The compact design keeps the charging area neat while fitting naturally into your everyday space.',
+    aboutThisItem: [
+      '**25W Wireless Charging Pad + Wall Stand:** Includes one QicDock 25W wireless charging pad and a Wall Stand for a dedicated wall-mounted charging setup.',
+      '**Saves Table & Desk Space:** Moves your charging point onto the wall, helping keep desks, bedside tables and other surfaces clear and organised.',
+      '**Easy Phone Access:** Keeps your phone in a fixed, familiar location where it is easy to see, reach and pick up whenever needed.',
+      '**Magnetic Alignment:** The charging pad helps position a compatible phone correctly on the charging surface for convenient wireless charging.',
+      '**Home & Office Ready:** Suitable for bedrooms, workspaces, study areas, office desks and other indoor spaces where a dedicated charging point is useful.'
+    ],
+    features: [
+      '25W Wireless Charging Pad + Wall Stand: Includes one QicDock 25W wireless charging pad and a Wall Stand for a dedicated wall-mounted charging setup.',
+      'Saves Table & Desk Space: Moves your charging point onto the wall, helping keep desks, bedside tables and other surfaces clear and organised.',
+      'Easy Phone Access: Keeps your phone in a fixed, familiar location where it is easy to see, reach and pick up whenever needed.',
+      'Magnetic Alignment: The charging pad helps position a compatible phone correctly on the charging surface for convenient wireless charging.',
+      'Home & Office Ready: Suitable for bedrooms, workspaces, study areas, office desks and other indoor spaces where a dedicated charging point is useful.'
+    ],
+    specs: {
+      chargingSpeed: '25W Qi2 / MagSafe Fast Wireless Charging',
+      compatibility: 'All MagSafe iPhones & Qi Wireless Compatible Phones',
+      material: 'Heat-Dissipating Matte Polymer & 3M Damage-Free Mounting',
+      installation: 'Flush Wall Mount / Adhesive / Screws Included',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'table-stand',
+    slug: 'table-stand',
+    name: 'QicDock Table Stand with 25W Wireless Charger | Charging Pad + Desktop Phone Stand | Magnetic Safe iPhone Charger | Compact Charging Dock for Home, Office & Bedside',
+    shortName: 'QicDock Table Stand 25W',
+    brand: 'Universal',
+    subtitle: 'Charging Pad + Desktop Phone Stand | Magnetic Safe iPhone Charger | Compact Charging Dock for Home, Office & Bedside',
+    price: 2148,
+    originalPrice: 2398,
+    discountPercentage: '-10%',
+    isHot: true,
+    years: 'Desks, Workstations & Bedside Tables',
+    slot: 'Upright Desktop Stand Setup',
+    badge: 'Best Seller',
+    images: [
+      tableStandImg,
+      centerMountImg,
+      wallStandImg
+    ],
+    category: 'Home & Office',
+    tags: ['Table Stand', 'Desktop Stand', 'Wireless Charger', 'Charging Pad', 'Magnetic Safe', 'iPhone Charger', 'Bedside Dock'],
+    description: 'The QicDock Table Stand with 25W Wireless Charging Pad turns your everyday tabletop into a neat, dedicated charging station. The charging pad fits into the Table Stand, keeping your phone raised instead of lying flat on your desk or bedside table. It is designed for spaces where you regularly use your phone, whether you are working, studying, relaxing or getting ready for the day.\n\nThe 25W wireless charging pad uses magnetic alignment to help position a compatible phone correctly while charging. The upright stand keeps the screen easy to see and the phone within reach, so you can quickly check notifications, view the display or pick up your phone without disturbing the charging setup. Its compact footprint makes it easy to keep beside your laptop, on a work desk or next to your bed.',
+    aboutThisItem: [
+      '**25W Wireless Charging Pad + Table Stand:** Includes one QicDock 25W wireless charging pad and a Table Stand for an organised tabletop charging setup.',
+      '**Upright Phone Position:** Keeps your phone raised and visible while charging, rather than leaving it flat on your desk or bedside table.',
+      '**Easy to View & Reach:** Lets you quickly check the screen, notifications or other information while keeping your phone within comfortable reach.',
+      '**Compact Desktop Setup:** Designed to occupy minimal tabletop space while giving your phone a dedicated place to charge.',
+      '**For Home, Office & Bedside:** Ideal for work desks, study tables, bedside tables and other everyday indoor surfaces.'
+    ],
+    features: [
+      '25W Wireless Charging Pad + Table Stand: Includes one QicDock 25W wireless charging pad and a Table Stand for an organised tabletop charging setup.',
+      'Upright Phone Position: Keeps your phone raised and visible while charging, rather than leaving it flat on your desk or bedside table.',
+      'Easy to View & Reach: Lets you quickly check the screen, notifications or other information while keeping your phone within comfortable reach.',
+      'Compact Desktop Setup: Designed to occupy minimal tabletop space while giving your phone a dedicated place to charge.',
+      'For Home, Office & Bedside: Ideal for work desks, study tables, bedside tables and other everyday indoor surfaces.'
+    ],
+    specs: {
+      chargingSpeed: '25W Qi2 Peak Output (Supports Apple StandBy Mode)',
+      compatibility: 'All MagSafe iPhones & Qi-Enabled Android Devices',
+      material: 'Weighted CNC Aluminum Alloy & Anti-Slip Base',
+      installation: 'Desktop Stand-Alone Base (Zero Assembly)',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'air-vent-stand',
+    slug: 'air-vent-stand',
+    name: 'QicDock Air Vent Stand with 25W Wireless Charger | Charging Pad + Car Vent Phone Mount | Magnetic Safe iPhone Charger | Wireless Charging Dock for Car Navigation',
+    shortName: 'QicDock Air Vent Stand 25W',
+    brand: 'Universal',
+    subtitle: 'Charging Pad + Car Vent Phone Mount | Magnetic Safe iPhone Charger | Wireless Charging Dock for Car Navigation',
+    price: 2098,
+    originalPrice: 2298,
+    discountPercentage: '-9%',
+    isHot: true,
+    years: 'Horizontal & Vertical Car AC Vents',
+    slot: 'Air Vent Louver Mount',
+    badge: 'Navigation Ready',
+    images: [
+      airVentImg,
+      centerMountImg,
+      headrestMountImg
+    ],
+    category: 'Car Specific',
+    tags: ['Air Vent Stand', 'Car Vent Mount', 'Wireless Charger', 'Charging Pad', 'Magnetic Safe', 'Navigation Dock', 'Car Mount'],
+    description: 'The QicDock Air Vent Stand with 25W Wireless Charging Pad brings charging and phone positioning together in one compact car setup. The charging pad fits into the Air Vent Stand, keeping your phone within convenient view while driving without leaving it loose on the dashboard, seat or centre console. It is designed for everyday driving, navigation and journeys where having your phone accessible matters.\n\nThe 25W wireless charging pad uses magnetic alignment to help keep a compatible phone correctly positioned on the charging surface. The Air Vent Stand places the phone at a practical viewing position, making navigation easier to follow while helping keep the front of the car more organised. The magnetic connection helps maintain alignment during normal driving movement, including everyday road vibrations and bumps.',
+    aboutThisItem: [
+      '**25W Wireless Charging Pad + Air Vent Stand:** Includes one QicDock 25W wireless charging pad and an Air Vent Stand for a compact in-car charging setup.',
+      '**Made for Navigation:** Positions your phone within convenient view, making it easier to follow maps and navigation while driving.',
+      '**Magnetic Phone Alignment:** Helps keep a compatible phone centred on the charging pad for convenient wireless charging during the journey.',
+      '**Keeps the Dashboard Clear:** Combines phone mounting and charging in one setup, reducing loose cables and keeping the phone off the dashboard and seats.',
+      '**Secure Everyday Car Use:** Designed to keep the phone positioned on the stand during normal driving movement, including everyday road vibrations and bumps.'
+    ],
+    features: [
+      '25W Wireless Charging Pad + Air Vent Stand: Includes one QicDock 25W wireless charging pad and an Air Vent Stand for a compact in-car charging setup.',
+      'Made for Navigation: Positions your phone within convenient view, making it easier to follow maps and navigation while driving.',
+      'Magnetic Phone Alignment: Helps keep a compatible phone centred on the charging pad for convenient wireless charging during the journey.',
+      'Keeps the Dashboard Clear: Combines phone mounting and charging in one setup, reducing loose cables and keeping the phone off the dashboard and seats.',
+      'Secure Everyday Car Use: Designed to keep the phone positioned on the stand during normal driving movement, including everyday road vibrations and bumps.'
+    ],
+    specs: {
+      chargingSpeed: '25W Qi2 Rapid Induction Fast Charge',
+      compatibility: 'Universal Air Vents (Horizontal, Vertical, Slanted)',
+      material: 'Reinforced Steel Vent Clamp & Heat-Dissipating Core',
+      installation: '360° Rotatable Vent Blade Clamp (No Tools)',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'rear-passenger-stand',
+    slug: 'rear-passenger-stand',
+    name: 'QicDock Rear Passenger Seat Stand with 25W Wireless Charger | Charging Pad + Back Seat Phone Mount | Magnetic Safe iPhone Charger | Car Charging Dock for Rear Passengers',
+    shortName: 'QicDock Rear Seat Stand 25W',
+    brand: 'Universal',
+    subtitle: 'Charging Pad + Back Seat Phone Mount | Magnetic Safe iPhone Charger | Car Charging Dock for Rear Passengers',
+    price: 2148,
+    originalPrice: 2398,
+    discountPercentage: '-10%',
+    isHot: false,
+    years: 'All Vehicle Headrest Rods',
+    slot: 'Rear Headrest Post Mount',
+    badge: 'Passenger Comfort',
+    images: [
+      headrestMountImg,
+      centerMountImg,
+      airVentImg
+    ],
+    category: 'Car Specific',
+    tags: ['Rear Passenger Stand', 'Back Seat Phone Mount', 'Wireless Charger', 'Charging Pad', 'Magnetic Safe', 'Headrest Dock', 'Road Trip'],
+    description: 'The QicDock Rear Passenger Seat Stand with 25W Wireless Charging Pad gives passengers in the back seat a dedicated place to keep and charge their phone during the journey. The charging pad fits into the Rear Passenger Seat Stand, keeping the phone off the seat and within easy reach. It is useful for everyday family drives, long journeys and road trips where rear passengers need convenient access to their phones.\n\nThe 25W wireless charging pad uses magnetic alignment to help position a compatible phone correctly on the charging surface. The stand keeps the phone raised and accessible, making it easier for passengers to check notifications, view content or pick up the phone without constantly holding it. It also gives the back seat a more organised setup by creating a specific place for the phone while travelling.',
+    aboutThisItem: [
+      '**25W Wireless Charging Pad + Rear Passenger Stand:** Includes one QicDock 25W wireless charging pad and a Rear Passenger Seat Stand for convenient back-seat charging.',
+      '**Made for Rear Passengers:** Gives passengers in the back seat their own dedicated place to keep and charge their phone during the journey.',
+      '**Easy Viewing & Access:** Keeps the phone raised and within reach, making it convenient to check the screen or pick it up when needed.',
+      '**Keeps the Seat Organised:** Provides a dedicated spot for the phone instead of leaving it loose on the seat, in a pocket or between passengers.',
+      '**Ideal for Daily Drives & Road Trips:** A practical setup for family journeys, long drives and everyday travel where rear passengers need convenient phone access.'
+    ],
+    features: [
+      '25W Wireless Charging Pad + Rear Passenger Stand: Includes one QicDock 25W wireless charging pad and a Rear Passenger Seat Stand for convenient back-seat charging.',
+      'Made for Rear Passengers: Gives passengers in the back seat their own dedicated place to keep and charge their phone during the journey.',
+      'Easy Viewing & Access: Keeps the phone raised and within reach, making it convenient to check the screen or pick it up when needed.',
+      'Keeps the Seat Organised: Provides a dedicated spot for the phone instead of leaving it loose on the seat, in a pocket or between passengers.',
+      'Ideal for Daily Drives & Road Trips: A practical setup for family journeys, long drives and everyday travel where rear passengers need convenient phone access.'
+    ],
+    specs: {
+      chargingSpeed: '25W Qi2 Wireless Output (Quick Backseat Charge)',
+      compatibility: 'All Vehicles with Standard Headrest Posts',
+      material: 'Heavy-Duty Shock-Absorbing Steel Bracket & Polymer',
+      installation: 'Dual-Post Snap-Lock Clamp',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
   }
 ];
 
 export function getCarProductBySlug(slug: string): CarProduct | undefined {
   const clean = slug.toLowerCase().trim();
-  return CAR_PRODUCTS.find(p => p.slug === clean || p.id === clean);
+  const aliasMap: Record<string, string> = {
+    'wall-charger': 'wall-stand',
+    'wall': 'wall-stand',
+    'desk-stand': 'table-stand',
+    'table': 'table-stand',
+    'car-vent': 'air-vent-stand',
+    'vent': 'air-vent-stand',
+    'car-rear': 'rear-passenger-stand',
+    'rear': 'rear-passenger-stand',
+    'headrest': 'rear-passenger-stand',
+    'car-pad': 'universal'
+  };
+  const target = aliasMap[clean] || clean;
+  return CAR_PRODUCTS.find(p => p.slug === target || p.id === target || p.slug === clean || p.id === clean);
 }
 
 export function getRelatedCarProducts(currentId: string, count: number = 4): CarProduct[] {
