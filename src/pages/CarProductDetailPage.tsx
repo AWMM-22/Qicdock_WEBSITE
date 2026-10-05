@@ -273,11 +273,6 @@ export default function CarProductDetailPage() {
               </span>
             </div>
 
-            {/* Subtitle / Model Tagline */}
-            <div className="text-gray-300 text-sm sm:text-base font-normal leading-relaxed">
-              {product.subtitle}
-            </div>
-
             {/* Quantity Selector & Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               
@@ -587,61 +582,64 @@ export default function CarProductDetailPage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Horizontal Recommendations Track */}
+          <div className="flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar pb-4 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0">
             {relatedProducts.map((rel) => (
               <div 
                 key={rel.id}
-                className="bg-[#181D26] border-2 border-white/10 rounded-none p-5 hover:border-[#00C8EC]/70 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 shadow-lg"
+                className="w-[300px] sm:w-[360px] shrink-0 bg-[#181D26] border-2 border-white/10 rounded-none p-4 hover:border-[#00C8EC]/70 transition-all duration-300 group flex flex-col justify-between hover:-translate-y-1 shadow-lg"
               >
-                <div>
-                  {/* Badge & Years */}
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-none bg-[#00C8EC]/10 text-[#00C8EC] border border-[#00C8EC]/30">
-                      {rel.badge}
-                    </span>
-                    <span className="text-[11px] font-semibold text-gray-400">
-                      {rel.years}
-                    </span>
-                  </div>
-
-                  {/* Thumbnail Image */}
+                <div className="flex gap-3.5 mb-3">
+                  {/* Thumbnail on left */}
                   <Link 
                     to={`/product/${rel.slug}`} 
-                    className="block h-44 w-full bg-[#11141A] rounded-none border border-white/5 p-0 mb-4 overflow-hidden group-hover:border-[#00C8EC]/40 transition-colors"
+                    className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 bg-[#11141A] rounded-none border border-white/10 p-0 overflow-hidden group-hover:border-[#00C8EC]/40 transition-colors flex items-center justify-center"
                   >
                     <img 
                       src={rel.images[0]} 
-                      alt={rel.name}
-                      loading="lazy"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      alt={rel.name} 
+                      loading="lazy" 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
                     />
                   </Link>
 
-                  {/* Title & Slot */}
-                  <Link to={`/product/${rel.slug}`}>
-                    <h3 className="font-bold text-sm text-white group-hover:text-[#00C8EC] transition-colors line-clamp-2 mb-1">
-                      {rel.name}
-                    </h3>
-                  </Link>
-                  <p className="text-xs text-gray-400 mb-4 line-clamp-1">
-                    Fitment: {rel.slot}
-                  </p>
+                  {/* Info on right */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center justify-between gap-1 mb-1">
+                        <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-none bg-[#00C8EC]/10 text-[#00C8EC] border border-[#00C8EC]/30">
+                          {rel.badge}
+                        </span>
+                        <span className="text-[10px] font-semibold text-gray-400 truncate">
+                          {rel.years}
+                        </span>
+                      </div>
+                      <Link to={`/product/${rel.slug}`}>
+                        <h3 className="font-bold text-xs sm:text-sm text-white group-hover:text-[#00C8EC] transition-colors line-clamp-2 leading-tight">
+                          {rel.shortName || rel.name}
+                        </h3>
+                      </Link>
+                    </div>
+                    <p className="text-[11px] text-gray-400 line-clamp-1">
+                      Fit: {rel.slot}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Price & Action Link */}
-                <div className="pt-3 border-t border-white/10 mt-auto flex items-center justify-between">
+                <div className="pt-2.5 border-t border-white/10 mt-auto flex items-center justify-between">
                   <div>
-                    <span className="text-gray-400 text-[10px] line-through block">
+                    <span className="text-gray-400 text-[10px] line-through block leading-none">
                       ₹{rel.originalPrice.toLocaleString('en-IN')}
                     </span>
-                    <span className="text-lg font-bold text-[#00C8EC]">
+                    <span className="text-base sm:text-lg font-bold text-[#00C8EC] leading-tight">
                       ₹{rel.price.toLocaleString('en-IN')}
                     </span>
                   </div>
 
                   <Link 
                     to={`/product/${rel.slug}`}
-                    className="bg-[#00C8EC] hover:bg-[#20d8fa] text-black font-extrabold text-[11px] uppercase tracking-wider px-4 py-2 rounded-none transition-all"
+                    className="bg-[#00C8EC] hover:bg-[#20d8fa] text-black font-extrabold text-[10px] sm:text-[11px] uppercase tracking-wider px-3.5 py-1.5 rounded-none transition-all"
                   >
                     View Dock
                   </Link>

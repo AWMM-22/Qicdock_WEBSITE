@@ -11,6 +11,7 @@ import wallStandImg from '../assets/images/wall_stand_mount.webp';
 import tableStandImg from '../assets/images/table_stand_mount.webp';
 import airVentImg from '../assets/images/air_vent_mount.webp';
 import headrestMountImg from '../assets/images/headrest_mount.webp';
+import combinedImg from '../assets/images/3in1 copy.webp';
 
 export interface CarProduct {
   id: string;
@@ -559,6 +560,252 @@ export const CAR_PRODUCTS: CarProduct[] = [
       installation: 'Dual-Post Snap-Lock Clamp',
       warranty: '1 Year Official Replacement Guarantee'
     }
+  },
+  {
+    id: 'pad-base',
+    slug: 'pad-base',
+    name: 'QicDock Car Charging Pad Base | Console Dock Mount',
+    shortName: 'Car Pad Base',
+    brand: 'Universal',
+    subtitle: 'High-Friction Silicone Console Base for QicDock 25W Charging Core',
+    price: 299,
+    originalPrice: 499,
+    discountPercentage: '-40%',
+    isHot: false,
+    years: 'Universal All Vehicles',
+    slot: 'Center Console Tray / Dashboard Mat',
+    badge: 'Console Fit',
+    images: [
+      centerMountImg,
+      universalPadImg,
+      fronxEtcImg
+    ],
+    category: 'Stand-Alone Mounts',
+    tags: ['Pad Base', 'Console Mount', 'Silicone Base', 'Modular Mount', 'Qicdock Accessory'],
+    description: 'The QicDock Car Charging Pad Base provides a high-friction silicone console mat with an integrated cable guide channel. Specifically engineered to snap snugly around your Qicdock 25W wireless charging pad core, holding your phone firmly in place on any vehicle console or flat tray.',
+    aboutThisItem: [
+      '**Modular Base Design:** Snaps directly onto any standard Qicdock 25W wireless charging core.',
+      '**High-Friction Silicone:** Prevents movement and sliding even during sudden stops or sharp turns.',
+      '**Cable Routing Channel:** Keeps USB-C wiring neatly tucked away for a cleaner cockpit look.',
+      '**Universal Placement:** Fits all flat surfaces, console pockets, and dashboard trays without adhesive damage.'
+    ],
+    features: [
+      'Precision molded cavity for zero-rattle hold.',
+      'Heat-resistant automotive grade silicone.',
+      'Washable and reusable non-slip bottom surface.'
+    ],
+    specs: {
+      chargingSpeed: 'Houses 25W Core (Pass-Through Cable Routing)',
+      compatibility: 'Universal Console Cavities & Dashboards',
+      material: 'Premium Non-Slip Heat-Resistant Silicone',
+      installation: 'Drop-In (Zero Tools or Adhesive Required)',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'vent-base',
+    slug: 'vent-base',
+    name: 'QicDock Air Vent 360° Holder Base | Steel-Core Louver Mount',
+    shortName: 'Air Vent 360° Base',
+    brand: 'Universal',
+    subtitle: 'Steel-Core Vent Blade Clamp with Lockable 360° Rotating Ball Socket',
+    price: 299,
+    originalPrice: 499,
+    discountPercentage: '-40%',
+    isHot: true,
+    years: 'Horizontal & Vertical Car AC Vents',
+    slot: 'Air Vent Blades (Horizontal / Vertical)',
+    badge: 'Dashboard',
+    images: [
+      airVentImg,
+      centerMountImg,
+      headrestMountImg
+    ],
+    category: 'Stand-Alone Mounts',
+    tags: ['Vent Base', 'Air Vent Mount', '360 Base', 'Modular Mount', 'Qicdock Accessory'],
+    description: 'The QicDock Air Vent 360° Holder Base features a heavy-duty steel-core vent clamp with a lockable ball socket. Designed for horizontal, vertical, and diagonal AC louvers, it raises your Qicdock charger to eye level for optimal GPS navigation without blocking driver view.',
+    aboutThisItem: [
+      '**Steel-Core Tension Clamp:** Grips vent blades securely without scratching or slipping off.',
+      '**360° Ball Joint:** Easily switch between portrait and landscape navigation angles.',
+      '**Anti-Vibration Design:** Maintains phone stability on bumps, speed breakers, and rough roads.',
+      '**Universal Compatibility:** Compatible with 99% of vehicle air conditioning louvers.'
+    ],
+    features: [
+      'Rubberized silicone grip teeth protect vent slats.',
+      'Fast thumb-screw tightening mechanism.',
+      'Ultra-compact form factor maximizes airflow.'
+    ],
+    specs: {
+      chargingSpeed: 'Houses 25W Core (Open Air Flow Cooling)',
+      compatibility: 'Horizontal, Vertical, & Slanted AC Vents',
+      material: 'Reinforced Steel Core & Polymer Body',
+      installation: 'Twist-Lock Clamp (No Tools Required)',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'rear-base',
+    slug: 'rear-base',
+    name: 'QicDock Rear Seat Headrest Clamp Base | Back Seat Mount',
+    shortName: 'Headrest Clamp Base',
+    brand: 'Universal',
+    subtitle: 'Dual-Bracket Headrest Post Mount for Rear Passenger Charging & Entertainment',
+    price: 399,
+    originalPrice: 599,
+    discountPercentage: '-33%',
+    isHot: false,
+    years: 'All Vehicle Headrest Rods',
+    slot: 'Rear Seat Headrest Posts',
+    badge: 'Rear Row',
+    images: [
+      headrestMountImg,
+      centerMountImg,
+      airVentImg
+    ],
+    category: 'Stand-Alone Mounts',
+    tags: ['Headrest Base', 'Rear Seat Mount', 'Backseat Holder', 'Modular Mount', 'Qicdock Accessory'],
+    description: 'The QicDock Rear Seat Headrest Clamp Base locks onto front seat headrest posts, providing rear seat passengers with an eye-level magnetic charging mount for movie watching, video calls, and navigation during long road trips.',
+    aboutThisItem: [
+      '**Heavy-Duty Headrest Clamp:** Secures directly to standard headrest metal posts.',
+      '**Hands-Free Viewing:** Keeps back seat passengers entertained without holding the device.',
+      '**Swivel & Tilt Adjustability:** Full angle adjustment for kids and adult passengers alike.',
+      '**Quick Snap-Lock:** Easy installation and removal in seconds with zero tools.'
+    ],
+    features: [
+      'Dual-post shock absorbing clamp design.',
+      'Fits headrest rod diameters from 10mm to 16mm.',
+      'High-durability scratch-resistant matte polymer.'
+    ],
+    specs: {
+      chargingSpeed: 'Houses 25W Core (Fast Backseat Power)',
+      compatibility: 'All Vehicles with Standard Headrest Posts',
+      material: 'Shock-Resistant Polymer & Metal Fasteners',
+      installation: 'Snap-Lock Clamp (Zero Tools Required)',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'table-base',
+    slug: 'table-base',
+    name: 'QicDock Weighted Aluminum Table Stand Base | CNC Desktop Pedestal',
+    shortName: 'Table Stand Base',
+    brand: 'Universal',
+    subtitle: 'Solid CNC Aluminum Desk Pedestal with Non-Slip Rubber Base',
+    price: 399,
+    originalPrice: 599,
+    discountPercentage: '-33%',
+    isHot: true,
+    years: 'Universal Home & Office',
+    slot: 'Work Desk / Bedside Table',
+    badge: 'Desk Workstation',
+    images: [
+      tableStandImg,
+      wallStandImg,
+      combinedImg
+    ],
+    category: 'Stand-Alone Mounts',
+    tags: ['Table Base', 'Desk Stand Base', 'Aluminum Base', 'Modular Mount', 'Qicdock Accessory'],
+    description: 'The QicDock Weighted Aluminum Table Stand Base is crafted from precision CNC aluminum alloy with a non-slip weighted foundation. It holds your phone at an ergonomic 65-degree tilt for video calls, desktop notifications, and Apple StandBy mode.',
+    aboutThisItem: [
+      '**Solid CNC Aluminum:** Weighted base prevents tipping when attaching or removing phone.',
+      '**Ergonomic 65° Viewing Angle:** Ideal for desk work, Zoom conferences, and bedside alarms.',
+      '**Rubberized Footing:** Protects wood, glass, and laminate tabletops from scratches.',
+      '**Seamless Core Fit:** Snaps firmly around your Qicdock 25W wireless charging core.'
+    ],
+    features: [
+      'Anodized matte finish resistant to fingerprints and scratches.',
+      'Cable routing cutout hides USB-C cable behind the stand.',
+      'Compact footprint leaves plenty of desk space.'
+    ],
+    specs: {
+      chargingSpeed: 'Houses 25W Core (Optimized for Apple StandBy)',
+      compatibility: 'Any Flat Desktop, Workstation, or Bedside Table',
+      material: 'Aircraft-Grade CNC Aluminum Alloy',
+      installation: 'Ready Out-of-the-Box (Stand-Alone)',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'wall-base',
+    slug: 'wall-base',
+    name: 'QicDock Flush Wall & Nightstand Magnetic Base | 3M VHB Mount',
+    shortName: 'Wall Mount Base',
+    brand: 'Universal',
+    subtitle: 'Low-Profile Flush Wall Dock Plate with Damage-Free 3M VHB Adhesive',
+    price: 299,
+    originalPrice: 499,
+    discountPercentage: '-40%',
+    isHot: false,
+    years: 'Universal Indoor Walls & Tiles',
+    slot: 'Wall / Bedside Tile / Kitchen Cabinet',
+    badge: 'Bedside',
+    images: [
+      wallStandImg,
+      tableStandImg,
+      combinedImg
+    ],
+    category: 'Stand-Alone Mounts',
+    tags: ['Wall Base', 'Wall Mount Base', 'Bedside Base', 'Modular Mount', 'Qicdock Accessory'],
+    description: 'The QicDock Flush Wall & Nightstand Magnetic Base mounts directly to walls, bedside panels, kitchen tiles, and workshop surfaces. Equipped with ultra-strong damage-free 3M VHB adhesive to keep your charging dock elevated and off cluttered countertops.',
+    aboutThisItem: [
+      '**Space Saving Elevation:** Frees up nightstands, desks, and kitchen counter space.',
+      '**Damage-Free 3M VHB Adhesive:** High-strength bond adheres securely to smooth indoor surfaces.',
+      '**Flush Minimalist Look:** Blends seamlessly into modern bedroom, kitchen, and office decor.',
+      '**Quick Detach Core:** Allows your charging core to snap in and out effortlessly.'
+    ],
+    features: [
+      'Low profile ultra-thin mounting plate.',
+      'Includes surface cleaning pad and extra 3M adhesive strips.',
+      'Engineered for portrait and landscape wall docking.'
+    ],
+    specs: {
+      chargingSpeed: 'Houses 25W Core (Direct Wall Power)',
+      compatibility: 'Drywall, Ceramic Tile, Wood, Laminate, Metal',
+      material: 'Reinforced Heat-Resistant Polymer',
+      installation: '3M VHB Peel-and-Stick (Zero Drilling)',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
+  },
+  {
+    id: 'gan-adapter',
+    slug: 'gan-adapter',
+    name: 'QicDock 45W GaN Dual USB-C Fast Car Charger | 12V Socket Adapter',
+    shortName: '45W GaN Car Charger',
+    brand: 'Universal',
+    subtitle: 'High-Density Miniature 12V Car Plug with PD 3.0 & PPS Fast Power',
+    price: 499,
+    originalPrice: 799,
+    discountPercentage: '-38%',
+    isHot: true,
+    years: 'All 12V / 24V Car Sockets',
+    slot: '12V Cigarette Lighter Socket',
+    badge: 'Fast Power',
+    images: [
+      centerMountImg,
+      universalPadImg,
+      fronxEtcImg
+    ],
+    category: 'Stand-Alone Mounts',
+    tags: ['GaN Charger', 'Car Adapter', 'USB-C Car Charger', '45W Adapter', 'Qicdock Accessory'],
+    description: 'The QicDock 45W GaN Dual USB-C Fast Car Charger delivers ultra-fast, energy-efficient power in a miniature flush profile that sits flat in your vehicle 12V accessory socket. Powered by next-gen Gallium Nitride (GaN) semiconductor technology to supply full 25W wireless charging speeds to your Qicdock pad with zero thermal throttling.',
+    aboutThisItem: [
+      '**45W GaN Power Delivery:** Powers your Qicdock 25W charger while fast-charging a second device.',
+      '**Dual USB-C Ports:** Allows concurrent high-speed charging for driver and passenger.',
+      '**Miniature Flush Fit:** Sits almost flush with 12V lighter sockets with folding pull-ring.',
+      '**Comprehensive Protection:** Protects against over-current, over-voltage, and short circuits.'
+    ],
+    features: [
+      'Next-Gen GaN III Semiconductor efficiency.',
+      'Supports Power Delivery 3.0, PPS, and Quick Charge 4+.',
+      'Soft blue LED ring for easy night-time plug-in.'
+    ],
+    specs: {
+      chargingSpeed: '45W Max Total (PD 3.0 / PPS / QC 4.0)',
+      compatibility: 'Universal 12V / 24V Car Accessory Sockets',
+      material: 'Fireproof Polycarbonate & Aluminum Bezel',
+      installation: 'Plug-and-Play into 12V Socket',
+      warranty: '1 Year Official Replacement Guarantee'
+    }
   }
 ];
 
@@ -574,7 +821,19 @@ export function getCarProductBySlug(slug: string): CarProduct | undefined {
     'car-rear': 'rear-passenger-stand',
     'rear': 'rear-passenger-stand',
     'headrest': 'rear-passenger-stand',
-    'car-pad': 'universal'
+    'car-pad': 'universal',
+    'pad-base': 'pad-base',
+    'vent-base': 'vent-base',
+    'rear-base': 'rear-base',
+    'table-base': 'table-base',
+    'wall-base': 'wall-base',
+    'gan-adapter': 'gan-adapter',
+    'sa-vent': 'vent-base',
+    'sa-table': 'table-base',
+    'sa-wall': 'wall-base',
+    'sa-rear': 'rear-base',
+    'sa-pad': 'pad-base',
+    'sa-gan': 'gan-adapter'
   };
   const target = aliasMap[clean] || clean;
   return CAR_PRODUCTS.find(p => p.slug === target || p.id === target || p.slug === clean || p.id === clean);

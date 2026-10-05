@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MessageSquare, X, Send, Car, Sparkles, Check, CheckCircle2, Zap, ShoppingBag, ArrowRight, RotateCcw, ChevronDown, ShieldCheck, ExternalLink, Phone, Tag, Loader2 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
 import { addToCart, setAppliedCoupon } from '../lib/cart';
 import { trackAssistantOpen, trackAssistantAnswer, trackAddToCart as trackAnalyticsAddToCart, trackComboUpgrade } from '../lib/analytics';
@@ -226,6 +226,29 @@ export default function CarFinderChatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { isSoldOut } = useInventory();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Dynamic position tracking: sits lower at bottom edge initially, then shifts up when BottomNav appears
+  const [isBottomNavActive, setIsBottomNavActive] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    return location.pathname !== '/' || window.scrollY > Math.min(window.innerHeight * 0.4, 280);
+  });
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setIsBottomNavActive(true);
+      return;
+    }
+
+    const handleScroll = () => {
+      const threshold = Math.min(window.innerHeight * 0.4, 280);
+      setIsBottomNavActive(window.scrollY > threshold);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
 
   // Deal Optimization Flow State
   const [recommendedProduct, setRecommendedProduct] = useState<CarProduct | null>(null);
@@ -571,8 +594,14 @@ export default function CarFinderChatbot() {
 
   return (
     <>
-      {/* Floating Trigger Button (Compact pill with circular logo badge, positioned cleanly in the bottom corner) */}
-      <div className="fixed bottom-[74px] md:bottom-6 right-3 sm:right-6 z-40 md:z-50 pointer-events-none">
+      {/* Floating Trigger Button (Positioned down near bottom edge initially on mobile so it doesn't overlap Explore Categories, and moves up smoothly above BottomNav when user scrolls) */}
+      <div 
+        className={`fixed right-3 sm:right-6 z-40 md:z-50 pointer-events-none transition-all duration-300 ease-out ${
+          isBottomNavActive 
+            ? 'bottom-[76px] sm:bottom-[84px] md:bottom-6' 
+            : 'bottom-3 sm:bottom-4 md:bottom-6'
+        }`}
+      >
         <button
           onClick={() => { setIsOpen(!isOpen); setHasOpenedBefore(true); }}
           className={`pointer-events-auto flex items-center gap-2 shadow-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer select-none rounded-full border-2 ${
@@ -610,7 +639,13 @@ export default function CarFinderChatbot() {
 
       {/* Chatbot Window */}
       {isOpen && (
-        <div className="fixed bottom-24 sm:bottom-24 right-3 sm:right-6 z-50 w-[94vw] sm:w-[420px] max-w-[420px] h-[580px] max-h-[80vh] bg-[#FAF7F0] border border-[#D6CDB8] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
+        <div 
+          className={`fixed right-3 sm:right-6 z-50 w-[94vw] sm:w-[420px] max-w-[420px] h-[580px] max-h-[80vh] bg-[#FAF7F0] border border-[#D6CDB8] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300 ${
+            isBottomNavActive 
+              ? 'bottom-[76px] sm:bottom-[84px] md:bottom-20' 
+              : 'bottom-16 sm:bottom-20 md:bottom-20'
+          }`}
+        >
           
           {/* Header */}
           <div className="bg-[#0A1E3F] text-[#F4F0E6] p-4 flex items-center justify-between border-b border-[#0A1E3F]/40 shrink-0">

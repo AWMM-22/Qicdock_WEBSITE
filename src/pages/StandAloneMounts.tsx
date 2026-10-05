@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Plus, ShoppingBag } from 'lucide-react';
+import { ArrowLeft, Zap, Shield, Sparkles, CheckCircle2, Truck, Plus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useInventory } from '../context/InventoryContext';
+import { addToCart } from '../lib/cart';
 import airVentImg from '../assets/images/air_vent_mount.webp';
 import headrestMountImg from '../assets/images/headrest_mount.webp';
 import tableStandImg from '../assets/images/table_stand_mount.webp';
@@ -93,10 +94,18 @@ export default function StandAloneMounts() {
     ? standaloneBases
     : standaloneBases.filter(item => item.category === selectedFilter);
 
-  const handleAddToCart = (id: string) => {
-    setAddedItems(prev => ({ ...prev, [id]: true }));
+  const handleAddToCart = (item: MountItem) => {
+    addToCart({
+      id: item.id,
+      name: item.name,
+      variant: item.category,
+      price: item.price,
+      originalPrice: item.originalPrice,
+      image: item.img
+    });
+    setAddedItems(prev => ({ ...prev, [item.id]: true }));
     setTimeout(() => {
-      setAddedItems(prev => ({ ...prev, [id]: false }));
+      setAddedItems(prev => ({ ...prev, [item.id]: false }));
     }, 2500);
   };
 
@@ -173,7 +182,10 @@ export default function StandAloneMounts() {
                   </div>
 
                   {/* Image */}
-                  <div className="w-full h-48 bg-[#F4F0E6] rounded-none border border-[#E2DAC8] p-0 flex items-center justify-center mb-5 overflow-hidden">
+                  <Link 
+                    to={`/product/${item.id}`}
+                    className="w-full h-48 bg-[#F4F0E6] rounded-none border border-[#E2DAC8] p-0 flex items-center justify-center mb-5 overflow-hidden block group-hover:border-[#0A1E3F]/40 transition-colors"
+                  >
                     <img
                       src={item.img}
                       alt={item.name}
@@ -181,12 +193,14 @@ export default function StandAloneMounts() {
                       decoding="async"
                       className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500"
                     />
-                  </div>
+                  </Link>
 
                   {/* Title & Description */}
-                  <h3 className="font-bold text-base text-[#0A1E3F] group-hover:text-[#0A1E3F] transition-colors mb-2">
-                    {item.name}
-                  </h3>
+                  <Link to={`/product/${item.id}`} className="block">
+                    <h3 className="font-bold text-base text-[#0A1E3F] group-hover:text-[#0A1E3F] transition-colors mb-2 line-clamp-2">
+                      {item.name}
+                    </h3>
+                  </Link>
                   <p className="text-xs text-gray-600 leading-relaxed mb-6">
                     {item.description}
                   </p>
@@ -214,29 +228,38 @@ export default function StandAloneMounts() {
                     )}
                   </div>
 
-                  <button
-                    onClick={() => handleAddToCart(item.id)}
-                    disabled={isSoldOut(item.id)}
-                    className={`w-full font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-2 shadow-sm ${
-                      isSoldOut(item.id)
-                        ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
-                        : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
-                    }`}
-                  >
-                    {isSoldOut(item.id) ? (
-                      <span>Sold Out Currently</span>
-                    ) : isAdded ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                        <span>Added to Cart!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>Buy Mount Only (₹{item.price})</span>
-                      </>
-                    )}
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      disabled={isSoldOut(item.id)}
+                      className={`w-full font-bold uppercase tracking-wider py-3 rounded-none text-xs transition-all flex items-center justify-center gap-2 shadow-sm ${
+                        isSoldOut(item.id)
+                          ? 'bg-red-50 text-red-600 border border-red-200 cursor-not-allowed'
+                          : 'bg-[#0A1E3F] text-[#F4F0E6] hover:bg-[#152B52] border border-transparent cursor-pointer'
+                      }`}
+                    >
+                      {isSoldOut(item.id) ? (
+                        <span>Sold Out Currently</span>
+                      ) : isAdded ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <span>Added to Cart!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Buy Mount Only (₹{item.price})</span>
+                        </>
+                      )}
+                    </button>
+                    <Link
+                      to={`/product/${item.id}`}
+                      className="w-full text-center py-2 text-xs font-bold uppercase tracking-wider text-[#0A1E3F] hover:bg-[#0A1E3F]/5 transition-colors border border-[#0A1E3F]/20 flex items-center justify-center gap-1"
+                    >
+                      <span>View Specifications</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             );
