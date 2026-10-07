@@ -28,7 +28,6 @@ const DEFAULT_WORDS = [
   'Drive',
   'Adapt',
   'Align',
-  'Connect',
   'Power',
 ];
 

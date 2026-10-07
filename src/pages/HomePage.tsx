@@ -4,10 +4,18 @@ import { Search, User, ShoppingBag, ChevronDown, Car, Smartphone, Check, Refresh
 import { trackPageView } from '../lib/analytics';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import centerMountTransparentImg from '../assets/images/center-mount-transparent.webp';
+import sharedHeroImg from '../assets/images/shared image.jpg';
 import airVentImg from '../assets/images/air_vent_mount.webp';
+import airVentJpg from '../assets/images/air_vent_mount.jpg';
 import headrestMountImg from '../assets/images/headrest_mount.webp';
+import headrestMountJpg from '../assets/images/headrest_mount.jpg';
 import tableStandImg from '../assets/images/table_stand_mount.webp';
+import tableStandJpg from '../assets/images/table_stand_mount.jpg';
 import wallStandImg from '../assets/images/wall_stand_mount.webp';
+import wallStandJpg from '../assets/images/wall_stand_mount.jpg';
+import m3Webp from '../assets/images/m3.webp';
+import leftCarMountImg from '../assets/images/left_car_mount_1788721155876.webp';
+import rightCarMountImg from '../assets/images/right_car_mount_1788721169113.webp';
 import combinedImg from '../assets/images/3in1 copy.webp';
 import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
 import ertigaImg from '../assets/images/Ertiga.webp';
@@ -31,15 +39,15 @@ interface CategoryItem {
 
 export default function HomePage() {
   const [openCategoryId, setOpenCategoryId] = useState<string | null>(null);
-  const [pausedCategories, setPausedCategories] = useState<Record<string, boolean>>({});
+  const [playingCategories, setPlayingCategories] = useState<Record<string, boolean>>({});
   const marqueeRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const toggleCategory = (id: string) => {
     setOpenCategoryId(prev => (prev === id ? null : id));
   };
 
-  const togglePause = (id: string) => {
-    setPausedCategories(prev => ({ ...prev, [id]: !prev[id] }));
+  const togglePlay = (id: string) => {
+    setPlayingCategories(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
   const handleScrollDrawer = (id: string, direction: 'left' | 'right') => {
@@ -441,7 +449,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <main className="relative flex flex-col justify-start md:justify-center items-center overflow-hidden min-h-[calc(100svh-4.5rem)] sm:min-h-[calc(100vh-5rem)] pt-2 sm:pt-4 md:pt-6 pb-12 sm:pb-16 md:pb-20">
+      <main className="relative flex flex-col justify-center items-center overflow-hidden min-h-[calc(100svh-4.5rem)] sm:min-h-[calc(100vh-5rem)] pt-3 pb-16 sm:pt-6 sm:pb-12 md:pt-8 md:pb-14">
         
         {/* Abstract Background Curves */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-[0.04]">
@@ -458,76 +466,142 @@ export default function HomePage() {
           </svg>
         </div>
 
-        {/* Foreground Content */}
-        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 md:px-8 lg:px-10 flex flex-col md:flex-row justify-start md:justify-between items-center h-full gap-4 md:gap-8 mt-1 sm:mt-2 md:my-auto pt-1 sm:pt-2 md:pt-3">
+        {/* Foreground Content - Centered Layout with tight spacing */}
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 flex flex-col items-center justify-center text-center">
           
-          {/* Left Column (Desktop Only) */}
-          <div className="hidden md:flex flex-col justify-center w-1/2 z-20 md:pr-2 lg:pr-6 pt-0">
-            {/* Single Line Text with Framer Motion Dynamic Rotating Words - Increased Size */}
-            <div className="flex flex-col mb-8 lg:mb-10">
-              <RotatingHeadline
-                layout="inline"
-                align="left"
-                staticText="Designed to"
-                words={['Charge', 'Mount', 'Drive', 'Adapt', 'Align', 'Connect', 'Power']}
-                staticTextClassName="text-[5.4vw] lg:text-[76px] xl:text-[92px] leading-[1.0] font-['Anton'] text-[#0A1E3F] uppercase tracking-tight whitespace-nowrap"
-                dynamicTextClassName="text-[5.4vw] lg:text-[76px] xl:text-[92px] leading-[1.0] font-['Anton'] tracking-tight whitespace-nowrap"
-                gradientClassName="text-[#0A1E3F]"
-              />
-            </div>
-            
-            {/* Action button */}
-            <div className="mt-4 lg:mt-6">
-              <Link to="/categories" className="inline-flex items-center justify-center bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-sm uppercase tracking-widest px-10 py-4 rounded-none shadow-xl shadow-[#0A1E3F]/20 transition-all hover:-translate-y-1">
-                Explore Categories
-              </Link>
-            </div>
+          {/* Centered Headline in 1 line with dynamic rotating words - positioned more upward */}
+          <div className="flex flex-col items-center justify-center text-center w-full -mt-2 sm:-mt-4 md:-mt-6 mb-3 sm:mb-5 md:mb-6 px-2 z-20">
+            <RotatingHeadline
+              layout="inline"
+              align="center"
+              staticText="Designed to"
+              words={['Charge', 'Mount', 'Drive', 'Adapt', 'Align', 'Power']}
+              staticTextClassName="text-[9.5vw] xs:text-[48px] sm:text-[64px] md:text-[80px] lg:text-[96px] xl:text-[108px] leading-[1.0] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase whitespace-nowrap text-center"
+              dynamicTextClassName="text-[9.5vw] xs:text-[48px] sm:text-[64px] md:text-[80px] lg:text-[96px] xl:text-[108px] leading-[1.0] font-['Anton'] tracking-tight whitespace-nowrap text-center"
+              gradientClassName="text-[#0A1E3F]"
+            />
           </div>
 
-          {/* Right/Center Image & Mobile Layout */}
-          <div className="flex-1 w-full md:w-1/2 flex flex-col items-center justify-center relative z-30">
+          {/* Redesigned Bento Card Theme Grid */}
+          <div className="w-full max-w-[460px] sm:max-w-[540px] md:max-w-[620px] lg:max-w-[680px] mx-auto grid grid-cols-2 gap-2.5 sm:gap-3.5 relative z-30 mt-1 sm:mt-2 mb-4 sm:mb-6">
             
-            {/* Mobile Title in 1 line with Framer Motion Dynamic Rotating Words - Increased Size */}
-            <div className="md:hidden flex flex-col items-center text-center w-full mb-4 px-1">
-              <RotatingHeadline
-                layout="inline"
-                align="center"
-                staticText="Designed to"
-                words={['Charge', 'Mount', 'Drive', 'Adapt', 'Align', 'Connect', 'Power']}
-                staticTextClassName="text-[10vw] xs:text-[42px] sm:text-[52px] leading-[1.05] font-['Anton'] text-[#0A1E3F] tracking-tight uppercase whitespace-nowrap"
-                dynamicTextClassName="text-[10vw] xs:text-[42px] sm:text-[52px] leading-[1.05] font-['Anton'] tracking-tight whitespace-nowrap"
-                gradientClassName="text-[#0A1E3F]"
-              />
-            </div>
-
-            {/* Hero Image with increased scale and positioned slightly lower */}
-            <div className="w-full flex items-center justify-center mt-2 sm:mt-4 md:mt-8">
+            {/* Card 1: PRODUCT CLOSEUP (Span 2 Columns - Edge-to-Edge Flush Cover) */}
+            <Link
+              to="/product/pad-base"
+              className="col-span-2 relative group overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-[#D6CDB8] hover:border-[#0A1E3F] bg-[#FAF7F0] shadow-[0_8px_25px_rgba(10,30,63,0.08)] hover:shadow-[0_14px_35px_rgba(10,30,63,0.18)] transition-all duration-300 aspect-[2.1/1] sm:aspect-[2.2/1] p-0 m-0 block cursor-pointer"
+            >
               <img 
-                src={centerMountTransparentImg} 
-                alt="QicDock Stand" 
+                src={m3Webp} 
+                alt="Product Closeup" 
                 loading="eager"
                 fetchPriority="high"
                 decoding="sync"
-                className="w-[96%] sm:w-[90%] md:w-[112%] lg:w-[108%] xl:w-[104%] max-w-[460px] sm:max-w-[540px] md:max-w-[680px] lg:max-w-[760px] max-h-[55vh] sm:max-h-[62vh] md:max-h-[680px] lg:max-h-[740px] object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.65)] md:drop-shadow-[-35px_35px_70px_rgba(0,0,0,0.85)] transform -rotate-[8deg] md:-rotate-[12deg] pointer-events-none" 
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
               />
-            </div>
-            
-            {/* Mobile-Only Subtitle and Button */}
-            <div className="md:hidden flex flex-col items-center text-center mt-6 sm:mt-8 z-30 mb-2">
-              <Link
-                to="/categories"
-                className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-none shadow-lg shadow-[#0A1E3F]/20 transition-all active:scale-95"
-              >
-                Explore Categories
-              </Link>
-            </div>
+              <div className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-10 pointer-events-none">
+                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[9px] sm:text-[11px] uppercase tracking-wider px-2.5 sm:px-3 py-1 rounded-md shadow-sm">
+                  Product Closeup
+                </span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            </Link>
+
+            {/* Card 2: HEADREST MOUNT (Middle Left) */}
+            <Link
+              to="/product/rear-passenger-stand"
+              className="col-span-1 relative group overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-[#D6CDB8] hover:border-[#0A1E3F] bg-[#FAF7F0] shadow-[0_8px_25px_rgba(10,30,63,0.08)] hover:shadow-[0_14px_35px_rgba(10,30,63,0.18)] transition-all duration-300 aspect-[4/3] sm:aspect-square block cursor-pointer"
+            >
+              <img 
+                src={headrestMountJpg} 
+                alt="Headrest Mount" 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
+              />
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
+                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
+                  Headrest Mount
+                </span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Link>
+
+            {/* Card 3: DESK & HOME SETUP (Middle Right) */}
+            <Link
+              to="/product/table-stand"
+              className="col-span-1 relative group overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-[#D6CDB8] hover:border-[#0A1E3F] bg-[#FAF7F0] shadow-[0_8px_25px_rgba(10,30,63,0.08)] hover:shadow-[0_14px_35px_rgba(10,30,63,0.18)] transition-all duration-300 aspect-[4/3] sm:aspect-square block cursor-pointer"
+            >
+              <img 
+                src={tableStandJpg} 
+                alt="Desk & Home Setup" 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
+              />
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
+                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
+                  Desk & Home Setup
+                </span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Link>
+
+            {/* Card 4: DASHBOARD MOUNT (Bottom Left) */}
+            <Link
+              to="/product/universal"
+              className="col-span-1 relative group overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-[#D6CDB8] hover:border-[#0A1E3F] bg-[#FAF7F0] shadow-[0_8px_25px_rgba(10,30,63,0.08)] hover:shadow-[0_14px_35px_rgba(10,30,63,0.18)] transition-all duration-300 aspect-[4/3] sm:aspect-square block cursor-pointer"
+            >
+              <img 
+                src={wallStandJpg} 
+                alt="Dashboard Mount" 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
+              />
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
+                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
+                  Dashboard Mount
+                </span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Link>
+
+            {/* Card 5: IN-CAR VENT MOUNT (Bottom Right) */}
+            <Link
+              to="/product/air-vent-stand"
+              className="col-span-1 relative group overflow-hidden rounded-2xl sm:rounded-3xl border-2 border-[#D6CDB8] hover:border-[#0A1E3F] bg-[#FAF7F0] shadow-[0_8px_25px_rgba(10,30,63,0.08)] hover:shadow-[0_14px_35px_rgba(10,30,63,0.18)] transition-all duration-300 aspect-[4/3] sm:aspect-square block cursor-pointer"
+            >
+              <img 
+                src={airVentJpg} 
+                alt="In-Car Vent Mount" 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
+              />
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
+                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
+                  In-Car Vent Mount
+                </span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </Link>
+          </div>
+
+          {/* Centered Action Button with clear margin so it never collides with floating buttons */}
+          <div className="flex flex-col items-center justify-center text-center mt-3 sm:mt-5 mb-2 sm:mb-4 z-30 w-full px-4">
+            <Link
+              to="/categories"
+              className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#FAF7F0] font-bold text-xs sm:text-sm uppercase tracking-widest px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-xl shadow-[#0A1E3F]/25 transition-all hover:scale-105 active:scale-95 inline-flex items-center justify-center cursor-pointer border border-[#FAF7F0]/20"
+            >
+              Explore Categories
+            </Link>
           </div>
 
         </div>
       </main>
 
-      {/* Shop By Categories Section with 6 Horizontal Category Accordion Buttons */}
-      <section className="bg-[#EBE5D9] w-full py-16 md:py-24 border-t border-[#0A1E3F]/20 relative overflow-hidden">
+      {/* Shop By Categories Section with halved top padding */}
+      <section className="bg-[#EBE5D9] w-full pt-8 sm:pt-10 md:pt-12 pb-16 md:pb-24 border-t border-[#0A1E3F]/20 relative overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-4 md:px-10">
           {/* Header */}
           <div className="text-center space-y-3 mb-10 md:mb-14 flex flex-col items-center">
@@ -547,7 +621,7 @@ export default function HomePage() {
             {categoryTabs.map((tab) => {
               const isOpen = openCategoryId === tab.id;
               const products = categoryProductsMap[tab.id] || [];
-              const isPaused = pausedCategories[tab.id] || false;
+              const isPlaying = !!playingCategories[tab.id];
 
               return (
                 <div 
@@ -607,12 +681,12 @@ export default function HomePage() {
                         {/* Drawer Carousel Controls */}
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => togglePause(tab.id)}
+                            onClick={() => togglePlay(tab.id)}
                             className="p-1.5 rounded-none bg-[#F4F0E6] border border-[#D6CDB8] hover:border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F] hover:text-[#FAF7F0] transition-all duration-200 shadow-sm cursor-pointer"
-                            title={isPaused ? "Resume Motion" : "Pause Motion"}
-                            aria-label={isPaused ? "Resume Motion" : "Pause Motion"}
+                            title={isPlaying ? "Pause Motion" : "Play Motion"}
+                            aria-label={isPlaying ? "Pause Motion" : "Play Motion"}
                           >
-                            {isPaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5 fill-current" />}
+                            {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
                           </button>
 
                           <button
@@ -644,9 +718,10 @@ export default function HomePage() {
                           className="overflow-x-auto no-scrollbar py-3 px-2 sm:px-4 cursor-grab active:cursor-grabbing"
                         >
                           <div 
-                            className={`flex gap-5 sm:gap-6 w-max ${isPaused ? '' : 'animate-combo-marquee'}`}
-                            onMouseEnter={() => setPausedCategories(prev => ({ ...prev, [tab.id]: true }))}
-                            onMouseLeave={() => setPausedCategories(prev => ({ ...prev, [tab.id]: false }))}
+                            className={`flex gap-5 sm:gap-6 w-max ${isPlaying ? 'animate-combo-marquee' : ''}`}
+                            onMouseEnter={() => {
+                              if (isPlaying) togglePlay(tab.id);
+                            }}
                           >
                             {[...products, ...products].map((product, idx) => (
                               <Link

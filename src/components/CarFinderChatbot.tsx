@@ -619,13 +619,13 @@ export default function CarFinderChatbot() {
           ) : (
             <div className="flex items-center gap-2">
               {/* Circular Logo Container */}
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white border border-[#0A1E3F]/30 flex items-center justify-center p-0.5 relative overflow-hidden shrink-0 shadow-inner">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black border border-black flex items-center justify-center p-0.5 relative overflow-hidden shrink-0 shadow-inner">
                 <img 
                   src={qicdockLogo} 
                   alt="QicDock" 
                   className="w-full h-full object-contain rounded-full"
                 />
-                <span className="absolute top-0 right-0 w-2 h-2 bg-emerald-500 border border-white rounded-full animate-pulse" />
+                <span className="absolute top-0 right-0 w-2 h-2 bg-emerald-500 border border-black rounded-full animate-pulse" />
               </div>
               
               {/* Beside Text */}

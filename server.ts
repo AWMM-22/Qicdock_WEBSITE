@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import fs from "fs";
 import cors from "cors";
+import crypto from "crypto";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
@@ -57,6 +58,47 @@ function saveLeadsLocal() {
   }
 }
 
+// User Accounts Storage with local persistence
+interface UserRecord {
+  id: string;
+  email: string;
+  passwordHash: string;
+  salt: string;
+  createdAt: string;
+  lastLoginAt?: string;
+  name?: string;
+}
+
+const USERS_FILE = path.join(process.cwd(), "users_auth.json");
+let usersDb: UserRecord[] = [];
+
+try {
+  if (fs.existsSync(USERS_FILE)) {
+    const raw = fs.readFileSync(USERS_FILE, "utf-8");
+    usersDb = JSON.parse(raw);
+  }
+} catch (e) {
+  console.warn("[Auth] Could not load local users file, starting fresh.");
+}
+
+function saveUsersLocal() {
+  try {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(usersDb, null, 2), "utf-8");
+  } catch (e) {
+    console.error("[Auth] Error saving local users:", e);
+  }
+}
+
+function hashPassword(password: string, salt: string): string {
+  return crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+}
+
+// Active Sessions in-memory store
+const sessionsMap: Record<string, { token: string; userId: string; email: string; createdAt: string; expiresAt: number }> = {};
+
+// Active OTPs in-memory store
+const otpMap: Record<string, { code: string; expiresAt: number }> = {};
+
 // Supabase client initialization (server-side)
 const supabaseUrl =
   process.env.VITE_SUPABASE_URL ||
@@ -88,6 +130,271 @@ async function startServer() {
     const { productId, isSoldOut } = req.body;
     inventory[productId] = isSoldOut;
     res.json({ success: true, inventory });
+  });
+
+  // --- Authentication API ---
+  app.post("/api/auth/signup", (req, res) => {
+    try {
+      const { email, password, name } = req.body;
+      if (!email || typeof email !== "string" || !email.includes("@")) {
+        return res.status(400).json({ error: "Please enter a valid email address." });
+      }
+      if (!password || typeof password !== "string" || password.length < 6) {
+        return res.status(400).json({ error: "Password must be at least 6 characters long." });
+      }
+
+      const cleanEmail = email.trim().toLowerCase();
+      const existing = usersDb.find(u => u.email === cleanEmail);
+      if (existing) {
+        return res.status(400).json({ error: "An account with this email already exists. Please sign in instead." });
+      }
+
+      const salt = crypto.randomBytes(16).toString("hex");
+      const passwordHash = hashPassword(password, salt);
+      const userId = `usr_${Date.now()}_${crypto.randomBytes(4).toString("hex")}`;
+      const newUser: UserRecord = {
+        id: userId,
+        email: cleanEmail,
+        passwordHash,
+        salt,
+        createdAt: new Date().toISOString(),
+        lastLoginAt: new Date().toISOString(),
+        name: name || cleanEmail.split("@")[0]
+      };
+
+      usersDb.push(newUser);
+      saveUsersLocal();
+
+      // Create session token
+      const token = `s_tok_${Date.now()}_${crypto.randomBytes(24).toString("hex")}`;
+      const expiresAt = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+      sessionsMap[token] = {
+        token,
+        userId: newUser.id,
+        email: newUser.email,
+        createdAt: new Date().toISOString(),
+        expiresAt
+      };
+
+      const userProfile = {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+        created_at: newUser.createdAt
+      };
+
+      res.status(200).json({
+        success: true,
+        user: userProfile,
+        session: {
+          access_token: token,
+          token_type: "bearer",
+          expires_at: Math.floor(expiresAt / 1000),
+          user: userProfile
+        }
+      });
+    } catch (err: any) {
+      console.error("[Auth Signup Error]", err);
+      res.status(500).json({ error: err.message || "Failed to create account. Please try again." });
+    }
+  });
+
+  app.post("/api/auth/login", (req, res) => {
+    try {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required." });
+      }
+
+      const cleanEmail = email.trim().toLowerCase();
+      const user = usersDb.find(u => u.email === cleanEmail);
+      if (!user) {
+        return res.status(400).json({ error: "Invalid email or password. If you don't have an account, please create one." });
+      }
+
+      const hash = hashPassword(password, user.salt);
+      if (hash !== user.passwordHash) {
+        return res.status(400).json({ error: "Invalid email or password." });
+      }
+
+      user.lastLoginAt = new Date().toISOString();
+      saveUsersLocal();
+
+      const token = `s_tok_${Date.now()}_${crypto.randomBytes(24).toString("hex")}`;
+      const expiresAt = Date.now() + 30 * 24 * 60 * 60 * 1000;
+      sessionsMap[token] = {
+        token,
+        userId: user.id,
+        email: user.email,
+        createdAt: new Date().toISOString(),
+        expiresAt
+      };
+
+      const userProfile = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        created_at: user.createdAt
+      };
+
+      res.status(200).json({
+        success: true,
+        user: userProfile,
+        session: {
+          access_token: token,
+          token_type: "bearer",
+          expires_at: Math.floor(expiresAt / 1000),
+          user: userProfile
+        }
+      });
+    } catch (err: any) {
+      console.error("[Auth Login Error]", err);
+      res.status(500).json({ error: err.message || "Authentication failed." });
+    }
+  });
+
+  app.post("/api/auth/otp/send", (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email || typeof email !== "string" || !email.includes("@")) {
+        return res.status(400).json({ error: "Please provide a valid email." });
+      }
+
+      const cleanEmail = email.trim().toLowerCase();
+      const code = Math.floor(10000000 + Math.random() * 90000000).toString(); // 8-digit OTP
+      const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+      otpMap[cleanEmail] = { code, expiresAt };
+      console.log(`[Auth OTP] Verification code for ${cleanEmail}: ${code}`);
+
+      res.status(200).json({
+        success: true,
+        message: `Magic verification code generated: ${code}`,
+        demoCode: code
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Failed to send code." });
+    }
+  });
+
+  app.post("/api/auth/otp/verify", (req, res) => {
+    try {
+      const { email, token: otpCode } = req.body;
+      if (!email || !otpCode) {
+        return res.status(400).json({ error: "Email and verification code are required." });
+      }
+
+      const cleanEmail = email.trim().toLowerCase();
+      const record = otpMap[cleanEmail];
+      if (!record || record.code !== otpCode.trim() || Date.now() > record.expiresAt) {
+        return res.status(400).json({ error: "Invalid or expired verification code." });
+      }
+
+      delete otpMap[cleanEmail];
+
+      // Find or create user
+      let user = usersDb.find(u => u.email === cleanEmail);
+      if (!user) {
+        const userId = `usr_${Date.now()}_${crypto.randomBytes(4).toString("hex")}`;
+        const salt = crypto.randomBytes(16).toString("hex");
+        user = {
+          id: userId,
+          email: cleanEmail,
+          passwordHash: hashPassword(crypto.randomBytes(16).toString("hex"), salt),
+          salt,
+          createdAt: new Date().toISOString(),
+          lastLoginAt: new Date().toISOString(),
+          name: cleanEmail.split("@")[0]
+        };
+        usersDb.push(user);
+        saveUsersLocal();
+      } else {
+        user.lastLoginAt = new Date().toISOString();
+        saveUsersLocal();
+      }
+
+      const sessionToken = `s_tok_${Date.now()}_${crypto.randomBytes(24).toString("hex")}`;
+      const expiresAt = Date.now() + 30 * 24 * 60 * 60 * 1000;
+      sessionsMap[sessionToken] = {
+        token: sessionToken,
+        userId: user.id,
+        email: user.email,
+        createdAt: new Date().toISOString(),
+        expiresAt
+      };
+
+      const userProfile = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        created_at: user.createdAt
+      };
+
+      res.status(200).json({
+        success: true,
+        user: userProfile,
+        session: {
+          access_token: sessionToken,
+          token_type: "bearer",
+          expires_at: Math.floor(expiresAt / 1000),
+          user: userProfile
+        }
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Failed to verify code." });
+    }
+  });
+
+  app.get("/api/auth/session", (req, res) => {
+    try {
+      const authHeader = req.headers.authorization || "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : "";
+      if (!token) {
+        return res.json({ session: null, user: null });
+      }
+
+      const sessionRecord = sessionsMap[token];
+      if (!sessionRecord || Date.now() > sessionRecord.expiresAt) {
+        return res.json({ session: null, user: null });
+      }
+
+      const user = usersDb.find(u => u.id === sessionRecord.userId);
+      if (!user) {
+        return res.json({ session: null, user: null });
+      }
+
+      const userProfile = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        created_at: user.createdAt
+      };
+
+      res.json({
+        session: {
+          access_token: token,
+          token_type: "bearer",
+          expires_at: Math.floor(sessionRecord.expiresAt / 1000),
+          user: userProfile
+        },
+        user: userProfile
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Failed to fetch session." });
+    }
+  });
+
+  app.post("/api/auth/logout", (req, res) => {
+    try {
+      const authHeader = req.headers.authorization || "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : "";
+      if (token && sessionsMap[token]) {
+        delete sessionsMap[token];
+      }
+      res.json({ success: true });
+    } catch {
+      res.json({ success: true });
+    }
   });
 
   // Phone normalization & validation for Indian numbers

@@ -517,46 +517,30 @@ export default function CarProductDetailPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-            <div className="space-y-4">
-              <h3 className="font-bold text-[#00C8EC] uppercase tracking-wider text-xs">
-                Key Features
-              </h3>
-              <ul className="space-y-2.5 text-gray-300">
-                {product.features.map((feat, i) => (
-                  <li key={i} className="flex items-start gap-2.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#00C8EC] mt-2 flex-shrink-0" />
-                    <span>{feat}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="font-bold text-[#00C8EC] uppercase tracking-wider text-xs">
-                Technical Specifications
-              </h3>
-              <div className="space-y-2 text-gray-300">
-                <div className="flex justify-between py-1.5 border-b border-white/5">
-                  <span className="text-gray-400">Charging Protocol:</span>
-                  <span className="font-medium text-white text-right">{product.specs.chargingSpeed}</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-white/5">
-                  <span className="text-gray-400">Fitment Slot:</span>
-                  <span className="font-medium text-white text-right">{product.slot}</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-white/5">
-                  <span className="text-gray-400">Supported Model Years:</span>
-                  <span className="font-medium text-white text-right">{product.years}</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-white/5">
-                  <span className="text-gray-400">Material Grade:</span>
-                  <span className="font-medium text-white text-right">{product.specs.material}</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-white/5">
-                  <span className="text-gray-400">Warranty:</span>
-                  <span className="font-medium text-emerald-400 text-right">{product.specs.warranty}</span>
-                </div>
+          <div className="space-y-4 text-sm max-w-3xl">
+            <h3 className="font-bold text-[#00C8EC] uppercase tracking-wider text-xs">
+              Technical Specifications
+            </h3>
+            <div className="space-y-2 text-gray-300">
+              <div className="flex justify-between py-2 border-b border-white/5">
+                <span className="text-gray-400">Charging Protocol:</span>
+                <span className="font-medium text-white text-right">{product.specs.chargingSpeed}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-white/5">
+                <span className="text-gray-400">Fitment Slot:</span>
+                <span className="font-medium text-white text-right">{product.slot}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-white/5">
+                <span className="text-gray-400">Supported Model Years:</span>
+                <span className="font-medium text-white text-right">{product.years}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-white/5">
+                <span className="text-gray-400">Material Grade:</span>
+                <span className="font-medium text-white text-right">{product.specs.material}</span>
+              </div>
+              <div className="flex justify-between py-2 border-b border-white/5">
+                <span className="text-gray-400">Warranty:</span>
+                <span className="font-medium text-emerald-400 text-right">{product.specs.warranty}</span>
               </div>
             </div>
           </div>
