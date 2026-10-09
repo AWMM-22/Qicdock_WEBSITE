@@ -52,7 +52,7 @@ export const SEARCH_CATALOG: SearchItem[] = [
     oldPrice: '₹2,996',
     savings: 'Save ₹650',
     image: centerMountImg,
-    link: '/category/car-combo',
+    link: '/category/car-wireless-four-charger-combo',
     tags: ['car combo', 'vehicle pack', 'automotive', 'air vent', 'headrest', 'cockpit', 'magsafe'],
     compatibility: ['All Cars', 'Sedan', 'SUV', 'Hatchback']
   },

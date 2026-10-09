@@ -110,31 +110,31 @@ export default function StandAloneMounts() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] py-10 md:py-16 px-4 sm:px-6 lg:px-10">
+    <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] py-2 sm:py-4 px-3 sm:px-6 lg:px-10">
       <div className="max-w-[1400px] mx-auto">
         
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-600">
-          <Link to="/" className="hover:text-[#0A1E3F] flex items-center gap-1 transition-colors">
+        {/* Compact Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" className="mb-2 flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-600 leading-tight flex-wrap">
+          <Link to="/" className="hover:text-[#0A1E3F] transition-colors">
             Home
           </Link>
-          <span className="text-gray-600">/</span>
+          <span className="text-gray-400">/</span>
           <Link to="/categories" className="hover:text-[#0A1E3F] transition-colors">
             Categories
           </Link>
-          <span className="text-gray-600">/</span>
-          <span className="text-[#0A1E3F] font-semibold">Stand-Alone Mounts</span>
-        </div>
+          <span className="text-gray-400">/</span>
+          <span className="text-[#0A1E3F] font-bold">Stand-Alone Mounts</span>
+        </nav>
 
         {/* Header */}
-        <div className="text-center space-y-4 mb-12">
-          <span className="text-[#0A1E3F] text-xs md:text-sm font-bold tracking-[0.2em] uppercase block">
+        <div className="text-center space-y-1.5 mb-6 md:mb-8">
+          <span className="text-[#0A1E3F] text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase block">
             Modular Hardware Expansion
           </span>
-          <h1 className="text-3xl sm:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
+          <h1 className="text-2xl sm:text-4xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
             Stand-Alone Mounts & <span className="text-[#0A1E3F]">Accessories</span>
           </h1>
-          <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-600 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
             Already own a Qicdock core module? Expand your wireless charging to additional vehicles, your office desk, or bedroom nightstand with extra mounting brackets.
           </p>
 

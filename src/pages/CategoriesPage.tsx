@@ -50,13 +50,13 @@ const categoriesData = [
     productId: "car-combo",
     badgeText: "COCKPIT READY",
     badgeIcon: Car,
-    title: "CAR COMBO BUNDLE",
+    title: "CAR WIRELESS 4 CHARGER COMBO",
     subtitle: "Front & Rear Passenger Charging",
     description: "Tailored automotive bundle including center console pad, 360° air vent clip, and rear passenger headrest bracket.",
-    price: "From ₹2,346",
-    savings: "Save ₹650",
+    price: "From ₹2,048",
+    savings: "Save ₹1,648",
     image: airVentImg,
-    link: "/category/car-combo"
+    link: "/category/car-wireless-four-charger-combo"
   },
   {
     productId: "individual",
@@ -87,29 +87,54 @@ const categoriesData = [
 export default function CategoriesPage() {
   const { isSoldOut } = useInventory();
   return (
-    <div className="w-full py-12 md:py-20 px-4 sm:px-6 lg:px-10 bg-[#F4F0E6] min-h-screen">
+    <div className="w-full py-2 sm:py-4 px-3 sm:px-6 lg:px-10 bg-[#F4F0E6] min-h-screen">
       <div className="max-w-[1400px] mx-auto">
         
-        {/* Navigation Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-600">
-          <Link to="/" className="hover:text-[#0A1E3F] flex items-center gap-1 transition-colors">
-            <ArrowLeft className="w-3.5 h-3.5" /> Home
+        {/* Compact Navigation Breadcrumb & Top Test Action */}
+        <div className="mb-3 flex items-center justify-between flex-wrap gap-2">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-600 leading-tight flex-wrap">
+            <Link to="/" className="hover:text-[#0A1E3F] transition-colors">
+              Home
+            </Link>
+            <span className="text-gray-400">/</span>
+            <span className="text-[#0A1E3F] font-bold">Categories</span>
+          </nav>
+
+          {/* Top Test Button */}
+          <Link
+            to="/categories/carcombo-test"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-[#0A1E3F] hover:bg-[#152B52] text-[#FAF7F0] text-xs font-bold tracking-wider uppercase rounded-full shadow-sm hover:shadow-md transition-all hover:scale-105 active:scale-95 border border-[#0A1E3F]"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Test</span>
+            <ArrowRight className="w-3.5 h-3.5 text-amber-300" />
           </Link>
-          <span className="text-gray-600">/</span>
-          <span className="text-[#0A1E3F] font-semibold">Categories</span>
         </div>
 
         {/* Header */}
-        <div className="text-center space-y-4 mb-14 md:mb-16">
-          <span className="text-[#0A1E3F] text-xs md:text-sm font-bold tracking-[0.2em] uppercase block">
+        <div className="text-center space-y-2 mb-6 md:mb-8">
+          <span className="text-[#0A1E3F] text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase block">
             Automotive & Desk Charging Architecture
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
             Shop By <span className="text-[#0A1E3F]">Categories</span>
           </h1>
-          <p className="text-gray-600 text-sm md:text-base font-normal max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-600 text-xs sm:text-sm font-normal max-w-2xl mx-auto leading-relaxed">
             Choose from all-in-one multi-environment bundles, car-specific docks, or modular mounting accessories engineered with 25W fast wireless charging.
           </p>
+
+          {/* Featured Test Configurator Banner/Button */}
+          <div className="pt-2 flex justify-center">
+            <Link
+              to="/categories/carcombo-test"
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#0A1E3F] hover:bg-[#152B52] text-[#FAF7F0] text-xs sm:text-sm font-bold tracking-wider uppercase rounded-xl shadow-md hover:shadow-lg transition-all hover:scale-[1.02] border border-[#0A1E3F] group"
+            >
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Test</span>
+              <span className="text-amber-300 font-normal text-[11px] sm:text-xs">Car Combo Configurator</span>
+              <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </div>
 
         {/* Categories Grid */}

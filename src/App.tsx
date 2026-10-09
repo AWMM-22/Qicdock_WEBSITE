@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomNav from './components/BottomNav';
@@ -18,6 +18,7 @@ import LoginPage from './pages/LoginPage';
 import OrdersPage from "./pages/OrdersPage";
 import AdminPage from './pages/AdminPage';
 import CarProductDetailPage from './pages/CarProductDetailPage';
+import NodeConfiguratorPage from './pages/NodeConfiguratorPage';
 import CarFinderChatbot from './components/CarFinderChatbot';
 import { AuthProvider } from './context/AuthContext';
 import { InventoryProvider } from './context/InventoryContext';
@@ -52,7 +53,12 @@ export default function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/categories" element={<CategoriesPage />} />
               <Route path="/category/all-in-one" element={<AllInOneCombo />} />
-              <Route path="/category/car-combo" element={<CarCombo />} />
+              <Route path="/category/car-wireless-four-charger-combo" element={<CarCombo />} />
+              <Route path="/category/car-combo" element={<Navigate to="/category/car-wireless-four-charger-combo" replace />} />
+              <Route path="/category/car-wireless-4-charger-combo" element={<Navigate to="/category/car-wireless-four-charger-combo" replace />} />
+              <Route path="/categories/car-wireless-four-charger-combo" element={<Navigate to="/category/car-wireless-four-charger-combo" replace />} />
+              <Route path="/categories/carcombo-test" element={<NodeConfiguratorPage />} />
+              <Route path="/category/carcombo-test" element={<NodeConfiguratorPage />} />
               <Route path="/category/home-office" element={<HomeOfficeCombo />} />
               <Route path="/category/individual" element={<IndividualChargers />} />
               <Route path="/category/vehicle-specific" element={<VehicleSpecific />} />

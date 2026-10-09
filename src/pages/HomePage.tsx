@@ -62,7 +62,7 @@ export default function HomePage() {
     { id: 'vehicle-specific', name: 'Vehicle Specific Docks', path: '/category/vehicle-specific' },
     { id: 'home-office', name: 'Home & Office Combo', path: '/category/home-office' },
     { id: 'all-in-one', name: 'All In One Combo', path: '/category/all-in-one' },
-    { id: 'car-combo', name: 'Car Combo Kit', path: '/category/car-combo' },
+    { id: 'car-combo', name: 'Car Combo Kit', path: '/category/car-wireless-four-charger-combo' },
     { id: 'individual', name: 'Individual Chargers', path: '/category/individual' },
     { id: 'stand-alone', name: 'Stand-Alone Mounts', path: '/category/stand-alone' },
   ];
@@ -276,7 +276,7 @@ export default function HomePage() {
         originalPrice: '₹2,996',
         badge: 'Save ₹650',
         img: centerMountImg,
-        link: '/category/car-combo',
+        link: '/category/car-wireless-four-charger-combo',
         cta: 'Get Car Pack'
       },
       {
@@ -288,7 +288,7 @@ export default function HomePage() {
         originalPrice: '₹3,149',
         badge: 'Save ₹700',
         img: headrestMountImg,
-        link: '/category/car-combo',
+        link: '/category/car-wireless-four-charger-combo',
         cta: 'Get Passenger Pack'
       },
       {
@@ -300,7 +300,7 @@ export default function HomePage() {
         originalPrice: '₹2,799',
         badge: 'Save ₹600',
         img: airVentImg,
-        link: '/category/car-combo',
+        link: '/category/car-wireless-four-charger-combo',
         cta: 'Get Driver Pack'
       }
     ],
@@ -710,15 +710,15 @@ export default function HomePage() {
 
                       {/* Horizontal Moving Marquee Track for This Category */}
                       <div className="relative w-full overflow-hidden">
-                        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-[#FAF7F0] to-transparent z-20 pointer-events-none" />
-                        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-[#FAF7F0] to-transparent z-20 pointer-events-none" />
+                        <div className="absolute left-0 top-0 bottom-0 w-4 sm:w-8 bg-gradient-to-r from-[#FAF7F0]/60 to-transparent z-20 pointer-events-none" />
+                        <div className="absolute right-0 top-0 bottom-0 w-4 sm:w-8 bg-gradient-to-l from-[#FAF7F0]/60 to-transparent z-20 pointer-events-none" />
 
                         <div 
                           ref={(el) => (marqueeRefs.current[tab.id] = el)}
-                          className="overflow-x-auto no-scrollbar py-3 px-2 sm:px-4 cursor-grab active:cursor-grabbing"
+                          className="overflow-x-auto no-scrollbar py-3 px-1 sm:px-2 cursor-grab active:cursor-grabbing snap-x snap-mandatory"
                         >
                           <div 
-                            className={`flex gap-5 sm:gap-6 w-max ${isPlaying ? 'animate-combo-marquee' : ''}`}
+                            className={`flex gap-3 sm:gap-5 w-max ${isPlaying ? 'animate-combo-marquee' : ''}`}
                             onMouseEnter={() => {
                               if (isPlaying) togglePlay(tab.id);
                             }}
@@ -727,7 +727,7 @@ export default function HomePage() {
                               <Link
                                 key={`${product.id}-${idx}`}
                                 to={product.link}
-                                className="w-[280px] sm:w-[310px] md:w-[325px] shrink-0 bg-[#F4F0E6] rounded-none p-4 md:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 group shadow-sm hover:shadow-[0_15px_35px_rgba(10,30,63,0.18)] border border-[#D6CDB8] hover:border-[#0A1E3F] block"
+                                className="w-[74vw] max-w-[270px] sm:w-[285px] md:w-[305px] shrink-0 bg-[#F4F0E6] rounded-none p-4 md:p-5 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 group shadow-sm hover:shadow-[0_15px_35px_rgba(10,30,63,0.18)] border border-[#D6CDB8] hover:border-[#0A1E3F] block snap-start"
                               >
                                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#0A1E3F] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 

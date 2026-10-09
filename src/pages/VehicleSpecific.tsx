@@ -115,51 +115,51 @@ export default function VehicleSpecific() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] py-10 md:py-16 px-4 sm:px-6 lg:px-10">
+    <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] py-2 sm:py-4 px-3 sm:px-6 lg:px-10">
       <div className="max-w-[1400px] mx-auto">
         
-        {/* Breadcrumbs */}
-        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-600">
-          <Link to="/" className="hover:text-[#0A1E3F] flex items-center gap-1 transition-colors">
+        {/* Compact Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" className="mb-2 flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-600 leading-tight flex-wrap">
+          <Link to="/" className="hover:text-[#0A1E3F] transition-colors">
             Home
           </Link>
-          <span className="text-gray-600">/</span>
+          <span className="text-gray-400">/</span>
           <Link to="/categories" className="hover:text-[#0A1E3F] transition-colors">
             Categories
           </Link>
-          <span className="text-gray-600">/</span>
-          <span className="text-[#0A1E3F] font-semibold">Vehicle-Specific Docks</span>
-        </div>
+          <span className="text-gray-400">/</span>
+          <span className="text-[#0A1E3F] font-bold">Vehicle-Specific Docks</span>
+        </nav>
 
         {/* Header */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-8 gap-6">
-          <div className="max-w-2xl space-y-3">
-            <span className="text-[#0A1E3F] text-xs md:text-sm font-bold tracking-[0.2em] uppercase block">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-4 gap-4">
+          <div className="max-w-2xl space-y-1">
+            <span className="text-[#0A1E3F] text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase block">
               OEM Precision Fitment
             </span>
-            <h1 className="text-3xl sm:text-5xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
+            <h1 className="text-2xl sm:text-4xl font-['Anton'] tracking-wide text-[#0A1E3F] uppercase">
               Vehicle Specific & <span className="text-[#0A1E3F]">Custom Fit</span>
             </h1>
-            <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
               3D laser-scanned to snap flush into your car's factory interior console cavity down to 0.2mm. Zero rattles, zero dangling wires, and 25W Qi2 MagSafe wireless fast charging.
             </p>
           </div>
 
           {/* Search Input Box */}
-          <div className="w-full lg:w-80 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+          <div className="w-full lg:w-72 relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
             <input
               type="text"
               placeholder="Search car model or year..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#FAF7F0] border border-[#D6CDB8] focus:border-[#0A1E3F] rounded-none pl-11 pr-4 py-3 text-xs sm:text-sm text-[#0A1E3F] placeholder-gray-500 focus:outline-none transition-colors"
+              className="w-full bg-[#FAF7F0] border border-[#D6CDB8] focus:border-[#0A1E3F] rounded-none pl-10 pr-3 py-2 text-xs sm:text-sm text-[#0A1E3F] placeholder-gray-500 focus:outline-none transition-colors"
             />
           </div>
         </div>
 
         {/* Interactive Vehicle Selector & Matcher Control Hub */}
-        <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-none p-5 sm:p-6 mb-10 shadow-sm">
+        <div className="bg-[#FAF7F0] border-2 border-[#0A1E3F] rounded-none p-4 sm:p-5 mb-6 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-3 border-b border-[#E2DAC8]">
             <div className="flex items-center gap-2">
               <Car className="w-5 h-5 text-[#0A1E3F]" />

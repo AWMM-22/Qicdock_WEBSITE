@@ -73,6 +73,11 @@ export default function BottomNav() {
     navigate(item.path);
   };
 
+  // Do not render bottom nav on product content pages; only present on the landing page ('/')
+  if (location.pathname !== '/') {
+    return null;
+  }
+
   return (
     <motion.div 
       aria-label="Floating Mobile Navigation"

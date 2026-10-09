@@ -73,16 +73,18 @@ export default function Header() {
 
   const navLinks = [
     { name: 'Categories', path: '/categories' },
+    { name: 'Test', path: '/categories/carcombo-test' },
     { name: 'Find Your Car', path: '/#compatibility' },
     { name: 'Custom Made', path: '/category/vehicle-specific' },
     { name: 'About', path: '/about' }
   ];
 
   const categoryQuickLinks = [
+    { name: 'Car Combo Configurator (Test)', path: '/categories/carcombo-test', tag: 'Test' },
     { name: 'Vehicle-Specific Docks', path: '/category/vehicle-specific', tag: 'OEM Fit' },
     { name: 'Home & Office Combo', path: '/category/home-office', tag: 'Desk & Wall' },
     { name: 'All-In-One Combo', path: '/category/all-in-one', tag: 'Best Value' },
-    { name: 'Car Combo Bundle', path: '/category/car-combo', tag: 'Automotive' },
+    { name: 'Car Combo Bundle', path: '/category/car-wireless-four-charger-combo', tag: 'Automotive' },
     { name: 'Individual Setups', path: '/category/individual', tag: 'Modular' },
     { name: 'Stand-Alone Bases', path: '/category/stand-alone', tag: 'Mounts' },
   ];

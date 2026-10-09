@@ -68,24 +68,24 @@ export default function AllInOneCombo() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] py-10 md:py-16 px-4 sm:px-6 lg:px-10">
+    <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] py-2 sm:py-4 px-3 sm:px-6 lg:px-10">
       <div className="max-w-[1320px] mx-auto">
         
-        {/* Breadcrumbs */}
-        <div className="mb-8 flex items-center gap-2 text-xs uppercase tracking-widest text-gray-600">
-          <Link to="/" className="hover:text-[#0A1E3F] flex items-center gap-1 transition-colors">
+        {/* Compact Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" className="mb-2 flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-600 leading-tight flex-wrap">
+          <Link to="/" className="hover:text-[#0A1E3F] transition-colors">
             Home
           </Link>
-          <span className="text-gray-600">/</span>
+          <span className="text-gray-400">/</span>
           <Link to="/categories" className="hover:text-[#0A1E3F] transition-colors">
             Categories
           </Link>
-          <span className="text-gray-600">/</span>
-          <span className="text-[#0A1E3F] font-semibold">All In One Combo</span>
-        </div>
+          <span className="text-gray-400">/</span>
+          <span className="text-[#0A1E3F] font-bold">All In One Combo</span>
+        </nav>
 
         {/* Product Configurator Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
           
           {/* Left Column: Visual Showcase & Specifications (5 cols) */}
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
