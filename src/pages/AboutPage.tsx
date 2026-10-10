@@ -39,7 +39,7 @@ export default function AboutPage() {
             </p>
             <div className="pt-2 flex flex-wrap gap-4">
               <Link
-                to="/categories"
+                to="/category"
                 className="inline-flex items-center gap-2 bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] font-bold text-xs uppercase tracking-widest px-6 py-3.5 transition-all shadow-md"
               >
                 <span>Explore Ecosystem</span>

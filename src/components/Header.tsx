@@ -72,15 +72,13 @@ export default function Header() {
   }, [location.pathname]);
 
   const navLinks = [
-    { name: 'Categories', path: '/categories' },
-    { name: 'Test', path: '/categories/carcombo-test' },
+    { name: 'Categories', path: '/category' },
     { name: 'Find Your Car', path: '/#compatibility' },
     { name: 'Custom Made', path: '/category/vehicle-specific' },
     { name: 'About', path: '/about' }
   ];
 
   const categoryQuickLinks = [
-    { name: 'Car Combo Configurator (Test)', path: '/categories/carcombo-test', tag: 'Test' },
     { name: 'Vehicle-Specific Docks', path: '/category/vehicle-specific', tag: 'OEM Fit' },
     { name: 'Home & Office Combo', path: '/category/home-office', tag: 'Desk & Wall' },
     { name: 'All-In-One Combo', path: '/category/all-in-one', tag: 'Best Value' },
@@ -366,7 +364,7 @@ export default function Header() {
                     Launch Car Assistant
                   </button>
                   <Link
-                    to="/categories"
+                    to="/category"
                     onClick={() => setIsSearchOpen(false)}
                     className="w-full sm:w-auto bg-transparent border border-[#0A1E3F] text-[#0A1E3F] hover:bg-[#0A1E3F]/10 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1.5"
                   >

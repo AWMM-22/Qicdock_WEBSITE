@@ -49,9 +49,9 @@ export default function BottomNav() {
     {
       id: 'categories',
       name: 'Categories',
-      path: '/categories',
+      path: '/category',
       icon: LayoutGrid,
-      match: (pathname: string) => pathname.startsWith('/categories')
+      match: (pathname: string) => pathname.startsWith('/category')
     },
     {
       id: 'about',

@@ -436,7 +436,7 @@ export default function CartPage() {
             </div>
             <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
             <p className="text-gray-600 mb-8 max-w-md">Looks like you haven't added any products to your cart yet. Explore our high-performance charging solutions.</p>
-            <Link to="/categories" className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] py-4 px-8 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors">
+            <Link to="/category" className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#F4F0E6] py-4 px-8 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors">
               Start Shopping
             </Link>
           </div>

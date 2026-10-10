@@ -48,15 +48,16 @@ import combo3combo1Img from '../assets/images/3combo1.png';
 import combo3combo2Img from '../assets/images/3combo2.png';
 import combo3combo3Img from '../assets/images/3combo3.png';
 
-// TOP CAROUSEL IMAGES
-const TOP_CAROUSEL_IMAGES = [
-  { src: comboImage1Img, alt: 'QICDOCK Car Combo All-in-One Kit' },
-  { src: combo3combo1Img, alt: 'QICDOCK 3-Combo Accessory 1' },
-  { src: combo3combo2Img, alt: 'QICDOCK 3-Combo Accessory 2' },
-  { src: combo3combo3Img, alt: 'QICDOCK 3-Combo Accessory 3' },
-  { src: allInOneComboImg, alt: 'Car Combo – 25W Wireless Charger | Charging Pad + 3 Stands' },
-  { src: matteBlackHookBracketImg, alt: 'Matte Black Minimalist Hook Bracket' },
-  { src: minimalistWallMountImg, alt: 'Minimalist Black Wall-Mount Bracket' }
+// TOP CAROUSEL ITEMS
+const TOP_CAROUSEL_ITEMS = [
+  { type: 'video', src: '/videos/car-combo-video.mp4', alt: 'QICDOCK Car Combo Video' },
+  { type: 'image', src: comboImage1Img, alt: 'QICDOCK Car Combo All-in-One Kit' },
+  { type: 'image', src: combo3combo1Img, alt: 'QICDOCK 3-Combo Accessory 1' },
+  { type: 'image', src: combo3combo2Img, alt: 'QICDOCK 3-Combo Accessory 2' },
+  { type: 'image', src: combo3combo3Img, alt: 'QICDOCK 3-Combo Accessory 3' },
+  { type: 'image', src: allInOneComboImg, alt: 'Car Combo – 25W Wireless Charger | Charging Pad + 3 Stands' },
+  { type: 'image', src: matteBlackHookBracketImg, alt: 'Matte Black Minimalist Hook Bracket' },
+  { type: 'image', src: minimalistWallMountImg, alt: 'Minimalist Black Wall-Mount Bracket' }
 ];
 
 // CAR MODEL OPTIONS
@@ -73,17 +74,6 @@ interface CarOption {
 }
 
 const CAR_OPTIONS: CarOption[] = [
-  {
-    id: 'test-car',
-    name: 'Test Car (₹1)',
-    brand: 'Testing',
-    yearRange: '2026',
-    trayFit: 'N/A',
-    imgThumb: dzireSwiftPng,
-    plateImg: dzireSwiftPng,
-    price: 1,
-    mrp: 1
-  },
   {
     id: 'universal',
     name: 'Universal',
@@ -265,7 +255,6 @@ const TECHNICAL_SPECS = [
   { label: 'Wireless Protocol', value: 'Qi Standards' },
   { label: 'Power Output', value: '25W Peak Wireless Fast Charging' },
   { label: 'Input Interface', value: 'USB Type-C' },
-  { label: 'Magnetic Array', value: 'N52 Neodymium Ring' },
   { label: 'Thermal System', value: 'Lower Pad Heat Design' },
   { label: 'Power Input', value: '12 Volts / 3 Amps' },
   { label: 'Materials', value: 'Acrylonitrile Butadiene Styrene (ABS), Aluminium and Metal Stands' },
@@ -275,12 +264,10 @@ const TECHNICAL_SPECS = [
 const WHATS_IN_THE_BOX = [
   '1x 25W Qi2 Fast Wireless Charging Pad / Dock',
   '1x Precision-Fit Dashboard / Console Tray',
-  '1x 360° Steel-Hook Car Air Vent Mount',
-  '1x Dual-Post Passenger Headrest Mount',
-  '1x 100W Braided Heavy-Duty Automotive Type-C Cable (1.5m)',
-  '1x Fast Dual-Port 12V Automotive Power Adapter',
-  '1x Cable Routing Clips & Quick Start Manual',
-  '1x Official 2-Year Warranty Registration Card'
+  '1x AC Air Vent Mount',
+  '1x Backseat Passenger Headrest Mount',
+  '1x Type-C Cable (1.5m)',
+  '1x manual'
 ];
 
 // FAQ matching the Car Combo 25W Wireless Charging Ecosystem
@@ -412,7 +399,7 @@ export default function NodeConfiguratorPage() {
       const rect = videoSectionRef.current.getBoundingClientRect();
       // When the top of the video enters viewport or is scrolled past, keep the top image hidden
       // so it never pops back up while browsing Car Vent Stand, Rear Seat Mount, Tray, or FAQs
-      const reachedOrPast = rect.top <= window.innerHeight * 0.75;
+      const reachedOrPast = rect.top <= window.innerHeight;
       setIsPastVideo(reachedOrPast);
     };
 
@@ -553,7 +540,7 @@ export default function NodeConfiguratorPage() {
         {/* ======================================================== */}
         {/* TOP / LEFT: STICKY PREVIEW STAGE                         */}
         {/* ======================================================== */}
-        <div className={`w-full lg:w-1/2 sticky top-16 sm:top-20 h-[32vh] sm:h-[38vh] lg:h-[calc(100vh-5rem)] bg-[#F4F0E6] border-b lg:border-b-0 lg:border-r border-[#0A1E3F]/10 flex flex-col items-center justify-center z-20 overflow-hidden p-0 m-0 relative transition-all duration-500 ease-in-out ${
+        <div className={`w-full lg:w-1/2 relative lg:sticky lg:top-16 lg:self-start h-[32vh] sm:h-[38vh] lg:h-[calc(100vh-4rem)] bg-[#F4F0E6] border-b lg:border-b-0 lg:border-r border-[#0A1E3F]/10 flex flex-col items-center justify-center z-20 overflow-hidden p-0 m-0 transition-all duration-500 ease-in-out ${
           shouldHideTopImage 
             ? '-translate-y-full opacity-0 pointer-events-none' 
             : 'translate-y-0 opacity-100'
@@ -590,21 +577,7 @@ export default function NodeConfiguratorPage() {
                 aria-label="Share"
               >
                 <Share2 className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]" />
-              </button>
-              
-              <button 
-                onClick={() => navigate('/cart')}
-                className="p-1 relative hover:opacity-70 transition focus:outline-none cursor-pointer"
-                title="Bag"
-                aria-label="Cart Bag"
-              >
-                <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#0A1E3F] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
+               </button>
             </div>
           </div>
 
@@ -620,14 +593,29 @@ export default function NodeConfiguratorPage() {
               className="w-full h-full flex transition-transform duration-300 ease-out"
               style={{ transform: `translateX(-${topCarouselIdx * 100}%)` }}
             >
-              {TOP_CAROUSEL_IMAGES.map((imgItem, idx) => (
+              {TOP_CAROUSEL_ITEMS.map((item, idx) => (
                 <div key={idx} className="w-full h-full min-w-full shrink-0 flex items-center justify-center p-0 m-0">
-                  <img 
-                    src={imgItem.src}
-                    alt={imgItem.alt}
-                    className="w-full h-full object-contain filter drop-shadow-md select-none p-0 m-0 block"
-                    loading={idx === 0 ? "eager" : "lazy"}
-                  />
+                  {item.type === 'video' ? (
+                    <video
+                      className="w-full h-full object-contain block m-0 p-0 bg-[#F4F0E6]"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      disablePictureInPicture
+                    >
+                      <source src={item.src} type="video/mp4" />
+                      Your browser does not support video.
+                    </video>
+                  ) : (
+                    <img 
+                      src={item.src}
+                      alt={item.alt}
+                      className="w-full h-full object-contain filter drop-shadow-md select-none p-0 m-0 block"
+                      loading={idx === 0 ? "eager" : "lazy"}
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -635,7 +623,7 @@ export default function NodeConfiguratorPage() {
             {/* Left Prev Arrow Button */}
             <button
               type="button"
-              onClick={() => setTopCarouselIdx((prev) => (prev - 1 + TOP_CAROUSEL_IMAGES.length) % TOP_CAROUSEL_IMAGES.length)}
+              onClick={() => setTopCarouselIdx((prev) => (prev - 1 + TOP_CAROUSEL_ITEMS.length) % TOP_CAROUSEL_ITEMS.length)}
               className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/80 hover:bg-white text-[#0A1E3F] shadow-sm flex items-center justify-center transition opacity-80 hover:opacity-100 z-10 cursor-pointer"
               aria-label="Previous image"
             >
@@ -645,7 +633,7 @@ export default function NodeConfiguratorPage() {
             {/* Right Next Arrow Button */}
             <button
               type="button"
-              onClick={() => setTopCarouselIdx((prev) => (prev + 1) % TOP_CAROUSEL_IMAGES.length)}
+              onClick={() => setTopCarouselIdx((prev) => (prev + 1) % TOP_CAROUSEL_ITEMS.length)}
               className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/80 hover:bg-white text-[#0A1E3F] shadow-sm flex items-center justify-center transition opacity-80 hover:opacity-100 z-10 cursor-pointer"
               aria-label="Next image"
             >
@@ -654,7 +642,7 @@ export default function NodeConfiguratorPage() {
 
             {/* Carousel Dot Indicators */}
             <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 px-2 py-1 rounded-full bg-[#0A1E3F]/10 backdrop-blur-xs">
-              {TOP_CAROUSEL_IMAGES.map((_, idx) => (
+              {TOP_CAROUSEL_ITEMS.map((_, idx) => (
                 <button
                   key={idx}
                   type="button"
@@ -1053,10 +1041,10 @@ export default function NodeConfiguratorPage() {
             <div className="bg-[#FAF7F2] border-[1.5px] border-[#0A1E3F] rounded-lg p-4 sm:p-5 my-4 shadow-2xs">
               <div className="space-y-1.5 text-left">
                 <h3 className="text-base sm:text-lg md:text-xl font-bold text-[#0A1E3F] tracking-tight leading-snug my-0">
-                  25W Qi2 Automotive Wireless Charging Ecosystem
+                  QICDOCK Car Combo – One Charger, Three Mounting Options, Endless Convenience
                 </h3>
                 <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed my-0">
-                  Qi2 is the advanced magnetic wireless charging standard delivering true 25W power. QICDOCK seamlessly brings it to your vehicle ecosystem through dedicated console dock, active air vent, and passenger mounts.
+                  Experience effortless in-car charging with the QICDOCK Car Combo, combining a powerful 25W magnetic wireless charger with three adaptable mounting solutions. Enjoy the freedom to position your phone on the AC vent, centre console, or rear passenger headrest for greater comfort and convenience.
                 </p>
               </div>
             </div>
@@ -1174,18 +1162,15 @@ export default function NodeConfiguratorPage() {
             </section>
 
             {/* ======================================================== */}
-            {/* SECTION 2: REAR SEAT PASSENGER HEADREST MOUNT            */}
+            {/* SECTION 2: REAR PASSENGER HEADREST STAND                 */}
             {/* ======================================================== */}
             <section className="pt-4 pb-3 border-t border-[#0A1E3F]/15 space-y-3">
               <div className="space-y-1 text-left">
                 <h2 className="text-base sm:text-lg md:text-xl font-semibold text-[#0A1E3F] tracking-tight uppercase leading-tight my-1 text-left">
-                  Rear Seat Passenger Mount
+                  Rear Passenger Headrest Stand
                 </h2>
-                <p className="text-xs sm:text-sm font-normal uppercase tracking-wider text-[#0A1E3F]/80 leading-snug my-0 text-left">
-                  PASSENGER ENTERTAINMENT. REAR ROW POWER.
-                </p>
                 <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed pt-0.5 my-0 text-left">
-                  Engineered for back-seat passengers and highway drives. Locks onto twin headrest metal posts with dual-strut clamps, positioning smartphones and tablets at eye-level while delivering continuous 25W Qi2 wireless charging.
+                  QICDOCK brings wireless charging to rear passengers with a dedicated headrest mount. Enjoy easy phone access, hands-free entertainment, and convenient 25W magnetic wireless charging throughout your journey.
                 </p>
               </div>
 
@@ -1238,25 +1223,25 @@ export default function NodeConfiguratorPage() {
               <div className="bg-[#FAF7F2] border-[1.5px] border-[#0A1E3F] rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/30 shadow-2xs pt-2.5">
                 <div className="px-2 sm:px-3 space-y-1 first:pl-0">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
-                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <Smartphone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                   <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
-                    Twin-Post Clamp
+                    Backseat Viewing Comfort
                   </h3>
                   <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
-                    Dual-strut steel mechanical lock secures firmly to headrest posts (100–150mm).
+                    Keeps your phone at eye level for rear passengers, making movies, video calls, and entertainment more convenient on the go.
                   </p>
                 </div>
 
                 <div className="px-2 sm:px-3 space-y-1">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
-                    <Smartphone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                   <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
-                    Eye-Level Comfort
+                    Secure Headrest Grip
                   </h3>
                   <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
-                    Positions smartphones & tablets at natural eye height, preventing neck strain.
+                    Strong metal hook design attaches firmly to the headrest rod, holding the mount steady even on bumpy rides.
                   </p>
                 </div>
 
@@ -1265,10 +1250,10 @@ export default function NodeConfiguratorPage() {
                     <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                   <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
-                    25W Qi2 Rapid Power
+                    Easy Install & Clean Setup
                   </h3>
                   <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
-                    Continuous 25W magnetic wireless power keeps rear passengers charged on road trips.
+                    Installs quickly without tools and keeps the phone mounted neatly behind the seat for a clutter-free rear-seat experience.
                   </p>
                 </div>
               </div>
@@ -1283,10 +1268,10 @@ export default function NodeConfiguratorPage() {
                   Vehicle-Specific Console Dock Tray
                 </h2>
                 <p className="text-xs sm:text-sm font-normal uppercase tracking-wider text-[#0A1E3F]/80 leading-snug my-0 text-left">
-                  FACTORY CONSOLE FIT.
+                  LESS CLUTTER. MORE CONVENIENCE.
                 </p>
                 <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed pt-0.5 my-0 text-left">
-                  Custom molded from sub-millimeter 3D interior scans for <strong>{currentCar.brand} {currentCar.name}</strong> and top Indian vehicles. Drops straight into your factory compartment with zero tools, zero rattling, and discreet automotive cable channels.
+                  Say goodbye to messy cables and chargers scattered around your car. QICDOCK keeps your charging setup neat, organised, and securely positioned in the centre console. Enjoy easy one-hand access and effortlessly undock your charger whenever needed.
                 </p>
               </div>
 

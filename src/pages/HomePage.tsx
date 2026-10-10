@@ -565,7 +565,7 @@ export default function HomePage() {
           {/* Centered Action Button with clear margin so it never collides with floating buttons */}
           <div className="flex flex-col items-center justify-center text-center mt-3 sm:mt-5 mb-2 sm:mb-4 z-30 w-full px-4">
             <Link
-              to="/categories"
+              to="/category"
               className="bg-[#0A1E3F] hover:bg-[#152B52] text-[#FAF7F0] font-bold text-xs sm:text-sm uppercase tracking-widest px-8 sm:px-10 py-3.5 sm:py-4 rounded-full shadow-xl shadow-[#0A1E3F]/25 transition-all hover:scale-105 active:scale-95 inline-flex items-center justify-center cursor-pointer border border-[#FAF7F0]/20"
             >
               Explore Categories
@@ -773,7 +773,7 @@ export default function HomePage() {
           {/* Master Categories Page Link */}
           <div className="mt-12 text-center flex justify-center px-4 relative z-10">
             <Link
-              to="/categories"
+              to="/category"
               className="inline-flex items-center justify-center gap-3 bg-[#0A1E3F] hover:bg-[#152B52] active:scale-95 text-[#FAF7F0] font-bold text-xs sm:text-sm uppercase tracking-widest px-8 sm:px-10 py-4 rounded-none shadow-xl shadow-[#0A1E3F]/20 transition-all group"
             >
               <span>Find your Qicdock</span>
@@ -1066,7 +1066,7 @@ export default function HomePage() {
                 <ArrowRight className="w-4 h-4" />
               </button>
               <Link 
-                to="/categories" 
+                to="/category" 
                 className="bg-transparent border border-[#0A1E3F] text-[#0A1E3F] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[13px] hover:bg-[#152B52] hover:text-[#F4F0E6] transition-colors flex items-center justify-center gap-2"
               >
                 SHOP UNIVERSAL

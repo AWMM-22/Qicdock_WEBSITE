@@ -119,7 +119,7 @@ export default function StandAloneMounts() {
             Home
           </Link>
           <span className="text-gray-400">/</span>
-          <Link to="/categories" className="hover:text-[#0A1E3F] transition-colors">
+          <Link to="/category" className="hover:text-[#0A1E3F] transition-colors">
             Categories
           </Link>
           <span className="text-gray-400">/</span>

@@ -126,7 +126,7 @@ export default function CarCombo() {
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-600 mb-2 leading-tight flex-wrap">
         <Link to="/" className="hover:text-[#0A1E3F] transition-colors">Home</Link>
         <span className="text-gray-400">/</span>
-        <Link to="/categories" className="hover:text-[#0A1E3F] transition-colors">Categories</Link>
+        <Link to="/category" className="hover:text-[#0A1E3F] transition-colors">Categories</Link>
         <span className="text-gray-400">/</span>
         <Link to="/category/vehicle-specific" className="hover:text-[#0A1E3F] transition-colors">Car Docks</Link>
         <span className="text-gray-400">/</span>

@@ -121,7 +121,7 @@ export default function CarProductDetailPage() {
                   ? '/category/home-office' 
                   : product.category === 'Car Specific' 
                   ? '/category/vehicle-specific' 
-                  : '/categories'
+                  : '/category'
               } 
               className="hover:text-[#0A1E3F] transition-colors"
             >
@@ -143,7 +143,7 @@ export default function CarProductDetailPage() {
               <ChevronLeft className="w-4 h-4" />
             </Link>
             <Link 
-              to="/categories"
+              to="/category"
               title="All Categories & Docks"
               className="p-1.5 hover:text-[#0A1E3F] hover:bg-[#0A1E3F]/10 rounded transition-colors"
             >

@@ -44,21 +44,20 @@ export default function App() {
       <InventoryProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#0A1E3F] selection:text-[#F4F0E6] overflow-y-auto">
+          <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#0A1E3F] selection:text-[#F4F0E6]">
           <Header />
           <main className="flex-1 w-full overflow-x-hidden">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/category" element={<CategoriesPage />} />
+              <Route path="/categories" element={<Navigate to="/category" replace />} />
               <Route path="/category/all-in-one" element={<AllInOneCombo />} />
-              <Route path="/category/car-wireless-four-charger-combo" element={<CarCombo />} />
+              <Route path="/category/car-wireless-four-charger-combo" element={<NodeConfiguratorPage />} />
+              <Route path="/category/car-wireless-car-charger-combo" element={<NodeConfiguratorPage />} />
               <Route path="/category/car-combo" element={<Navigate to="/category/car-wireless-four-charger-combo" replace />} />
               <Route path="/category/car-wireless-4-charger-combo" element={<Navigate to="/category/car-wireless-four-charger-combo" replace />} />
-              <Route path="/categories/car-wireless-four-charger-combo" element={<Navigate to="/category/car-wireless-four-charger-combo" replace />} />
-              <Route path="/categories/carcombo-test" element={<NodeConfiguratorPage />} />
-              <Route path="/category/carcombo-test" element={<NodeConfiguratorPage />} />
               <Route path="/category/home-office" element={<HomeOfficeCombo />} />
               <Route path="/category/individual" element={<IndividualChargers />} />
               <Route path="/category/vehicle-specific" element={<VehicleSpecific />} />

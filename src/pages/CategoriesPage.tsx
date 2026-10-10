@@ -23,6 +23,18 @@ const categoriesData = [
     link: "/category/vehicle-specific"
   },
   {
+    productId: "car-combo",
+    badgeText: "COCKPIT READY",
+    badgeIcon: Car,
+    title: "CAR COMBO 3IN1",
+    subtitle: "Front & Rear Passenger Charging",
+    description: "Tailored automotive bundle including center console pad, 360° air vent clip, and rear passenger headrest bracket.",
+    price: "From ₹2,048",
+    savings: "Save ₹1,648",
+    image: airVentImg,
+    link: "/category/car-wireless-four-charger-combo"
+  },
+  {
     productId: "home-office-combo",
     badgeText: "WORKSTATION",
     badgeIcon: MonitorSmartphone,
@@ -45,18 +57,6 @@ const categoriesData = [
     savings: "Save ₹1,100",
     image: combinedImg,
     link: "/category/all-in-one"
-  },
-  {
-    productId: "car-combo",
-    badgeText: "COCKPIT READY",
-    badgeIcon: Car,
-    title: "CAR WIRELESS 4 CHARGER COMBO",
-    subtitle: "Front & Rear Passenger Charging",
-    description: "Tailored automotive bundle including center console pad, 360° air vent clip, and rear passenger headrest bracket.",
-    price: "From ₹2,048",
-    savings: "Save ₹1,648",
-    image: airVentImg,
-    link: "/category/car-wireless-four-charger-combo"
   },
   {
     productId: "individual",
@@ -100,15 +100,6 @@ export default function CategoriesPage() {
             <span className="text-[#0A1E3F] font-bold">Categories</span>
           </nav>
 
-          {/* Top Test Button */}
-          <Link
-            to="/categories/carcombo-test"
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-[#0A1E3F] hover:bg-[#152B52] text-[#FAF7F0] text-xs font-bold tracking-wider uppercase rounded-full shadow-sm hover:shadow-md transition-all hover:scale-105 active:scale-95 border border-[#0A1E3F]"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Test</span>
-            <ArrowRight className="w-3.5 h-3.5 text-amber-300" />
-          </Link>
         </div>
 
         {/* Header */}
@@ -123,18 +114,6 @@ export default function CategoriesPage() {
             Choose from all-in-one multi-environment bundles, car-specific docks, or modular mounting accessories engineered with 25W fast wireless charging.
           </p>
 
-          {/* Featured Test Configurator Banner/Button */}
-          <div className="pt-2 flex justify-center">
-            <Link
-              to="/categories/carcombo-test"
-              className="inline-flex items-center gap-2.5 px-5 py-2.5 bg-[#0A1E3F] hover:bg-[#152B52] text-[#FAF7F0] text-xs sm:text-sm font-bold tracking-wider uppercase rounded-xl shadow-md hover:shadow-lg transition-all hover:scale-[1.02] border border-[#0A1E3F] group"
-            >
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Test</span>
-              <span className="text-amber-300 font-normal text-[11px] sm:text-xs">Car Combo Configurator</span>
-              <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
         </div>
 
         {/* Categories Grid */}
