@@ -267,10 +267,6 @@ const FAQ_ITEMS = [
     a: 'The package contains: (1) 25W Qi2 Magnetic Fast Wireless Charging Pad, (2) Custom console tray tailored for your selected car model, (3) 360° Steel-Hook Air Vent Mount, (4) Dual-Post Rear Seat Headrest Mount, (5) 1.5m Heavy-Duty Braided Automotive Type-C Cable (100W rated), (6) Fast Dual-Port 12V Automotive Power Adapter, (7) Cable Routing Clips, and (8) Official 2-Year Replacement Warranty Registration Card.'
   },
   {
-    q: 'What power adapter should be used with the Car Combo in my car?',
-    a: 'We include a fast dual-port 12V automotive power adapter in the package that plugs directly into your car auxiliary 12V/24V socket. You can also connect it to any onboard USB-C port in your vehicle that supports 15W–65W Power Delivery (PD).'
-  },
-  {
     q: 'Will the custom console tray fit my specific car model?',
     a: 'Yes! When configuring your combo, you select your exact car (Maruti Suzuki Fronx, Swift, Dzire, Baleno, Ertiga, Toyota Taisor, Glanza, or Mahindra 3XO). Each tray is molded directly from 3D CAD vehicle interior scans to drop snugly into your car’s factory console without adhesives, drilling, or dashboard vibrations.'
   },
@@ -676,14 +672,14 @@ export default function NodeConfiguratorPage() {
               </div>
 
               {/* Module Cards Stack */}
-              <div className="flex flex-col space-y-2.5 sm:space-y-3">
+              <div className="flex flex-col space-y-2.5 sm:space-y-3 w-full">
                 {MODULE_OPTIONS.map(mod => {
                   const isSelected = selectedModuleIds.includes(mod.id);
 
                   return (
                     <div
                       key={mod.id}
-                      className={`w-full max-w-[340px] sm:max-w-none h-[112px] min-h-[110px] max-h-[115px] p-2.5 sm:p-3 rounded-lg border transition-all bg-[#FAF7F2] shadow-2xs flex items-center justify-between mx-auto sm:mx-0 ${
+                      className={`w-full h-[112px] min-h-[110px] max-h-[115px] p-2.5 sm:p-3 rounded-lg border transition-all bg-[#FAF7F2] shadow-2xs flex items-center justify-between ${
                         isSelected 
                           ? 'border-[1.5px] border-[#0A1E3F] bg-[#0A1E3F]/5 ring-1 ring-[#0A1E3F]/20' 
                           : 'border border-[#0A1E3F]/15 hover:border-[#0A1E3F]/35 hover:bg-[#FAF7F2]'
@@ -709,7 +705,7 @@ export default function NodeConfiguratorPage() {
                         </div>
 
                         {/* Right Content Area */}
-                        <div className="w-[220px] max-w-[220px] sm:max-w-none flex-1 min-w-0 flex flex-col justify-between h-[85px] py-0.5">
+                        <div className="flex-1 min-w-0 flex flex-col justify-between h-[85px] py-0.5">
                           <div>
                             <p 
                               onClick={() => {
@@ -1277,13 +1273,13 @@ export default function NodeConfiguratorPage() {
               <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/15 shadow-2xs pt-2.5">
                 <div className="px-2 sm:px-3 space-y-1 first:pl-0">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
-                    <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <Smartphone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                   <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
-                    3D Scanned Fit
+                    Convenient Console Placement
                   </h3>
                   <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
-                    Precision molded from factory scans for {currentCar.brand} {currentCar.name}.
+                    Keeps your phone within easy reach on the centre console for effortless access while parked.
                   </p>
                 </div>
 
@@ -1292,22 +1288,22 @@ export default function NodeConfiguratorPage() {
                     <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                   <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
-                    Zero Adhesive Fit
+                    Stable & Secure Mounting
                   </h3>
                   <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
-                    Drops into factory console compartment without glue, screws, or tools.
+                    Provides a firm, reliable base that keeps your charger securely positioned, even on bumpy roads.
                   </p>
                 </div>
 
                 <div className="px-2 sm:px-3 space-y-1 last:pr-0">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
-                    <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                   <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
-                    Anti-Rattle Bed
+                    Multiple Car Compatibility
                   </h3>
                   <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
-                    High-friction acoustic silicone prevents cabin noise on rough roads.
+                    Choose from Universal or car-specific dock variants designed for a neat, seamless fit in your vehicle.
                   </p>
                 </div>
               </div>
