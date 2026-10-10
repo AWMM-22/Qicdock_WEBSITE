@@ -8,6 +8,8 @@ import {
   Check, 
   ChevronDown, 
   ChevronUp, 
+  ChevronLeft,
+  ChevronRight,
   X,
   Truck,
   ShieldCheck,
@@ -29,6 +31,9 @@ import { addToCart, getCartItems } from '../lib/cart';
 
 // Real asset imports
 import allInOneComboImg from '../assets/images/all_in_1combo.png';
+import matteBlackHookBracketImg from '../assets/images/Matte Black Minimalist Hook Bracket.png';
+import minimalistWallMountImg from '../assets/images/Minimalist Black Wall-Mount Bracket.png';
+import comboImage1Img from '../assets/images/combo image 1.png';
 import centerMountImg from '../assets/images/center_mount_1788721138616.webp';
 import airVentImg from '../assets/images/air_vent_mount.webp';
 import headrestMountImg from '../assets/images/headrest_mount.webp';
@@ -39,6 +44,14 @@ import ertigaImg from '../assets/images/Ertiga.webp';
 import xuv3xoImg from '../assets/images/3XO.webp';
 import combinedImg from '../assets/images/3in1 copy.webp';
 import combined1Img from '../assets/images/combined-1.png';
+
+// TOP CAROUSEL IMAGES
+const TOP_CAROUSEL_IMAGES = [
+  { src: allInOneComboImg, alt: 'Car Combo – 25W Wireless Charger | Charging Pad + 3 Stands' },
+  { src: matteBlackHookBracketImg, alt: 'Matte Black Minimalist Hook Bracket' },
+  { src: minimalistWallMountImg, alt: 'Minimalist Black Wall-Mount Bracket' },
+  { src: comboImage1Img, alt: 'QICDOCK Car Combo All-in-One Kit' }
+];
 
 // CAR MODEL OPTIONS
 interface CarOption {
@@ -332,6 +345,31 @@ export default function NodeConfiguratorPage() {
   const videoSectionRef = useRef<HTMLDivElement | null>(null);
   const mainVideoRef = useRef<HTMLVideoElement | null>(null);
 
+  // State & touch handlers for Top Image Carousel
+  const [topCarouselIdx, setTopCarouselIdx] = useState<number>(0);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchEndXRef = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndXRef.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartXRef.current === null || touchEndXRef.current === null) return;
+    const distance = touchStartXRef.current - touchEndXRef.current;
+    if (distance > 40) {
+      setTopCarouselIdx((prev) => (prev + 1) % TOP_CAROUSEL_IMAGES.length);
+    } else if (distance < -40) {
+      setTopCarouselIdx((prev) => (prev - 1 + TOP_CAROUSEL_IMAGES.length) % TOP_CAROUSEL_IMAGES.length);
+    }
+    touchStartXRef.current = null;
+    touchEndXRef.current = null;
+  };
+
   // Play first video only when user scrolls or reaches it on screen
   useEffect(() => {
     const videoEl = mainVideoRef.current;
@@ -562,13 +600,66 @@ export default function NodeConfiguratorPage() {
             </div>
           </div>
 
-          {/* Product Image Stage (Top image with all_in_1combo.png, 0 padding in div) */}
-          <div className="relative w-full h-full flex items-center justify-center p-0 m-0 overflow-hidden bg-[#F4F0E6]">
-            <img 
-              src={allInOneComboImg}
-              alt="Car Combo – 25W Wireless Charger | Charging Pad + 3 Stands"
-              className="w-full h-full object-contain filter drop-shadow-md select-none p-0 m-0 block transition-all duration-300"
-            />
+          {/* Product Image Stage Carousel (Includes all_in_1combo, Matte Black Hook, Minimalist Wall-Mount, combo image 1) */}
+          <div 
+            className="relative w-full h-full flex items-center justify-center p-0 m-0 overflow-hidden bg-[#F4F0E6] select-none"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Carousel Images Track */}
+            <div 
+              className="w-full h-full flex transition-transform duration-300 ease-out"
+              style={{ transform: `translateX(-${topCarouselIdx * 100}%)` }}
+            >
+              {TOP_CAROUSEL_IMAGES.map((imgItem, idx) => (
+                <div key={idx} className="w-full h-full min-w-full shrink-0 flex items-center justify-center p-0 m-0">
+                  <img 
+                    src={imgItem.src}
+                    alt={imgItem.alt}
+                    className="w-full h-full object-contain filter drop-shadow-md select-none p-0 m-0 block"
+                    loading={idx === 0 ? "eager" : "lazy"}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Left Prev Arrow Button */}
+            <button
+              type="button"
+              onClick={() => setTopCarouselIdx((prev) => (prev - 1 + TOP_CAROUSEL_IMAGES.length) % TOP_CAROUSEL_IMAGES.length)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/80 hover:bg-white text-[#0A1E3F] shadow-sm flex items-center justify-center transition opacity-80 hover:opacity-100 z-10 cursor-pointer"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* Right Next Arrow Button */}
+            <button
+              type="button"
+              onClick={() => setTopCarouselIdx((prev) => (prev + 1) % TOP_CAROUSEL_IMAGES.length)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/80 hover:bg-white text-[#0A1E3F] shadow-sm flex items-center justify-center transition opacity-80 hover:opacity-100 z-10 cursor-pointer"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+
+            {/* Carousel Dot Indicators */}
+            <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 px-2 py-1 rounded-full bg-[#0A1E3F]/10 backdrop-blur-xs">
+              {TOP_CAROUSEL_IMAGES.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setTopCarouselIdx(idx)}
+                  className={`h-1.5 sm:h-2 rounded-full transition-all cursor-pointer ${
+                    topCarouselIdx === idx 
+                      ? 'w-4 sm:w-5 bg-[#0A1E3F]' 
+                      : 'w-1.5 sm:w-2 bg-[#0A1E3F]/35 hover:bg-[#0A1E3F]/60'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
 
         </div>
@@ -679,10 +770,10 @@ export default function NodeConfiguratorPage() {
                   return (
                     <div
                       key={mod.id}
-                      className={`w-full h-[112px] min-h-[110px] max-h-[115px] p-2.5 sm:p-3 rounded-lg border transition-all bg-[#FAF7F2] shadow-2xs flex items-center justify-between ${
+                      className={`w-full h-[112px] min-h-[110px] max-h-[115px] p-2.5 sm:p-3 rounded-lg transition-all bg-[#FAF7F2] shadow-2xs flex items-center justify-between ${
                         isSelected 
-                          ? 'border-[1.5px] border-[#0A1E3F] bg-[#0A1E3F]/5 ring-1 ring-[#0A1E3F]/20' 
-                          : 'border border-[#0A1E3F]/15 hover:border-[#0A1E3F]/35 hover:bg-[#FAF7F2]'
+                          ? 'border-2 border-[#0A1E3F] bg-[#0A1E3F]/8 shadow-sm ring-1 ring-[#0A1E3F]' 
+                          : 'border-[1.5px] border-[#0A1E3F] hover:bg-[#0A1E3F]/5'
                       }`}
                     >
                       {/* Internal Grid */}
@@ -984,7 +1075,7 @@ export default function NodeConfiguratorPage() {
             </div>
 
             {/* 25W QI2 IN-CAR ECOSYSTEM SECTION (BETWEEN FIRST VIDEO AND COMBINED-1 IMAGE, NO ICONS) */}
-            <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-4 sm:p-5 my-4 shadow-2xs">
+            <div className="bg-[#FAF7F2] border-[1.5px] border-[#0A1E3F] rounded-lg p-4 sm:p-5 my-4 shadow-2xs">
               <div className="space-y-1.5 text-left">
                 <h3 className="text-base sm:text-lg md:text-xl font-bold text-[#0A1E3F] tracking-tight leading-snug my-0">
                   25W Qi2 Automotive Wireless Charging Ecosystem
@@ -1068,7 +1159,7 @@ export default function NodeConfiguratorPage() {
               </div>
 
               {/* Single div container holding all 3 features in a row */}
-              <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/15 shadow-2xs pt-2.5">
+              <div className="bg-[#FAF7F2] border-[1.5px] border-[#0A1E3F] rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/30 shadow-2xs pt-2.5">
                 <div className="px-2 sm:px-3 space-y-1 first:pl-0">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
                     <Wind className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -1169,7 +1260,7 @@ export default function NodeConfiguratorPage() {
               </div>
 
               {/* Single div container holding all 3 features in a row */}
-              <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/15 shadow-2xs pt-2.5">
+              <div className="bg-[#FAF7F2] border-[1.5px] border-[#0A1E3F] rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/30 shadow-2xs pt-2.5">
                 <div className="px-2 sm:px-3 space-y-1 first:pl-0">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
                     <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -1270,7 +1361,7 @@ export default function NodeConfiguratorPage() {
               </div>
 
               {/* Single div container holding all 3 features in a row */}
-              <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/15 shadow-2xs pt-2.5">
+              <div className="bg-[#FAF7F2] border-[1.5px] border-[#0A1E3F] rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/30 shadow-2xs pt-2.5">
                 <div className="px-2 sm:px-3 space-y-1 first:pl-0">
                   <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
                     <Smartphone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -1322,7 +1413,7 @@ export default function NodeConfiguratorPage() {
                 </h3>
               </div>
 
-              <div className="divide-y divide-[#0A1E3F]/10 border border-[#0A1E3F]/15 rounded-lg overflow-hidden bg-[#FAF7F2] shadow-2xs">
+              <div className="divide-y divide-[#0A1E3F]/10 border-[1.5px] border-[#0A1E3F] rounded-lg overflow-hidden bg-[#FAF7F2] shadow-2xs">
                 {(showAllFaqs ? FAQ_ITEMS : FAQ_ITEMS.slice(0, 5)).map((faq, idx) => {
                   const isOpen = openFaqIndex === idx;
                   return (
