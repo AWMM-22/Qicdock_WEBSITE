@@ -44,13 +44,19 @@ import ertigaImg from '../assets/images/Ertiga.webp';
 import xuv3xoImg from '../assets/images/3XO.webp';
 import combinedImg from '../assets/images/3in1 copy.webp';
 import combined1Img from '../assets/images/combined-1.png';
+import combo3combo1Img from '../assets/images/3combo1.png';
+import combo3combo2Img from '../assets/images/3combo2.png';
+import combo3combo3Img from '../assets/images/3combo3.png';
 
 // TOP CAROUSEL IMAGES
 const TOP_CAROUSEL_IMAGES = [
+  { src: comboImage1Img, alt: 'QICDOCK Car Combo All-in-One Kit' },
+  { src: combo3combo1Img, alt: 'QICDOCK 3-Combo Accessory 1' },
+  { src: combo3combo2Img, alt: 'QICDOCK 3-Combo Accessory 2' },
+  { src: combo3combo3Img, alt: 'QICDOCK 3-Combo Accessory 3' },
   { src: allInOneComboImg, alt: 'Car Combo – 25W Wireless Charger | Charging Pad + 3 Stands' },
   { src: matteBlackHookBracketImg, alt: 'Matte Black Minimalist Hook Bracket' },
-  { src: minimalistWallMountImg, alt: 'Minimalist Black Wall-Mount Bracket' },
-  { src: comboImage1Img, alt: 'QICDOCK Car Combo All-in-One Kit' }
+  { src: minimalistWallMountImg, alt: 'Minimalist Black Wall-Mount Bracket' }
 ];
 
 // CAR MODEL OPTIONS
@@ -67,6 +73,17 @@ interface CarOption {
 }
 
 const CAR_OPTIONS: CarOption[] = [
+  {
+    id: 'test-car',
+    name: 'Test Car (₹1)',
+    brand: 'Testing',
+    yearRange: '2026',
+    trayFit: 'N/A',
+    imgThumb: dzireSwiftPng,
+    plateImg: dzireSwiftPng,
+    price: 1,
+    mrp: 1
+  },
   {
     id: 'universal',
     name: 'Universal',
@@ -185,7 +202,7 @@ interface ModuleOption {
 const MODULE_OPTIONS: ModuleOption[] = [
   {
     id: 'vent',
-    name: 'Car Vent Mobile Stand',
+    name: 'Ac air vent mobile stand',
     price: 499,
     mrp: 999,
     thumbImg: airVentImg,
@@ -195,7 +212,7 @@ const MODULE_OPTIONS: ModuleOption[] = [
     features: [
       '360° smooth ball joint for portrait navigation and landscape calls',
       'Aerospace-grade steel hook clamp with anti-scratch silicone cushioning',
-      'Instant 25W magnetic wireless charging with precision Qi2 alignment',
+      'Instant 25W magnetic wireless charging with precision Qi2 Standards',
       'Universally fits round, vertical, and horizontal automotive air louvers'
     ],
     galleryImages: [
@@ -205,7 +222,7 @@ const MODULE_OPTIONS: ModuleOption[] = [
   },
   {
     id: 'rear',
-    name: 'Rear Seat Passenger Mount',
+    name: 'Rear Passenger Headrest Stand',
     price: 499,
     mrp: 999,
     thumbImg: headrestMountImg,
@@ -225,15 +242,15 @@ const MODULE_OPTIONS: ModuleOption[] = [
   },
   {
     id: 'tray',
-    name: 'Universal Centre Console Dock Tray',
+    name: 'Universal Centre Console Dock',
     price: 500,
     mrp: 899,
     thumbImg: dzireSwiftPng,
     stageImg: dzireSwiftPng,
     slotStyles: { left: '300px', top: '510px', width: '220px', height: '220px', zIndex: 98 },
-    description: 'Precision molded charging base engineered for the lower center console tray with non-slip silicone backing and factory OEM dashboard finish.',
+    description: 'Precision molded charging base engineered for the lower center console with non-slip silicone backing and factory OEM dashboard finish.',
     features: [
-      'Direct OEM console tray fitment with zero rattle or slide during acceleration',
+      'Direct OEM console fitment with zero rattle or slide during acceleration',
       'Dual-coil 25W Qi2 fast charging architecture with thermal management',
       'Copper dissipation core keeps device cool during continuous GPS navigation',
       'Includes stealth low-profile Type-C power connector for clean cabin wiring'
@@ -247,15 +264,14 @@ const MODULE_OPTIONS: ModuleOption[] = [
 
 
 const TECHNICAL_SPECS = [
-  { label: 'Wireless Protocol', value: 'Qi2.2 / MagSafe Fast Charging standard' },
+  { label: 'Wireless Protocol', value: 'Qi Standards' },
   { label: 'Power Output', value: '25W Peak Wireless Fast Charging' },
-  { label: 'Input Interface', value: 'USB Type-C (Supports 12V–24V vehicle adapters & 65W+ PD sources)' },
-  { label: 'Magnetic Array', value: 'N52 Neodymium Ring (tested up to 1.8kg hold capacity)' },
-  { label: 'Thermal System', value: 'Integrated heat dissipation vents with active thermal throttling' },
-  { label: 'Safety Protections', value: 'FOD (Foreign Object Detection), OVP, OCP, OTP temperature guard' },
-  { label: 'Cable Included', value: '1.5m Heavy-Duty Braided Automotive Type-C (100W rated)' },
-  { label: 'Materials', value: 'Aerospace Aluminium, Polycarbonate & Non-Slip Silicone' },
-  { label: 'Warranty', value: '2-Year Doorstep Replacement Guarantee' }
+  { label: 'Input Interface', value: 'USB Type-C' },
+  { label: 'Magnetic Array', value: 'N52 Neodymium Ring' },
+  { label: 'Thermal System', value: 'Lower Pad Heat Design' },
+  { label: 'Power Input', value: '12 Volts / 3 Amps' },
+  { label: 'Materials', value: 'Acrylonitrile Butadiene Styrene (ABS), Aluminium and Metal Stands' },
+  { label: 'Warranty', value: '6 months' }
 ];
 
 const WHATS_IN_THE_BOX = [
@@ -273,23 +289,23 @@ const WHATS_IN_THE_BOX = [
 const FAQ_ITEMS = [
   {
     q: 'What is the Car Combo 25W Wireless Charger Ecosystem?',
-    a: 'The Car Combo is an all-in-one 25W Qi2 wireless charging ecosystem engineered specifically for car cabins. It combines a 25W Qi2 fast wireless charging core with three purpose-built automotive stands: a custom-fit Centre Console Dock Tray tailored to your vehicle, a 360° Steel-Hook Car Air Vent Mount, and a Dual-Post Rear Seat Headrest Mount for backseat passengers.'
+    a: 'The QicDock Car Combo features a 25W Wireless Charger + 3 versatile stands (AC Air Vent Mobile Stand, Rear Passenger Headrest Stand, and Universal Centre Console Dock) for flexible mounting across your car. Designed for magnetic-safe iPhone charging, it keeps compatible phones aligned and charged at 25W.'
   },
   {
     q: 'What comes in the box with the Car Combo?',
-    a: 'The package contains: (1) 25W Qi2 Magnetic Fast Wireless Charging Pad, (2) Custom console tray tailored for your selected car model, (3) 360° Steel-Hook Air Vent Mount, (4) Dual-Post Rear Seat Headrest Mount, (5) 1.5m Heavy-Duty Braided Automotive Type-C Cable (100W rated), (6) Fast Dual-Port 12V Automotive Power Adapter, (7) Cable Routing Clips, and (8) Official 2-Year Replacement Warranty Registration Card.'
+    a: 'The package contains: (1) 25W Wireless Charging Pad, (2) AC Air Vent Mobile Stand, (3) Rear Passenger Headrest Stand, (4) Universal Centre Console Dock, (5) Type-C cable, (6) 12V Power Adapter, and (7) User Manual.'
   },
   {
-    q: 'Will the custom console tray fit my specific car model?',
-    a: 'Yes! When configuring your combo, you select your exact car (Maruti Suzuki Fronx, Swift, Dzire, Baleno, Ertiga, Toyota Taisor, Glanza, or Mahindra 3XO). Each tray is molded directly from 3D CAD vehicle interior scans to drop snugly into your car’s factory console without adhesives, drilling, or dashboard vibrations.'
+    q: 'Will the custom console dock fit my specific car model?',
+    a: 'Yes! When configuring your combo, you select your car. Each dock is precision-molded for your specific vehicle console to drop snugly into place without adhesives or drilling.'
   },
   {
-    q: 'What makes the 25W Qi2 technology special?',
-    a: 'Qi2 is the latest global standard for magnetic wireless charging certified by the Wireless Power Consortium. It delivers up to 25W peak wireless charging speeds with precision N52 neodymium magnetic alignment, superior heat management, and zero disconnections over bumps.'
+    q: 'What makes the 25W charging technology special?',
+    a: 'The 25W output provides convenient, fast power for compatible devices, with a magnetic-safe design that helps keep compatible iPhones securely aligned while you drive.'
   },
   {
-    q: 'Which phone models are compatible with the Car Combo?',
-    a: 'The Car Combo natively supports all MagSafe and Qi2 iPhones (iPhone 12 through iPhone 16 series), as well as wireless-charging Android phones (such as Samsung Galaxy S23/S24/S25 series and Google Pixel) either directly or with any MagSafe-compatible magnetic case or ring.'
+    q: 'Which phone models are compatible?',
+    a: 'Supports Apple iPhones (12 through 18 Pro Max/Pro/Plus/mini/Air series), Samsung Galaxy, Google Pixel, and other Qi-standard compatible smartphones. Note: Some phones require an external magnetic case for optimal alignment.'
   },
   {
     q: 'Is it safe to leave connected inside the car in high summer temperatures?',
@@ -530,12 +546,6 @@ export default function NodeConfiguratorPage() {
         <div className="fixed top-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:top-6 md:right-6 z-50 bg-[#0A1E3F] text-[#F4F0E6] px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 animate-fade-in text-sm font-semibold">
           <Check className="w-4 h-4 text-[#F4F0E6]" />
           <span>Added Car Combo to your bag!</span>
-          <button 
-            onClick={() => navigate('/cart')}
-            className="ml-2 text-xs uppercase tracking-wider font-bold underline bg-white/20 px-2 py-0.5 rounded cursor-pointer"
-          >
-            View Bag
-          </button>
         </div>
       )}
 
@@ -873,14 +883,14 @@ export default function NodeConfiguratorPage() {
                 {openProductDetails && (
                   <div className="mt-2 text-xs sm:text-[13px] text-gray-600 space-y-2 leading-relaxed">
                     <p>
-                      The Car Combo is an all-in-one 25W Qi2 wireless charging ecosystem precision engineered for Indian roads and vehicle interiors. Comes custom configured for <strong>{currentCar.brand} {currentCar.name}</strong> along with 3 specialized mounting stands.
+                      The Car Combo is an all-in-one 25W Qi2 wireless charging ecosystem precision engineered for Indian roads and vehicle interiors. Comes custom configured for <strong>{currentCar.brand} {currentCar.name}</strong> along with 3 specialized mounting stands. Materials: Acrylonitrile Butadiene Styrene (ABS), Aluminium and Metal Stands.
                     </p>
                     <ul className="space-y-1.5 list-disc pl-4 text-xs sm:text-[13px]">
-                      <li>Custom-fit console dock tray designed specifically for {currentCar.name} ({currentCar.trayFit})</li>
-                      <li>Car Vent Mobile Stand with lockable 360° steel hook clamp</li>
-                      <li>Rear Seat Passenger Mount with dual-post headrest clamp for backseat entertainment</li>
-                      <li>Universal Centre Console Dock Tray with non-slip silicone backing</li>
-                      <li>Qi2 certified 25W magnetic wireless charging with fast thermal dissipation</li>
+                      <li>Custom-fit console dock designed specifically for {currentCar.name} ({currentCar.trayFit})</li>
+                      <li>AC Air Vent Mobile Stand with lockable 360° steel hook clamp</li>
+                      <li>Rear Passenger Headrest Stand with dual-post headrest clamp for backseat entertainment</li>
+                      <li>Universal Centre Console Dock with non-slip silicone backing</li>
+                      <li>Qi2 Standards 25W magnetic wireless charging with fast thermal dissipation</li>
                       <li>Smart power management prevents vehicle battery drain when engine is idle</li>
                       <li>Includes braided heavy-duty automotive Type-C cables and 12V adapter</li>
                     </ul>
@@ -944,30 +954,16 @@ export default function NodeConfiguratorPage() {
                   <div className="mt-2 text-xs sm:text-[13px] text-[#0A1E3F]/80 space-y-2.5 leading-relaxed">
                     <div>
                       <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">DELIVERY</h5>
-                      <p>Will be Dispatched in 4-5 days.</p>
+                      <p>Orders will be dispatched within 2–3 business days after order confirmation. Delivery timelines may vary depending on your location and courier service availability.</p>
                     </div>
 
                     <div>
-                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">FREE SHIPPING</h5>
-                      <p>Free shipping on orders above ₹1199. A charge of ₹79 is applied to all orders of ₹1199 and below.</p>
+                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">RETURNS & REPLACEMENT</h5>
+                      <p>QICDOCK products come with a <em>6-month brand warranty</em> covering manufacturing defects and functional issues.</p>
+                      <p>We also offer a <em>7-day return or replacement policy</em> from the date of delivery, subject to eligibility and product condition.</p>
                     </div>
 
-                    <div>
-                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">CASH ON DELIVERY</h5>
-                      <p>₹99 extra charges for all Cash On Delivery orders.</p>
-                    </div>
 
-                    <div>
-                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">RETURNS</h5>
-                      <p>2-year replacement for manufacturing or functionality defects.</p>
-                      <p className="mt-1">
-                        For more information, check out our{' '}
-                        <span className="text-[#0A1E3F] underline cursor-pointer font-medium">Shipping Policy Page</span>{' '}
-                        and{' '}
-                        <span className="text-[#0A1E3F] underline cursor-pointer font-medium">Return and Exchange Policy</span>{' '}
-                        page.
-                      </p>
-                    </div>
                   </div>
                 )}
               </div>
@@ -1011,7 +1007,7 @@ export default function NodeConfiguratorPage() {
                     Quality Assured
                   </span>
                   <span className="text-[9px] text-[#0A1E3F]/60 leading-tight">
-                    Qi2 Certified
+                    Qi2 Standards
                   </span>
                 </div>
               </div>
@@ -1103,7 +1099,7 @@ export default function NodeConfiguratorPage() {
               {/* All texts left-aligned */}
               <div className="space-y-1 text-left">
                 <h2 className="text-base sm:text-lg md:text-xl font-semibold text-[#0A1E3F] tracking-tight uppercase leading-tight my-1 text-left">
-                  Car Vent Mobile Stand
+                  AC Air Vent Mobile Stand
                 </h2>
                 <p className="text-xs sm:text-sm font-normal uppercase tracking-wider text-[#0A1E3F]/80 leading-snug my-0 text-left">
                   COOLER AIR. BETTER CHARGING.
@@ -1308,7 +1304,7 @@ export default function NodeConfiguratorPage() {
                   Vehicle-Specific Console Dock Tray
                 </h2>
                 <p className="text-xs sm:text-sm font-normal uppercase tracking-wider text-[#0A1E3F]/80 leading-snug my-0 text-left">
-                  FACTORY CONSOLE FIT. ZERO ADHESIVE.
+                  FACTORY CONSOLE FIT.
                 </p>
                 <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed pt-0.5 my-0 text-left">
                   Custom molded from sub-millimeter 3D interior scans for <strong>{currentCar.brand} {currentCar.name}</strong> and top Indian vehicles. Drops straight into your factory compartment with zero tools, zero rattling, and discreet automotive cable channels.
