@@ -498,11 +498,6 @@ export default function HomePage() {
                 decoding="sync"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
               />
-              <div className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-10 pointer-events-none">
-                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[9px] sm:text-[11px] uppercase tracking-wider px-2.5 sm:px-3 py-1 rounded-md shadow-sm">
-                  Product Closeup
-                </span>
-              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </Link>
 
@@ -518,11 +513,6 @@ export default function HomePage() {
                 decoding="async"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
               />
-              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
-                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
-                  Headrest Mount
-                </span>
-              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
 
@@ -538,11 +528,6 @@ export default function HomePage() {
                 decoding="async"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
               />
-              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
-                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
-                  Desk & Home Setup
-                </span>
-              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
 
@@ -558,11 +543,6 @@ export default function HomePage() {
                 decoding="async"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
               />
-              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
-                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
-                  Dashboard Mount
-                </span>
-              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
 
@@ -578,11 +558,6 @@ export default function HomePage() {
                 decoding="async"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out select-none" 
               />
-              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 pointer-events-none">
-                <span className="bg-[#FAF7F0]/90 backdrop-blur-md border border-[#0A1E3F]/15 text-[#0A1E3F] font-bold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md shadow-sm">
-                  In-Car Vent Mount
-                </span>
-              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1E3F]/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Link>
           </div>

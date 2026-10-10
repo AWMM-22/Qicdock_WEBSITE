@@ -17,7 +17,13 @@ import {
   CheckCircle2,
   Video,
   Upload,
-  Play
+  Play,
+  Star,
+  Wind,
+  ThermometerSnowflake,
+  Smartphone,
+  Layers,
+  Award
 } from 'lucide-react';
 import { addToCart, getCartItems } from '../lib/cart';
 
@@ -28,9 +34,11 @@ import airVentImg from '../assets/images/air_vent_mount.webp';
 import headrestMountImg from '../assets/images/headrest_mount.webp';
 import fronxEtcImg from '../assets/images/Fronx, Taisor, Glanza and Baleno.webp';
 import dzireSwiftImg from '../assets/images/Dzire and Swift.webp';
+import dzireSwiftPng from '../assets/images/Dzire and Swift.png';
 import ertigaImg from '../assets/images/Ertiga.webp';
 import xuv3xoImg from '../assets/images/3XO.webp';
 import combinedImg from '../assets/images/3in1 copy.webp';
+import combined1Img from '../assets/images/combined-1.png';
 
 // CAR MODEL OPTIONS
 interface CarOption {
@@ -41,9 +49,22 @@ interface CarOption {
   trayFit: string;
   imgThumb: string;
   plateImg: string;
+  price: number;
+  mrp: number;
 }
 
 const CAR_OPTIONS: CarOption[] = [
+  {
+    id: 'universal',
+    name: 'Universal',
+    brand: 'Universal Fit',
+    yearRange: 'All Cars & Models',
+    trayFit: 'Center Console Fit',
+    imgThumb: dzireSwiftPng,
+    plateImg: dzireSwiftPng,
+    price: 2335,
+    mrp: 3007
+  },
   {
     id: 'fronx',
     name: 'Fronx',
@@ -51,7 +72,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2023 - 2025',
     trayFit: 'Console Tray Fit',
     imgThumb: fronxEtcImg,
-    plateImg: fronxEtcImg
+    plateImg: fronxEtcImg,
+    price: 2571,
+    mrp: 3255
   },
   {
     id: 'baleno',
@@ -60,7 +83,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2022 - 2025',
     trayFit: 'Console Tray Fit',
     imgThumb: fronxEtcImg,
-    plateImg: fronxEtcImg
+    plateImg: fronxEtcImg,
+    price: 2571,
+    mrp: 3255
   },
   {
     id: 'swift',
@@ -69,7 +94,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2024 - 2025',
     trayFit: 'Center Slot Fit',
     imgThumb: dzireSwiftImg,
-    plateImg: dzireSwiftImg
+    plateImg: dzireSwiftImg,
+    price: 2571,
+    mrp: 3255
   },
   {
     id: 'dzire',
@@ -78,7 +105,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2024 - 2025',
     trayFit: 'Center Slot Fit',
     imgThumb: dzireSwiftImg,
-    plateImg: dzireSwiftImg
+    plateImg: dzireSwiftImg,
+    price: 2571,
+    mrp: 3255
   },
   {
     id: 'ertiga',
@@ -87,7 +116,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2019 - 2025',
     trayFit: 'Cup-Holder Slot',
     imgThumb: ertigaImg,
-    plateImg: ertigaImg
+    plateImg: ertigaImg,
+    price: 2571,
+    mrp: 3255
   },
   {
     id: 'taisor',
@@ -96,7 +127,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2024 - 2025',
     trayFit: 'Console Tray Fit',
     imgThumb: fronxEtcImg,
-    plateImg: fronxEtcImg
+    plateImg: fronxEtcImg,
+    price: 2571,
+    mrp: 3255
   },
   {
     id: 'glanza',
@@ -105,7 +138,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2022 - 2025',
     trayFit: 'Console Tray Fit',
     imgThumb: fronxEtcImg,
-    plateImg: fronxEtcImg
+    plateImg: fronxEtcImg,
+    price: 2571,
+    mrp: 3255
   },
   {
     id: '3xo',
@@ -114,7 +149,9 @@ const CAR_OPTIONS: CarOption[] = [
     yearRange: '2024 - 2025',
     trayFit: 'XUV Tray Fit',
     imgThumb: xuv3xoImg,
-    plateImg: xuv3xoImg
+    plateImg: xuv3xoImg,
+    price: 2571,
+    mrp: 3255
   }
 ];
 
@@ -178,8 +215,8 @@ const MODULE_OPTIONS: ModuleOption[] = [
     name: 'Universal Centre Console Dock Tray',
     price: 500,
     mrp: 899,
-    thumbImg: centerMountImg,
-    stageImg: centerMountImg,
+    thumbImg: dzireSwiftPng,
+    stageImg: dzireSwiftPng,
     slotStyles: { left: '300px', top: '510px', width: '220px', height: '220px', zIndex: 98 },
     description: 'Precision molded charging base engineered for the lower center console tray with non-slip silicone backing and factory OEM dashboard finish.',
     features: [
@@ -189,7 +226,7 @@ const MODULE_OPTIONS: ModuleOption[] = [
       'Includes stealth low-profile Type-C power connector for clean cabin wiring'
     ],
     galleryImages: [
-      centerMountImg,
+      dzireSwiftPng,
       combinedImg
     ]
   }
@@ -260,8 +297,8 @@ const FAQ_ITEMS = [
 export default function NodeConfiguratorPage() {
   const navigate = useNavigate();
 
-  // State: selected car (defaults to Fronx)
-  const [selectedCarId, setSelectedCarId] = useState<string>('fronx');
+  // State: selected car (defaults to Universal)
+  const [selectedCarId, setSelectedCarId] = useState<string>('universal');
 
   // State: selected modules (default: all 3 modules selected)
   const [selectedModuleIds, setSelectedModuleIds] = useState<string[]>(['vent', 'rear', 'tray']);
@@ -272,9 +309,17 @@ export default function NodeConfiguratorPage() {
   // State: Cart count from storage
   const [cartCount, setCartCount] = useState<number>(0);
 
-  // State: Pincode check
-  const [pincode, setPincode] = useState<string>('');
-  const [pincodeMessage, setPincodeMessage] = useState<string | null>(null);
+  // State: Car Vent Stand Video
+  const [ventVideoUrl, setVentVideoUrl] = useState<string>('/videos/car-vent-stand.mp4');
+  const [ventVideoError, setVentVideoError] = useState<boolean>(false);
+
+  // State: Rear Seat Stand Video
+  const [rearVideoUrl, setRearVideoUrl] = useState<string>('/videos/rear-seat-mount.mp4');
+  const [rearVideoError, setRearVideoError] = useState<boolean>(false);
+
+  // State: Vehicle Specific Tray Video
+  const [trayVideoUrl, setTrayVideoUrl] = useState<string>('/videos/vehicle-specific-tray.mp4');
+  const [trayVideoError, setTrayVideoError] = useState<boolean>(false);
 
   // State: Accordions
   const [openProductDetails, setOpenProductDetails] = useState<boolean>(false);
@@ -286,29 +331,54 @@ export default function NodeConfiguratorPage() {
   // State: Product Video
   const [videoUrl, setVideoUrl] = useState<string>('/videos/car-combo-video.mp4');
   const [videoError, setVideoError] = useState<boolean>(false);
-  const [isVideoOnScreen, setIsVideoOnScreen] = useState<boolean>(false);
+  const [isPastVideo, setIsPastVideo] = useState<boolean>(false);
   const [isVideoHovered, setIsVideoHovered] = useState<boolean>(false);
   const videoSectionRef = useRef<HTMLDivElement | null>(null);
+  const mainVideoRef = useRef<HTMLVideoElement | null>(null);
 
+  // Play first video only when user scrolls or reaches it on screen
   useEffect(() => {
+    const videoEl = mainVideoRef.current;
+    if (!videoEl) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVideoOnScreen(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          videoEl.play().catch(() => {});
+        } else {
+          videoEl.pause();
+        }
       },
       {
-        threshold: 0.15,
-        rootMargin: '0px 0px -10% 0px'
+        threshold: 0.15
       }
     );
 
-    if (videoSectionRef.current) {
-      observer.observe(videoSectionRef.current);
-    }
-
+    observer.observe(videoEl);
     return () => observer.disconnect();
+  }, [videoUrl]);
+
+  useEffect(() => {
+    const checkScrollPosition = () => {
+      if (!videoSectionRef.current) return;
+      const rect = videoSectionRef.current.getBoundingClientRect();
+      // When the top of the video enters viewport or is scrolled past, keep the top image hidden
+      // so it never pops back up while browsing Car Vent Stand, Rear Seat Mount, Tray, or FAQs
+      const reachedOrPast = rect.top <= window.innerHeight * 0.75;
+      setIsPastVideo(reachedOrPast);
+    };
+
+    window.addEventListener('scroll', checkScrollPosition, { passive: true });
+    window.addEventListener('resize', checkScrollPosition, { passive: true });
+    checkScrollPosition();
+
+    return () => {
+      window.removeEventListener('scroll', checkScrollPosition);
+      window.removeEventListener('resize', checkScrollPosition);
+    };
   }, []);
 
-  const shouldHideTopImage = isVideoOnScreen || isVideoHovered;
+  const shouldHideTopImage = isPastVideo || isVideoHovered;
 
   const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -316,6 +386,33 @@ export default function NodeConfiguratorPage() {
       const url = URL.createObjectURL(file);
       setVideoUrl(url);
       setVideoError(false);
+    }
+  };
+
+  const handleVentVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setVentVideoUrl(url);
+      setVentVideoError(false);
+    }
+  };
+
+  const handleRearVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setRearVideoUrl(url);
+      setRearVideoError(false);
+    }
+  };
+
+  const handleTrayVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setTrayVideoUrl(url);
+      setTrayVideoError(false);
     }
   };
 
@@ -354,47 +451,21 @@ export default function NodeConfiguratorPage() {
     }
   };
 
-  // Base price for car specific charging tray hardware
-  const baseCarPrice = 550;
-  const baseCarMrp = 999;
-
-  // Price calculations
+  // Price calculations driven by selected car:
+  // Universal: ₹2,335 (cancelled ₹3,007 -> 22% OFF)
+  // All other cars: ₹2,571 (cancelled ₹3,255 -> 21% OFF)
   const totalPrice = useMemo(() => {
-    let sum = baseCarPrice;
-    selectedModuleIds.forEach(id => {
-      const mod = MODULE_OPTIONS.find(m => m.id === id);
-      if (mod) sum += mod.price;
-    });
-    // When all 3 modules are selected, exactly matches the combo deal: ₹2,048
-    if (selectedModuleIds.length === 3) return 2048;
-    return sum;
-  }, [selectedModuleIds]);
+    return currentCar.price;
+  }, [currentCar]);
 
   const totalMrp = useMemo(() => {
-    let sum = baseCarMrp;
-    selectedModuleIds.forEach(id => {
-      const mod = MODULE_OPTIONS.find(m => m.id === id);
-      if (mod) sum += mod.mrp;
-    });
-    // Combo MRP is ₹3,696
-    if (selectedModuleIds.length === 3) return 3696;
-    return Math.max(sum, Math.round(totalPrice * 1.8 / 100) * 100 - 1);
-  }, [selectedModuleIds, totalPrice]);
+    return currentCar.mrp;
+  }, [currentCar]);
 
   const discountPercent = useMemo(() => {
     if (totalMrp <= totalPrice) return 0;
     return Math.round(((totalMrp - totalPrice) / totalMrp) * 100);
   }, [totalPrice, totalMrp]);
-
-  // Handle Pincode Check
-  const handleCheckPincode = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!pincode || pincode.length < 6) {
-      setPincodeMessage('Please enter a valid 6-digit Indian PIN code');
-      return;
-    }
-    setPincodeMessage(`Delivery to ${pincode}: Dispatch within 2-4 business days. Free express delivery available for ${currentCar.name}.`);
-  };
 
   // Handle Add To Cart
   const handleAddToCart = () => {
@@ -418,16 +489,16 @@ export default function NodeConfiguratorPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white text-[#1d1d1f] font-sans antialiased selection:bg-[#20a87e] selection:text-white">
+    <div className="w-full min-h-screen bg-[#F4F0E6] text-[#0A1E3F] font-sans antialiased selection:bg-[#0A1E3F] selection:text-[#F4F0E6]">
       
       {/* Toast Alert */}
       {addedToast && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:top-6 md:right-6 z-50 bg-[#20a87e] text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 animate-fade-in text-sm font-semibold">
-          <Check className="w-4 h-4 text-white" />
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:top-6 md:right-6 z-50 bg-[#0A1E3F] text-[#F4F0E6] px-5 py-3 rounded-full shadow-2xl flex items-center gap-3 animate-fade-in text-sm font-semibold">
+          <Check className="w-4 h-4 text-[#F4F0E6]" />
           <span>Added Car Combo to your bag!</span>
           <button 
             onClick={() => navigate('/cart')}
-            className="ml-2 text-xs uppercase tracking-wider font-bold underline bg-white/20 px-2 py-0.5 rounded"
+            className="ml-2 text-xs uppercase tracking-wider font-bold underline bg-white/20 px-2 py-0.5 rounded cursor-pointer"
           >
             View Bag
           </button>
@@ -440,7 +511,7 @@ export default function NodeConfiguratorPage() {
         {/* ======================================================== */}
         {/* TOP / LEFT: STICKY PREVIEW STAGE                         */}
         {/* ======================================================== */}
-        <div className={`w-full lg:w-1/2 sticky top-0 h-[32vh] sm:h-[38vh] lg:h-screen bg-white border-b lg:border-b-0 lg:border-r border-[#EEEEEE] flex flex-col items-center justify-center z-20 overflow-hidden p-0 m-0 relative transition-all duration-500 ease-in-out ${
+        <div className={`w-full lg:w-1/2 sticky top-16 sm:top-20 h-[32vh] sm:h-[38vh] lg:h-[calc(100vh-5rem)] bg-[#F4F0E6] border-b lg:border-b-0 lg:border-r border-[#0A1E3F]/10 flex flex-col items-center justify-center z-20 overflow-hidden p-0 m-0 relative transition-all duration-500 ease-in-out ${
           shouldHideTopImage 
             ? '-translate-y-full opacity-0 pointer-events-none' 
             : 'translate-y-0 opacity-100'
@@ -451,7 +522,7 @@ export default function NodeConfiguratorPage() {
             {/* Back button */}
             <button 
               onClick={() => navigate(-1)}
-              className="p-1 -ml-1 text-[#1d1d1f] hover:opacity-70 transition flex items-center justify-center focus:outline-none"
+              className="p-1 -ml-1 text-[#0A1E3F] hover:opacity-70 transition flex items-center justify-center focus:outline-none cursor-pointer"
               title="Go back"
               aria-label="Back"
             >
@@ -459,7 +530,7 @@ export default function NodeConfiguratorPage() {
             </button>
 
             {/* Right icons */}
-            <div className="flex items-center gap-3.5 sm:gap-5 text-[#1d1d1f]">
+            <div className="flex items-center gap-3.5 sm:gap-5 text-[#0A1E3F]">
               <button 
                 onClick={() => {
                   if (navigator.share) {
@@ -472,7 +543,7 @@ export default function NodeConfiguratorPage() {
                     alert('Link copied to clipboard!');
                   }
                 }}
-                className="p-1 hover:opacity-70 transition focus:outline-none"
+                className="p-1 hover:opacity-70 transition focus:outline-none cursor-pointer"
                 title="Share"
                 aria-label="Share"
               >
@@ -481,13 +552,13 @@ export default function NodeConfiguratorPage() {
               
               <button 
                 onClick={() => navigate('/cart')}
-                className="p-1 relative hover:opacity-70 transition focus:outline-none"
+                className="p-1 relative hover:opacity-70 transition focus:outline-none cursor-pointer"
                 title="Bag"
                 aria-label="Cart Bag"
               >
                 <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#0d8c66] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#0A1E3F] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
                     {cartCount}
                   </span>
                 )}
@@ -496,54 +567,12 @@ export default function NodeConfiguratorPage() {
           </div>
 
           {/* Product Image Stage (Top image with all_in_1combo.png, 0 padding in div) */}
-          <div className="relative w-full h-full flex items-center justify-center p-0 m-0 overflow-hidden bg-white">
+          <div className="relative w-full h-full flex items-center justify-center p-0 m-0 overflow-hidden bg-[#F4F0E6]">
             <img 
               src={allInOneComboImg}
               alt="Car Combo – 25W Wireless Charger | Charging Pad + 3 Stands"
               className="w-full h-full object-contain filter drop-shadow-md select-none p-0 m-0 block transition-all duration-300"
             />
-
-            {/* "See it in action" Active Wireless Charging Glow & Pulse */}
-            {seeInAction && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <span className="w-36 sm:w-52 h-36 sm:h-52 rounded-full border-2 border-[#0d8c66] animate-ping opacity-60" />
-                <span className="absolute w-14 sm:w-16 h-14 sm:h-16 rounded-full bg-[#0d8c66]/20 backdrop-blur-xs border border-[#0d8c66] flex items-center justify-center text-white shadow-lg">
-                  <Zap className="w-6 sm:w-8 h-6 sm:h-8 text-[#0d8c66] fill-[#0d8c66]" />
-                </span>
-              </div>
-            )}
-
-            {/* Status pill on stage when "See it in action" is active */}
-            {seeInAction && (
-              <div className="absolute top-12 left-1/2 -translate-x-1/2 bg-[#1d1d1f]/90 backdrop-blur text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded-full flex items-center gap-2 shadow-2xl text-[10px] sm:text-xs font-bold tracking-wider uppercase z-30">
-                <span className="w-2 h-2 rounded-full bg-[#0d8c66] animate-pulse" />
-                <span>25W Qi2 MagSafe Active · {currentCar.name}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Bottom "See it in action" Floating Toggle (Absolute Overlay) */}
-          <div className="absolute bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 z-30 pointer-events-auto">
-            <div className="bg-white/95 backdrop-blur shadow-sm border border-gray-200/80 px-2.5 py-1 rounded-full flex items-center gap-2">
-              <Sparkles className="w-3 h-3 text-[#0d8c66]" />
-              <span className="text-[9px] sm:text-[10px] font-bold tracking-wider text-[#1d1d1f] uppercase">
-                See it in action
-              </span>
-              <button
-                type="button"
-                onClick={() => setSeeInAction(!seeInAction)}
-                className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors duration-200 focus:outline-none ${
-                  seeInAction ? 'bg-[#0d8c66]' : 'bg-[#d1d5db]'
-                }`}
-                title="Toggle charging & illumination mode"
-              >
-                <span
-                  className={`inline-block h-3 w-3 transform rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                    seeInAction ? 'translate-x-3.5' : 'translate-x-0.5'
-                  }`}
-                />
-              </button>
-            </div>
           </div>
 
         </div>
@@ -551,38 +580,38 @@ export default function NodeConfiguratorPage() {
         {/* ======================================================== */}
         {/* BOTTOM / RIGHT: CONFIGURATOR CONTROLS & SELECTION         */}
         {/* ======================================================== */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-between px-3 sm:px-6 lg:px-10 pt-3 sm:pt-5 pb-20 sm:pb-24 lg:pb-8 bg-white">
+        <div className="w-full lg:w-1/2 flex flex-col justify-between px-3 sm:px-6 lg:px-10 pt-3 sm:pt-5 pb-20 sm:pb-24 lg:pb-8 bg-[#F4F0E6]">
           <div className="max-w-[620px] mx-auto w-full space-y-3 sm:space-y-4">
             
-            {/* Header: Title & Pricing (Compact typography & spacing, unbolded title) */}
-            <div className="border-b border-gray-100 pb-2 sm:pb-3">
-              <h1 className="text-base sm:text-lg md:text-xl font-normal text-[#1d1d1f] tracking-tight uppercase leading-tight my-1">
+            {/* Header: Title & Pricing */}
+            <div className="border-b border-[#0A1E3F]/15 pb-2 sm:pb-3">
+              <h1 className="text-base sm:text-lg md:text-xl font-semibold text-[#0A1E3F] tracking-tight uppercase leading-tight my-1">
                 Car Combo – 25W Wireless Charger | Charging Pad + 3 Stands
               </h1>
               
-              {/* Pricing Row - Tightly stacked */}
+              {/* Pricing Row */}
               <div className="mt-1 flex items-baseline gap-2 flex-wrap">
-                <span className="text-xl sm:text-2xl font-extrabold text-[#1d1d1f] tracking-tight leading-none">
+                <span className="text-xl sm:text-2xl font-extrabold text-[#0A1E3F] tracking-tight leading-none">
                   ₹{totalPrice.toLocaleString('en-IN')}
                 </span>
-                <span className="text-xs sm:text-sm text-gray-400 line-through font-normal">
+                <span className="text-xs sm:text-sm text-[#0A1E3F]/50 line-through font-normal">
                   ₹{totalMrp.toLocaleString('en-IN')}
                 </span>
                 {discountPercent > 0 && (
-                  <span className="text-[10px] sm:text-xs font-bold text-[#0d8c66] bg-emerald-50 px-1.5 py-0.5 rounded leading-none">
+                  <span className="text-[10px] sm:text-xs font-bold text-[#0A1E3F] bg-[#0A1E3F]/10 px-1.5 py-0.5 rounded leading-none">
                     {discountPercent}% OFF
                   </span>
                 )}
-                <span className="text-[10px] text-gray-400 font-medium ml-1">
+                <span className="text-[10px] text-[#0A1E3F]/60 font-medium ml-1">
                   (Incl. all taxes)
                 </span>
               </div>
             </div>
 
-            {/* SELECT CAR NAME (Reduced size to 3/4 height, width 124px so 3rd div peeks in, no brand badge, no tray fit text) */}
+            {/* SELECT CAR NAME */}
             <section className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-900 my-0">
+                <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#0A1E3F] my-0">
                   Select Car Name
                 </h2>
               </div>
@@ -600,16 +629,16 @@ export default function NodeConfiguratorPage() {
                         type="button"
                         key={car.id} 
                         onClick={() => setSelectedCarId(car.id)}
-                        className={`cursor-pointer shrink-0 snap-start w-[124px] min-w-[124px] h-[102px] rounded-[6px] p-2 flex flex-col justify-between bg-white relative select-none text-left transition-all ${
+                        className={`cursor-pointer shrink-0 snap-start w-[116px] min-w-[116px] h-[76px] rounded-[6px] p-2 flex flex-col justify-between bg-[#FAF7F2] relative select-none text-left transition-all ${
                           isSelected 
-                            ? 'border-[1.5px] border-[#0d8c66] bg-emerald-50/15 shadow-2xs' 
-                            : 'border border-gray-200 hover:border-gray-300 hover:bg-gray-50/50'
+                            ? 'border-2 border-[#0A1E3F] bg-[#0A1E3F]/8 shadow-sm ring-1 ring-[#0A1E3F]' 
+                            : 'border-[1.5px] border-[#0A1E3F] hover:bg-[#0A1E3F]/5'
                         }`}
                       >
                         {/* Status Checkmark */}
                         <div className="flex items-center justify-between w-full">
                           <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                            isSelected ? 'bg-[#0d8c66] text-white shadow-2xs' : 'border border-gray-300 bg-gray-50'
+                            isSelected ? 'bg-[#0A1E3F] text-[#F4F0E6] shadow-2xs' : 'border border-[#0A1E3F]/25 bg-[#EFEAE1]'
                           }`}>
                             {isSelected ? (
                               <Check className="w-2 h-2 stroke-[3]" />
@@ -620,22 +649,12 @@ export default function NodeConfiguratorPage() {
                         </div>
 
                         {/* Title Text: Car Brand & Model */}
-                        <div className="flex flex-col min-w-0 my-0.5">
-                          <span className="text-[10.5px] font-normal text-gray-500 leading-tight truncate">
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-[10px] font-normal text-[#0A1E3F]/70 leading-tight truncate">
                             {car.brand}
                           </span>
-                          <span className="text-[12px] font-bold text-gray-900 leading-tight truncate">
+                          <span className="text-[12px] font-bold text-[#0A1E3F] leading-tight truncate">
                             {car.name}
-                          </span>
-                        </div>
-
-                        {/* Price Text: Font size 12px bold, strikethrough 10px */}
-                        <div className="flex items-baseline gap-1 pt-1 border-t border-gray-100 w-full">
-                          <span className="text-[12px] font-bold text-gray-900 leading-none">
-                            ₹550
-                          </span>
-                          <span className="text-[10px] text-gray-400 line-through leading-none">
-                            ₹999
                           </span>
                         </div>
                       </button>
@@ -645,18 +664,18 @@ export default function NodeConfiguratorPage() {
               </div>
             </section>
 
-            {/* SELECT MODULES (Dimensionality: Full-width stack ~328px-340px, height 110px-115px, thumbnail 85x85, right ~220px, 14px medium, 13px bold, 28x72 pill #0d8c66) */}
+            {/* SELECT MODULES */}
             <section className="space-y-2 pt-1">
               <div className="flex items-center justify-between">
-                <h2 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#1d1d1f] my-0">
+                <h2 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#0A1E3F] my-0">
                   Select Modules
                 </h2>
-                <span className="text-[11px] sm:text-xs font-semibold text-gray-500">
+                <span className="text-[11px] sm:text-xs font-semibold text-[#0A1E3F]/70">
                   {selectedModuleIds.length} of {MODULE_OPTIONS.length} Added
                 </span>
               </div>
 
-              {/* Module Cards Stack (Vertical Stack Row) */}
+              {/* Module Cards Stack */}
               <div className="flex flex-col space-y-2.5 sm:space-y-3">
                 {MODULE_OPTIONS.map(mod => {
                   const isSelected = selectedModuleIds.includes(mod.id);
@@ -664,89 +683,67 @@ export default function NodeConfiguratorPage() {
                   return (
                     <div
                       key={mod.id}
-                      className={`w-full max-w-[340px] sm:max-w-none h-[112px] min-h-[110px] max-h-[115px] p-2.5 sm:p-3 rounded-lg border transition-all bg-white shadow-2xs flex items-center justify-between mx-auto sm:mx-0 ${
+                      className={`w-full max-w-[340px] sm:max-w-none h-[112px] min-h-[110px] max-h-[115px] p-2.5 sm:p-3 rounded-lg border transition-all bg-[#FAF7F2] shadow-2xs flex items-center justify-between mx-auto sm:mx-0 ${
                         isSelected 
-                          ? 'border-[1.5px] border-[#0d8c66] bg-emerald-50/15 ring-1 ring-[#0d8c66]/20' 
-                          : 'border border-gray-200 hover:border-gray-300 hover:bg-gray-50/40'
+                          ? 'border-[1.5px] border-[#0A1E3F] bg-[#0A1E3F]/5 ring-1 ring-[#0A1E3F]/20' 
+                          : 'border border-[#0A1E3F]/15 hover:border-[#0A1E3F]/35 hover:bg-[#FAF7F2]'
                       }`}
                     >
-                      {/* Internal Grid (Horizontal Split) */}
+                      {/* Internal Grid */}
                       <div className="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0 h-full">
                         
-                        {/* Left Thumbnail Box: Width 85px, Height 85px (Square grey background box #f7f7f7) */}
+                        {/* Left Thumbnail Box (0 left/right padding, flush edge-to-edge) */}
                         <div 
                           onClick={() => {
                             setActiveModalModule(mod);
                             setActiveModalImageIdx(0);
                           }}
-                          className="w-[85px] h-[85px] min-w-[85px] rounded-md bg-[#f7f7f7] border border-gray-100 flex items-center justify-center p-1 cursor-pointer shrink-0 hover:opacity-90 transition-opacity"
+                          className="w-[85px] h-[85px] min-w-[85px] rounded-md bg-transparent border border-[#0A1E3F]/10 flex items-center justify-center p-0 m-0 overflow-hidden cursor-pointer shrink-0 hover:opacity-90 transition-opacity"
                           title="Click to view full module details"
                         >
                           <img 
                             src={mod.thumbImg} 
                             alt={mod.name}
-                            className="max-h-[72px] max-w-[72px] w-auto h-auto object-contain"
+                            className="w-full h-full object-cover object-center p-0 m-0 block"
                           />
                         </div>
 
-                        {/* Right Content Area: Width ~220px */}
+                        {/* Right Content Area */}
                         <div className="w-[220px] max-w-[220px] sm:max-w-none flex-1 min-w-0 flex flex-col justify-between h-[85px] py-0.5">
-                          {/* Title Text: Font size 14px medium, line height 1.2 */}
                           <div>
                             <p 
                               onClick={() => {
                                 setActiveModalModule(mod);
                                 setActiveModalImageIdx(0);
                               }}
-                              className="text-[14px] font-medium leading-[1.2] text-gray-900 line-clamp-2 cursor-pointer hover:underline"
+                              className="text-[14px] font-medium leading-[1.2] text-[#0A1E3F] line-clamp-2 cursor-pointer hover:underline"
                             >
                               {mod.name}
                             </p>
                             
-                            {/* "View more" link: Font size 11px, underline */}
+                            {/* "View more" link */}
                             <button
                               type="button"
                               onClick={() => {
                                 setActiveModalModule(mod);
                                 setActiveModalImageIdx(0);
                               }}
-                              className="text-[11px] text-gray-500 hover:text-gray-900 underline font-normal leading-tight pt-0.5 block text-left"
+                              className="text-[11px] text-[#0A1E3F]/70 hover:text-[#0A1E3F] underline font-normal leading-tight pt-0.5 block text-left cursor-pointer"
                             >
                               View more
                             </button>
                           </div>
 
-                          {/* Price & Action Area: Price: 13px bold, Action Button: Height 28px, Width 72px, Border Radius 8px, Background #0d8c66 */}
+                          {/* Action Area: Stand included in combo with zero separate stand price */}
                           <div className="flex items-center justify-between gap-1 mt-auto pt-1">
-                            <div className="flex items-baseline gap-1">
-                              <span className="text-[13px] font-bold text-gray-900 leading-none">
-                                ₹{mod.price.toLocaleString('en-IN')}
-                              </span>
-                              <span className="text-[10px] text-gray-400 line-through leading-none">
-                                ₹{mod.mrp.toLocaleString('en-IN')}
-                              </span>
-                            </div>
+                            <span className="text-[11px] font-semibold text-[#0A1E3F]/80">
+                              Combo Stand
+                            </span>
 
-                            {/* Action Button (REMOVE / + ADD) */}
-                            {isSelected ? (
-                              <button
-                                type="button"
-                                onClick={() => handleToggleModule(mod.id)}
-                                className="h-[28px] w-[72px] min-w-[72px] rounded-[8px] bg-[#0d8c66] hover:bg-[#0b7857] text-white text-[10px] font-bold uppercase tracking-wider flex items-center justify-center transition shadow-2xs cursor-pointer"
-                                title="Remove module"
-                              >
-                                REMOVE
-                              </button>
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={() => handleToggleModule(mod.id)}
-                                className="h-[28px] w-[72px] min-w-[72px] rounded-[8px] border border-[#0d8c66] text-[#0d8c66] bg-white hover:bg-emerald-50 text-[10px] font-bold uppercase tracking-wider flex items-center justify-center transition cursor-pointer"
-                                title="Add module"
-                              >
-                                + ADD
-                              </button>
-                            )}
+                            <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[8px] bg-[#0A1E3F]/10 text-[#0A1E3F] text-[10px] font-bold uppercase tracking-wider select-none">
+                              <Check className="w-3 h-3 stroke-[3]" />
+                              <span>INCLUDED</span>
+                            </div>
                           </div>
 
                         </div>
@@ -757,48 +754,12 @@ export default function NodeConfiguratorPage() {
               </div>
             </section>
 
-
-
-            {/* ======================================================== */}
-            {/* DELIVERY PINCODE CHECKER                                  */}
-            {/* ======================================================== */}
-            <div className="border border-gray-200 rounded-lg p-3 sm:p-3.5 bg-white space-y-2 mt-2">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-800">
-                <Truck className="w-4 h-4 text-gray-600" />
-                <span>Check Delivery Date & COD</span>
-              </div>
-              
-              <form onSubmit={handleCheckPincode} className="flex gap-2">
-                <input
-                  type="text"
-                  maxLength={6}
-                  value={pincode}
-                  onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
-                  placeholder="Enter 6-digit Pincode"
-                  className="flex-1 px-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-md focus:outline-none focus:border-[#20a87e]"
-                />
-                <button
-                  type="submit"
-                  className="px-3.5 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-md hover:bg-gray-800 transition"
-                >
-                  CHECK
-                </button>
-              </form>
-
-              {pincodeMessage && (
-                <div className="flex items-start gap-1.5 pt-0.5 text-xs text-[#20a87e] font-medium">
-                  <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5" />
-                  <p>{pincodeMessage}</p>
-                </div>
-              )}
-            </div>
-
             {/* Desktop-only Add to Cart Button */}
             <div className="hidden lg:block pt-1.5">
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="w-full h-[48px] bg-[#20a87e] hover:bg-[#1b936e] active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider rounded-md shadow-sm flex items-center justify-center gap-2 transition"
+                className="w-full h-[48px] bg-[#0A1E3F] hover:bg-[#152E58] active:scale-[0.99] text-[#F4F0E6] font-bold text-xs uppercase tracking-wider rounded-md shadow-sm flex items-center justify-center gap-2 transition cursor-pointer"
               >
                 <span>ADD TO CART</span>
                 <span>-</span>
@@ -841,39 +802,39 @@ export default function NodeConfiguratorPage() {
               </div>
 
               {/* 2. Technical Specifications & What's in the Box Accordion */}
-              <div className="border-b border-gray-100 pb-2.5">
+              <div className="border-b border-[#0A1E3F]/15 pb-2.5">
                 <button
                   type="button"
                   onClick={() => setOpenSpecs(!openSpecs)}
-                  className="w-full flex items-center justify-between text-left text-xs sm:text-[13px] font-bold uppercase tracking-wider text-gray-900 py-1"
+                  className="w-full flex items-center justify-between text-left text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#0A1E3F] py-1 cursor-pointer"
                 >
                   <span>Specifications & Box Contents</span>
-                  {openSpecs ? <ChevronUp className="w-4 h-4 text-gray-600" /> : <ChevronDown className="w-4 h-4 text-gray-600" />}
+                  {openSpecs ? <ChevronUp className="w-4 h-4 text-[#0A1E3F]/60" /> : <ChevronDown className="w-4 h-4 text-[#0A1E3F]/60" />}
                 </button>
 
                 {openSpecs && (
-                  <div className="mt-2 text-xs sm:text-[13px] text-gray-600 space-y-3 leading-relaxed">
+                  <div className="mt-2 text-xs sm:text-[13px] text-[#0A1E3F]/80 space-y-3 leading-relaxed">
                     <div>
-                      <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-1.5">
+                      <h4 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider mb-1.5">
                         Technical Specifications
                       </h4>
-                      <div className="border border-gray-200 rounded-md divide-y divide-gray-100 overflow-hidden bg-gray-50/50">
+                      <div className="border border-[#0A1E3F]/15 rounded-md divide-y divide-[#0A1E3F]/10 overflow-hidden bg-[#FAF7F2]">
                         {TECHNICAL_SPECS.map((spec, sIdx) => (
                           <div key={sIdx} className="grid grid-cols-2 p-2 text-[11px] sm:text-xs">
-                            <span className="font-semibold text-gray-700">{spec.label}</span>
-                            <span className="text-gray-900">{spec.value}</span>
+                            <span className="font-semibold text-[#0A1E3F]/80">{spec.label}</span>
+                            <span className="text-[#0A1E3F]">{spec.value}</span>
                           </div>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-1.5">
+                      <h4 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider mb-1.5">
                         What’s in the Box
                       </h4>
                       <ul className="space-y-1 list-disc pl-4 text-xs">
                         {WHATS_IN_THE_BOX.map((item, bIdx) => (
-                          <li key={bIdx} className="text-gray-700">{item}</li>
+                          <li key={bIdx} className="text-[#0A1E3F]/80">{item}</li>
                         ))}
                       </ul>
                     </div>
@@ -882,41 +843,41 @@ export default function NodeConfiguratorPage() {
               </div>
 
               {/* 3. Delivery Time & Returns Accordion */}
-              <div className="border-b border-gray-100 pb-2.5">
+              <div className="border-b border-[#0A1E3F]/15 pb-2.5">
                 <button
                   type="button"
                   onClick={() => setOpenDelivery(!openDelivery)}
-                  className="w-full flex items-center justify-between text-left text-xs sm:text-[13px] font-bold uppercase tracking-wider text-gray-900 py-1"
+                  className="w-full flex items-center justify-between text-left text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#0A1E3F] py-1 cursor-pointer"
                 >
                   <span>Delivery Time & Returns</span>
-                  {openDelivery ? <ChevronUp className="w-4 h-4 text-gray-600" /> : <ChevronDown className="w-4 h-4 text-gray-600" />}
+                  {openDelivery ? <ChevronUp className="w-4 h-4 text-[#0A1E3F]/60" /> : <ChevronDown className="w-4 h-4 text-[#0A1E3F]/60" />}
                 </button>
 
                 {openDelivery && (
-                  <div className="mt-2 text-xs sm:text-[13px] text-gray-600 space-y-2.5 leading-relaxed">
+                  <div className="mt-2 text-xs sm:text-[13px] text-[#0A1E3F]/80 space-y-2.5 leading-relaxed">
                     <div>
-                      <h5 className="font-bold text-gray-900 text-xs uppercase tracking-wider">DELIVERY</h5>
+                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">DELIVERY</h5>
                       <p>Will be Dispatched in 4-5 days.</p>
                     </div>
 
                     <div>
-                      <h5 className="font-bold text-gray-900 text-xs uppercase tracking-wider">FREE SHIPPING</h5>
+                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">FREE SHIPPING</h5>
                       <p>Free shipping on orders above ₹1199. A charge of ₹79 is applied to all orders of ₹1199 and below.</p>
                     </div>
 
                     <div>
-                      <h5 className="font-bold text-gray-900 text-xs uppercase tracking-wider">CASH ON DELIVERY</h5>
+                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">CASH ON DELIVERY</h5>
                       <p>₹99 extra charges for all Cash On Delivery orders.</p>
                     </div>
 
                     <div>
-                      <h5 className="font-bold text-gray-900 text-xs uppercase tracking-wider">RETURNS</h5>
+                      <h5 className="font-bold text-[#0A1E3F] text-xs uppercase tracking-wider">RETURNS</h5>
                       <p>2-year replacement for manufacturing or functionality defects.</p>
                       <p className="mt-1">
                         For more information, check out our{' '}
-                        <span className="text-[#20a87e] underline cursor-pointer font-medium">Shipping Policy Page</span>{' '}
+                        <span className="text-[#0A1E3F] underline cursor-pointer font-medium">Shipping Policy Page</span>{' '}
                         and{' '}
-                        <span className="text-[#20a87e] underline cursor-pointer font-medium">Return and Exchange Policy</span>{' '}
+                        <span className="text-[#0A1E3F] underline cursor-pointer font-medium">Return and Exchange Policy</span>{' '}
                         page.
                       </p>
                     </div>
@@ -929,40 +890,40 @@ export default function NodeConfiguratorPage() {
             {/* ======================================================== */}
             {/* CONFORMANCE / TRUST BADGES (QUICK DELIVERY, EASY RETURNS) */}
             {/* ======================================================== */}
-            <div className="bg-[#F8F8F8] border border-gray-200/80 rounded-lg p-3 my-2">
-              <div className="grid grid-cols-3 gap-2 text-center divide-x divide-gray-200">
+            <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-3 my-2 shadow-2xs">
+              <div className="grid grid-cols-3 gap-2 text-center divide-x divide-[#0A1E3F]/15">
                 <div className="flex flex-col items-center justify-center p-1 space-y-1">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100/60 flex items-center justify-center text-[#20a87e]">
+                  <div className="w-8 h-8 rounded-full bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
                     <Truck className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-bold text-gray-900 leading-tight">
+                  <span className="text-[11px] font-bold text-[#0A1E3F] leading-tight">
                     Quick Delivery
                   </span>
-                  <span className="text-[9px] text-gray-500 leading-tight">
+                  <span className="text-[9px] text-[#0A1E3F]/60 leading-tight">
                     2-4 Day Dispatch
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center justify-center p-1 space-y-1 pl-2">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100/60 flex items-center justify-center text-[#20a87e]">
+                  <div className="w-8 h-8 rounded-full bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
                     <RotateCcw className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-bold text-gray-900 leading-tight">
+                  <span className="text-[11px] font-bold text-[#0A1E3F] leading-tight">
                     Easy Returns
                   </span>
-                  <span className="text-[9px] text-gray-500 leading-tight">
+                  <span className="text-[9px] text-[#0A1E3F]/60 leading-tight">
                     2-Yr Replacement
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center justify-center p-1 space-y-1 pl-2">
-                  <div className="w-8 h-8 rounded-full bg-emerald-100/60 flex items-center justify-center text-[#20a87e]">
+                  <div className="w-8 h-8 rounded-full bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
                     <ShieldCheck className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] font-bold text-gray-900 leading-tight">
+                  <span className="text-[11px] font-bold text-[#0A1E3F] leading-tight">
                     Quality Assured
                   </span>
-                  <span className="text-[9px] text-gray-500 leading-tight">
+                  <span className="text-[9px] text-[#0A1E3F]/60 leading-tight">
                     Qi2 Certified
                   </span>
                 </div>
@@ -978,14 +939,14 @@ export default function NodeConfiguratorPage() {
               ref={videoSectionRef}
               onMouseEnter={() => setIsVideoHovered(true)}
               onMouseLeave={() => setIsVideoHovered(false)}
-              className="w-screen relative left-1/2 -translate-x-1/2 my-4 bg-black overflow-hidden shadow-sm select-none"
+              className="w-screen relative left-1/2 -translate-x-1/2 mt-4 mb-0 bg-black overflow-hidden shadow-sm select-none"
             >
               {!videoError ? (
                 <div className="relative w-full bg-black flex flex-col items-center justify-center">
                   <video
+                    ref={mainVideoRef}
                     key={videoUrl}
                     className="w-full h-auto max-h-[85vh] min-h-[220px] object-cover sm:object-contain mx-auto block bg-black"
-                    autoPlay
                     muted
                     loop
                     playsInline
@@ -999,8 +960,8 @@ export default function NodeConfiguratorPage() {
                   </video>
                 </div>
               ) : (
-                <div className="w-full py-12 px-4 bg-gradient-to-b from-gray-900 to-black text-white text-center flex flex-col items-center justify-center space-y-3">
-                  <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+                <div className="w-full py-12 px-4 bg-gradient-to-b from-[#0A1E3F] via-[#112D5E] to-black text-white text-center flex flex-col items-center justify-center space-y-3">
+                  <div className="w-14 h-14 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white">
                     <Video className="w-7 h-7" />
                   </div>
                   <h3 className="text-base sm:text-lg font-bold text-white tracking-wide">
@@ -1008,11 +969,11 @@ export default function NodeConfiguratorPage() {
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-300 max-w-md mx-auto leading-relaxed">
                     Place your video file in the codebase at:{' '}
-                    <code className="bg-white/10 text-emerald-300 px-2 py-0.5 rounded font-mono text-[11px] sm:text-xs">
+                    <code className="bg-white/10 text-[#F4F0E6] px-2 py-0.5 rounded font-mono text-[11px] sm:text-xs">
                       public/videos/car-combo-video.mp4
                     </code>
                   </p>
-                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-[#20a87e] hover:bg-[#1b936e] text-white text-xs font-bold uppercase tracking-wider rounded-md transition shadow mt-2">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-[#0A1E3F] hover:bg-[#152E58] border border-white/20 text-[#F4F0E6] text-xs font-bold uppercase tracking-wider rounded-md transition shadow mt-2">
                     <Upload className="w-4 h-4" />
                     <span>Preview Local Video Now</span>
                     <input 
@@ -1026,17 +987,346 @@ export default function NodeConfiguratorPage() {
               )}
             </div>
 
+            {/* 25W QI2 IN-CAR ECOSYSTEM SECTION (BETWEEN FIRST VIDEO AND COMBINED-1 IMAGE, NO ICONS) */}
+            <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-4 sm:p-5 my-4 shadow-2xs">
+              <div className="space-y-1.5 text-left">
+                <h3 className="text-base sm:text-lg md:text-xl font-bold text-[#0A1E3F] tracking-tight leading-snug my-0">
+                  25W Qi2 Automotive Wireless Charging Ecosystem
+                </h3>
+                <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed my-0">
+                  Qi2 is the advanced magnetic wireless charging standard delivering true 25W power. QICDOCK seamlessly brings it to your vehicle ecosystem through dedicated console dock, active air vent, and passenger mounts.
+                </p>
+              </div>
+            </div>
+
+            {/* COMBINED-1 IMAGE (Directly connected below) */}
+            <div className="w-screen relative left-1/2 -translate-x-1/2 m-0 p-0 overflow-hidden select-none bg-black">
+              <img
+                src={combined1Img}
+                alt="Car Combo All-in-One Setup"
+                className="w-full h-auto block m-0 p-0 object-cover"
+                loading="eager"
+              />
+            </div>
+
             {/* ======================================================== */}
-            {/* FREQUENTLY ASKED QUESTIONS (NOW POSITIONED BELOW VIDEO)  */}
+            {/* SECTION 1: CAR VENT MOBILE STAND (USER SPECIFIED COPY)   */}
             {/* ======================================================== */}
-            <section className="pt-4 pb-2 border-t border-gray-200">
+            <section className="pt-4 pb-3 border-t border-[#0A1E3F]/15 space-y-3">
+              {/* All texts left-aligned */}
+              <div className="space-y-1 text-left">
+                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-[#0A1E3F] tracking-tight uppercase leading-tight my-1 text-left">
+                  Car Vent Mobile Stand
+                </h2>
+                <p className="text-xs sm:text-sm font-normal uppercase tracking-wider text-[#0A1E3F]/80 leading-snug my-0 text-left">
+                  COOLER AIR. BETTER CHARGING.
+                </p>
+                <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed pt-0.5 my-0 text-left">
+                  Positioned right at your car’s AC vent, QICDOCK benefits from cool airflow to help reduce heat buildup and support consistent wireless charging performance.
+                </p>
+              </div>
+
+              {/* Video Placeholder for Car Vent Mobile Stand */}
+              <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-[#0A1E3F] border border-[#0A1E3F]/20 shadow-md group">
+                {!ventVideoError ? (
+                  <div className="relative w-full h-full bg-[#0A1E3F] flex flex-col items-center justify-center">
+                    <video
+                      key={ventVideoUrl}
+                      className="w-full h-full object-cover mx-auto block bg-black"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      disablePictureInPicture
+                      onError={() => setVentVideoError(true)}
+                    >
+                      <source src={ventVideoUrl} type="video/mp4" />
+                      <source src="/videos/car-vent-stand.mp4" type="video/mp4" />
+                      Your browser does not support HTML5 video.
+                    </video>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0A1E3F] via-[#112D5E] to-[#0A1E3F] flex flex-col items-center justify-center p-4 text-center">
+                    <div className="w-12 h-12 rounded-full bg-white/10 border border-white/25 flex items-center justify-center text-[#F4F0E6] shadow-lg group-hover:scale-105 transition-transform duration-300">
+                      <Play className="w-5 h-5 fill-[#F4F0E6] text-[#F4F0E6] translate-x-0.5" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[#F4F0E6] mt-2">
+                      Car Vent Stand in Action
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-[#F4F0E6]/70 max-w-xs mt-0.5">
+                      Place video file in codebase at <code className="text-[#F4F0E6] bg-white/10 px-1 py-0.5 rounded font-mono">public/videos/car-vent-stand.mp4</code>
+                    </span>
+                    <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/15 hover:bg-white/25 text-[#F4F0E6] text-[10px] font-bold uppercase tracking-wider rounded transition border border-white/20 mt-2.5">
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Select Video File</span>
+                      <input 
+                        type="file" 
+                        accept="video/mp4,video/webm,video/*" 
+                        onChange={handleVentVideoUpload}
+                        className="hidden" 
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+
+              {/* Single div container holding all 3 features in a row */}
+              <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/15 shadow-2xs pt-2.5">
+                <div className="px-2 sm:px-3 space-y-1 first:pl-0">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <Wind className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    Active Vent Cooling
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    AC air circulates behind Qi2 coil, keeping phone cool during GPS navigation.
+                  </p>
+                </div>
+
+                <div className="px-2 sm:px-3 space-y-1">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    Steel Hook Grip
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    Dual-threaded metal hook locks tightly onto vent slats with zero slippage.
+                  </p>
+                </div>
+
+                <div className="px-2 sm:px-3 space-y-1 last:pr-0">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    25W Peak Speed
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    Next-gen Qi2 magnetic wireless fast charging for iPhone MagSafe & Android.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* ======================================================== */}
+            {/* SECTION 2: REAR SEAT PASSENGER HEADREST MOUNT            */}
+            {/* ======================================================== */}
+            <section className="pt-4 pb-3 border-t border-[#0A1E3F]/15 space-y-3">
+              <div className="space-y-1 text-left">
+                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-[#0A1E3F] tracking-tight uppercase leading-tight my-1 text-left">
+                  Rear Seat Passenger Mount
+                </h2>
+                <p className="text-xs sm:text-sm font-normal uppercase tracking-wider text-[#0A1E3F]/80 leading-snug my-0 text-left">
+                  PASSENGER ENTERTAINMENT. REAR ROW POWER.
+                </p>
+                <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed pt-0.5 my-0 text-left">
+                  Engineered for back-seat passengers and highway drives. Locks onto twin headrest metal posts with dual-strut clamps, positioning smartphones and tablets at eye-level while delivering continuous 25W Qi2 wireless charging.
+                </p>
+              </div>
+
+              {/* Video for Rear Seat (No overlay text) */}
+              <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-[#0A1E3F] border border-[#0A1E3F]/20 shadow-md group">
+                {!rearVideoError ? (
+                  <div className="relative w-full h-full bg-[#0A1E3F] flex flex-col items-center justify-center">
+                    <video
+                      key={rearVideoUrl}
+                      className="w-full h-full object-cover mx-auto block bg-black"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      disablePictureInPicture
+                      onError={() => setRearVideoError(true)}
+                    >
+                      <source src={rearVideoUrl} type="video/mp4" />
+                      <source src="/videos/rear-seat-mount.mp4" type="video/mp4" />
+                      Your browser does not support HTML5 video.
+                    </video>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0A1E3F] via-[#112D5E] to-[#0A1E3F] flex flex-col items-center justify-center p-4 text-center">
+                    <div className="w-12 h-12 rounded-full bg-white/10 border border-white/25 flex items-center justify-center text-[#F4F0E6] shadow-lg group-hover:scale-105 transition-transform duration-300">
+                      <Play className="w-5 h-5 fill-[#F4F0E6] text-[#F4F0E6] translate-x-0.5" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[#F4F0E6] mt-2">
+                      Rear Seat Mount in Action
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-[#F4F0E6]/70 max-w-xs mt-0.5">
+                      Place video file in codebase at <code className="text-[#F4F0E6] bg-white/10 px-1 py-0.5 rounded font-mono">public/videos/rear-seat-mount.mp4</code>
+                    </span>
+                    <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/15 hover:bg-white/25 text-[#F4F0E6] text-[10px] font-bold uppercase tracking-wider rounded transition border border-white/20 mt-2.5">
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Select Video File</span>
+                      <input 
+                        type="file" 
+                        accept="video/mp4,video/webm,video/*" 
+                        onChange={handleRearVideoUpload}
+                        className="hidden" 
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+
+              {/* Single div container holding all 3 features in a row */}
+              <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/15 shadow-2xs pt-2.5">
+                <div className="px-2 sm:px-3 space-y-1 first:pl-0">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    Twin-Post Clamp
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    Dual-strut steel mechanical lock secures firmly to headrest posts (100–150mm).
+                  </p>
+                </div>
+
+                <div className="px-2 sm:px-3 space-y-1">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <Smartphone className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    Eye-Level Comfort
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    Positions smartphones & tablets at natural eye height, preventing neck strain.
+                  </p>
+                </div>
+
+                <div className="px-2 sm:px-3 space-y-1 last:pr-0">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    25W Qi2 Rapid Power
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    Continuous 25W magnetic wireless power keeps rear passengers charged on road trips.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* ======================================================== */}
+            {/* SECTION 3: VEHICLE-SPECIFIC CONSOLE DOCK TRAY             */}
+            {/* ======================================================== */}
+            <section className="pt-4 pb-3 border-t border-[#0A1E3F]/15 space-y-3">
+              <div className="space-y-1 text-left">
+                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-[#0A1E3F] tracking-tight uppercase leading-tight my-1 text-left">
+                  Vehicle-Specific Console Dock Tray
+                </h2>
+                <p className="text-xs sm:text-sm font-normal uppercase tracking-wider text-[#0A1E3F]/80 leading-snug my-0 text-left">
+                  FACTORY CONSOLE FIT. ZERO ADHESIVE.
+                </p>
+                <p className="text-xs sm:text-[13px] text-[#0A1E3F]/80 leading-relaxed pt-0.5 my-0 text-left">
+                  Custom molded from sub-millimeter 3D interior scans for <strong>{currentCar.brand} {currentCar.name}</strong> and top Indian vehicles. Drops straight into your factory compartment with zero tools, zero rattling, and discreet automotive cable channels.
+                </p>
+              </div>
+
+              {/* Video for Vehicle-Specific Console Dock Tray */}
+              <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-[#0A1E3F] border border-[#0A1E3F]/20 shadow-md group">
+                {!trayVideoError ? (
+                  <div className="relative w-full h-full bg-[#0A1E3F] flex flex-col items-center justify-center">
+                    <video
+                      key={trayVideoUrl}
+                      className="w-full h-full object-cover mx-auto block bg-black"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                      disablePictureInPicture
+                      onError={() => setTrayVideoError(true)}
+                    >
+                      <source src={trayVideoUrl} type="video/mp4" />
+                      <source src="/videos/vehicle-specific-tray.mp4" type="video/mp4" />
+                      Your browser does not support HTML5 video.
+                    </video>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0A1E3F] via-[#112D5E] to-[#0A1E3F] flex flex-col items-center justify-center p-4 text-center">
+                    <div className="w-12 h-12 rounded-full bg-white/10 border border-white/25 flex items-center justify-center text-[#F4F0E6] shadow-lg group-hover:scale-105 transition-transform duration-300">
+                      <Play className="w-5 h-5 fill-[#F4F0E6] text-[#F4F0E6] translate-x-0.5" />
+                    </div>
+                    <span className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[#F4F0E6] mt-2">
+                      Console Dock Tray in Action
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-[#F4F0E6]/70 max-w-xs mt-0.5">
+                      Place video file in codebase at <code className="text-[#F4F0E6] bg-white/10 px-1 py-0.5 rounded font-mono">public/videos/vehicle-specific-tray.mp4</code>
+                    </span>
+                    <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/15 hover:bg-white/25 text-[#F4F0E6] text-[10px] font-bold uppercase tracking-wider rounded transition border border-white/20 mt-2.5">
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Select Video File</span>
+                      <input 
+                        type="file" 
+                        accept="video/mp4,video/webm,video/*" 
+                        onChange={handleTrayVideoUpload}
+                        className="hidden" 
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+
+              {/* Single div container holding all 3 features in a row */}
+              <div className="bg-[#FAF7F2] border border-[#0A1E3F]/15 rounded-lg p-2.5 sm:p-3 grid grid-cols-3 divide-x divide-[#0A1E3F]/15 shadow-2xs pt-2.5">
+                <div className="px-2 sm:px-3 space-y-1 first:pl-0">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    3D Scanned Fit
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    Precision molded from factory scans for {currentCar.brand} {currentCar.name}.
+                  </p>
+                </div>
+
+                <div className="px-2 sm:px-3 space-y-1">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    Zero Adhesive Fit
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    Drops into factory console compartment without glue, screws, or tools.
+                  </p>
+                </div>
+
+                <div className="px-2 sm:px-3 space-y-1 last:pr-0">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-md bg-[#0A1E3F]/10 flex items-center justify-center text-[#0A1E3F]">
+                    <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </div>
+                  <h3 className="text-[11px] sm:text-xs font-bold text-[#0A1E3F] leading-tight">
+                    Anti-Rattle Bed
+                  </h3>
+                  <p className="text-[10px] sm:text-[11px] text-[#0A1E3F]/75 leading-tight m-0">
+                    High-friction acoustic silicone prevents cabin noise on rough roads.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+
+
+
+            {/* ======================================================== */}
+            {/* SECTION 7: FREQUENTLY ASKED QUESTIONS (BELOW VIDEO)      */}
+            {/* ======================================================== */}
+            <section className="pt-4 pb-2 border-t border-[#0A1E3F]/15">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm sm:text-base font-bold text-gray-900 tracking-tight my-0">
+                <h3 className="text-sm sm:text-base font-bold text-[#0A1E3F] tracking-tight my-0">
                   Frequently Asked Questions
                 </h3>
               </div>
 
-              <div className="divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden bg-white shadow-2xs">
+              <div className="divide-y divide-[#0A1E3F]/10 border border-[#0A1E3F]/15 rounded-lg overflow-hidden bg-[#FAF7F2] shadow-2xs">
                 {(showAllFaqs ? FAQ_ITEMS : FAQ_ITEMS.slice(0, 5)).map((faq, idx) => {
                   const isOpen = openFaqIndex === idx;
                   return (
@@ -1044,18 +1334,18 @@ export default function NodeConfiguratorPage() {
                       <button
                         type="button"
                         onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                        className="w-full flex items-center justify-between text-left p-3 sm:p-3.5 hover:bg-gray-50/70 transition cursor-pointer"
+                        className="w-full flex items-center justify-between text-left p-3 sm:p-3.5 hover:bg-[#0A1E3F]/5 transition cursor-pointer"
                       >
-                        <span className="text-xs sm:text-[13px] font-semibold text-gray-900 pr-2">
+                        <span className="text-xs sm:text-[13px] font-semibold text-[#0A1E3F] pr-2">
                           {faq.q}
                         </span>
-                        <span className="shrink-0 text-gray-500">
+                        <span className="shrink-0 text-[#0A1E3F]/60">
                           {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                         </span>
                       </button>
 
                       {isOpen && (
-                        <div className="px-3 pb-3 sm:px-3.5 sm:pb-3.5 pt-0 text-xs text-gray-600 leading-relaxed border-t border-gray-50">
+                        <div className="px-3 pb-3 sm:px-3.5 sm:pb-3.5 pt-0 text-xs text-[#0A1E3F]/80 leading-relaxed border-t border-[#0A1E3F]/5">
                           {faq.a}
                         </div>
                       )}
@@ -1068,7 +1358,7 @@ export default function NodeConfiguratorPage() {
               <button
                 type="button"
                 onClick={() => setShowAllFaqs(!showAllFaqs)}
-                className="mt-2.5 w-full py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md text-xs font-bold text-gray-800 uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer"
+                className="mt-2.5 w-full py-2 bg-[#FAF7F2] hover:bg-[#0A1E3F]/10 border border-[#0A1E3F]/15 rounded-md text-xs font-bold text-[#0A1E3F] uppercase tracking-wider flex items-center justify-center gap-1.5 transition cursor-pointer"
               >
                 <span>{showAllFaqs ? 'Show Less FAQs' : 'View All FAQs'}</span>
                 <span>{showAllFaqs ? '−' : '+'}</span>
@@ -1084,11 +1374,11 @@ export default function NodeConfiguratorPage() {
         {/* ======================================================== */}
         {/* MOBILE STICKY BOTTOM BAR (Fixed CTA Button)              */}
         {/* ======================================================== */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 px-3 py-2 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#F4F0E6]/95 backdrop-blur border-t border-[#0A1E3F]/15 px-3 py-2 shadow-[0_-4px_16px_rgba(10,30,63,0.08)]">
           <button
             type="button"
             onClick={handleAddToCart}
-            className="w-full h-[46px] bg-[#20a87e] hover:bg-[#1b936e] active:scale-[0.99] text-white font-bold text-xs uppercase tracking-wider rounded flex items-center justify-center gap-2 transition shadow"
+            className="w-full h-[46px] bg-[#0A1E3F] hover:bg-[#152E58] active:scale-[0.99] text-[#F4F0E6] font-bold text-xs uppercase tracking-wider rounded flex items-center justify-center gap-2 transition shadow cursor-pointer"
           >
             <span>ADD TO CART</span>
             <span>-</span>
@@ -1103,19 +1393,19 @@ export default function NodeConfiguratorPage() {
       {/* ======================================================== */}
       {activeModalModule && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
-          <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+          <div className="bg-[#FAF7F2] rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl relative border border-[#0A1E3F]/15">
             {/* Close button */}
             <button
               type="button"
               onClick={() => setActiveModalModule(null)}
-              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 z-10 transition"
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#EFEAE1] hover:bg-[#D5CEBF] flex items-center justify-center text-[#0A1E3F] z-10 transition cursor-pointer"
               title="Close modal"
             >
               <X className="w-4 h-4" />
             </button>
 
             {/* Modal Image Carousel */}
-            <div className="bg-[#F8F8F8] p-4 flex flex-col items-center justify-center border-b border-gray-100">
+            <div className="bg-[#EFEAE1] p-4 flex flex-col items-center justify-center border-b border-[#0A1E3F]/10">
               <div className="w-full h-56 flex items-center justify-center">
                 <img
                   src={activeModalModule.galleryImages[activeModalImageIdx] || activeModalModule.thumbImg}
@@ -1132,8 +1422,8 @@ export default function NodeConfiguratorPage() {
                       key={idx}
                       type="button"
                       onClick={() => setActiveModalImageIdx(idx)}
-                      className={`w-12 h-12 rounded border p-0.5 bg-white shrink-0 overflow-hidden ${
-                        activeModalImageIdx === idx ? 'border-[#20a87e] ring-2 ring-[#20a87e]/20' : 'border-gray-200 opacity-60'
+                      className={`w-12 h-12 rounded border p-0.5 bg-[#FAF7F2] shrink-0 overflow-hidden cursor-pointer ${
+                        activeModalImageIdx === idx ? 'border-[#0A1E3F] ring-2 ring-[#0A1E3F]/20' : 'border-[#0A1E3F]/15 opacity-60'
                       }`}
                     >
                       <img src={img} alt="thumbnail" className="w-full h-full object-contain" />
@@ -1146,32 +1436,28 @@ export default function NodeConfiguratorPage() {
             {/* Modal Body */}
             <div className="p-5 space-y-4">
               <div>
-                <h3 className="text-lg font-bold text-gray-900">
+                <h3 className="text-lg font-bold text-[#0A1E3F]">
                   {activeModalModule.name}
                 </h3>
-                <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-lg font-bold text-[#1d1d1f]">
-                    ₹{activeModalModule.price.toLocaleString('en-IN')}
-                  </span>
-                  <span className="text-xs text-gray-400 line-through">
-                    ₹{activeModalModule.mrp.toLocaleString('en-IN')}
-                  </span>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 mt-1.5 rounded bg-[#0A1E3F]/10 text-[#0A1E3F] text-xs font-bold uppercase tracking-wider">
+                  <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                  <span>Included in Car Combo</span>
                 </div>
               </div>
 
-              <p className="text-xs text-gray-600 leading-relaxed">
+              <p className="text-xs text-[#0A1E3F]/80 leading-relaxed">
                 {activeModalModule.description}
               </p>
 
               {/* Key Features */}
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-gray-800 mb-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#0A1E3F] mb-2">
                   Key Highlights
                 </h4>
                 <ul className="space-y-1.5">
                   {activeModalModule.features.map((feat, fIdx) => (
-                    <li key={fIdx} className="text-xs text-gray-600 flex items-start gap-2">
-                      <span className="text-[#20a87e] font-bold">✓</span>
+                    <li key={fIdx} className="text-xs text-[#0A1E3F]/80 flex items-start gap-2">
+                      <span className="text-[#0A1E3F] font-bold">✓</span>
                       <span>{feat}</span>
                     </li>
                   ))}
@@ -1188,7 +1474,7 @@ export default function NodeConfiguratorPage() {
                     }
                     setActiveModalModule(null);
                   }}
-                  className="w-full py-3 bg-[#20a87e] hover:bg-[#1b936e] text-white font-bold text-xs uppercase tracking-wider rounded transition"
+                  className="w-full py-3 bg-[#0A1E3F] hover:bg-[#152E58] text-[#F4F0E6] font-bold text-xs uppercase tracking-wider rounded transition cursor-pointer"
                 >
                   {selectedModuleIds.includes(activeModalModule.id) ? 'ALREADY IN COMBO' : 'ADD TO COMBO'}
                 </button>
