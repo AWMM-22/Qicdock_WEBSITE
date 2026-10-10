@@ -133,7 +133,7 @@ export default function CartPage() {
   const discount = couponApplied
     ? (couponCode.toUpperCase() === 'QIC100' ? Math.min(100, subtotal) : Math.floor(subtotal * 0.1))
     : 0;
-  const shipping = subtotal > 999 ? 0 : 150;
+  const shipping = 0;
   const total = Math.max(0, subtotal - discount + shipping);
 
   const processOrderSuccess = async (gateway: string, payId: string) => {
