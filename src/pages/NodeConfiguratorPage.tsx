@@ -627,7 +627,7 @@ export default function NodeConfiguratorPage() {
                   <img 
                     src={imgItem.src}
                     alt={imgItem.alt}
-                    className="w-full h-full object-contain filter drop-shadow-md select-none p-0 m-0 block"
+                    className="w-full h-full object-contain max-h-[28vh] sm:max-h-[34vh] lg:max-h-full filter drop-shadow-md select-none p-0 m-0 block"
                     loading={idx === 0 ? "eager" : "lazy"}
                   />
                 </div>
