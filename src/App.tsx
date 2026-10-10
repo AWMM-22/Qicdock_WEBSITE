@@ -44,9 +44,9 @@ export default function App() {
       <InventoryProvider>
         <BrowserRouter>
           <ScrollToTop />
-          <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#0A1E3F] selection:text-[#F4F0E6] overflow-y-auto">
+          <div className="min-h-screen bg-[#F4F0E6] text-[#0A1E3F] flex flex-col font-['Ubuntu',sans-serif] selection:bg-[#0A1E3F] selection:text-[#F4F0E6]">
           <Header />
-          <main className="flex-1 w-full overflow-x-hidden">
+          <main className="flex-1">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/cart" element={<CartPage />} />

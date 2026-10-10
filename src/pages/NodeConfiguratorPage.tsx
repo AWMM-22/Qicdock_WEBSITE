@@ -555,7 +555,7 @@ export default function NodeConfiguratorPage() {
         {/* ======================================================== */}
         {/* TOP / LEFT: STICKY PREVIEW STAGE                         */}
         {/* ======================================================== */}
-        <div className={`w-full lg:w-1/2 sticky top-16 sm:top-20 h-[30vh] sm:h-[38vh] max-h-[30vh] lg:h-[calc(100vh-5rem)] bg-[#F4F0E6] border-b lg:border-b-0 lg:border-r border-[#0A1E3F]/10 flex flex-col items-center justify-center z-20 overflow-hidden p-0 m-0 relative transition-all duration-500 ease-in-out ${
+        <div className={`w-full lg:w-1/2 sticky top-16 sm:top-20 h-[32vh] sm:h-[38vh] lg:h-[calc(100vh-5rem)] bg-[#F4F0E6] border-b lg:border-b-0 lg:border-r border-[#0A1E3F]/10 flex flex-col items-center justify-center z-20 overflow-hidden p-0 m-0 relative transition-all duration-500 ease-in-out ${
           shouldHideTopImage 
             ? '-translate-y-full opacity-0 pointer-events-none' 
             : 'translate-y-0 opacity-100'
@@ -627,7 +627,7 @@ export default function NodeConfiguratorPage() {
                   <img 
                     src={imgItem.src}
                     alt={imgItem.alt}
-                    className="w-full h-full object-contain max-h-[28vh] sm:max-h-[34vh] lg:max-h-full filter drop-shadow-md select-none p-0 m-0 block"
+                    className="w-full h-full object-contain filter drop-shadow-md select-none p-0 m-0 block"
                     loading={idx === 0 ? "eager" : "lazy"}
                   />
                 </div>
