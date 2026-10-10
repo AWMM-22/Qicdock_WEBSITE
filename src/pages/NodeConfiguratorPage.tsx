@@ -202,18 +202,17 @@ interface ModuleOption {
 const MODULE_OPTIONS: ModuleOption[] = [
   {
     id: 'vent',
-    name: 'Ac air vent mobile stand',
+    name: 'AC Air Vent Mobile Stand',
     price: 499,
     mrp: 999,
     thumbImg: airVentImg,
     stageImg: airVentImg,
     slotStyles: { left: '160px', top: '340px', width: '210px', height: '210px', zIndex: 100 },
-    description: 'Lockable steel-core 360° clamping arm mounts securely to horizontal and vertical AC air vents without blocking cabin airflow or vibrating over bumps.',
+    description: 'A stable, secure mount for your car AC vent.',
     features: [
-      '360° smooth ball joint for portrait navigation and landscape calls',
-      'Aerospace-grade steel hook clamp with anti-scratch silicone cushioning',
-      'Instant 25W magnetic wireless charging with precision Qi2 Standards',
-      'Universally fits round, vertical, and horizontal automotive air louvers'
+      '1. AC Airflow Cooling: Cool air from the AC vent helps manage heat buildup behind the charger, supporting consistent charging during navigation and long drives.',
+      '2. Secure Vent Grip: Durable metal hook attachment holds the stand firmly onto compatible car vent slats, helping minimize movement and maintain stability on the road.',
+      '3. 25W Wireless Charging: Powerful 25W magnetic wireless charging designed to meet applicable Qi standards, with easy phone alignment for compatible iPhones and Android devices.'
     ],
     galleryImages: [
       airVentImg,
@@ -228,12 +227,11 @@ const MODULE_OPTIONS: ModuleOption[] = [
     thumbImg: headrestMountImg,
     stageImg: headrestMountImg,
     slotStyles: { left: '460px', top: '340px', width: '210px', height: '210px', zIndex: 99 },
-    description: 'Heavy-duty dual-post headrest clamp extends magnetic wireless charging and comfortable hands-free video viewing directly to backseat passengers.',
+    description: 'QICDOCK brings wireless charging to rear passengers with a dedicated headrest mount. Enjoy easy phone access, hands-free entertainment, and convenient 25W magnetic wireless charging throughout your journey.',
     features: [
-      'Heavy-duty dual-post headrest clamp fits any standard passenger headrest',
-      'Telescopic articulating pivot arm for gaming, movies, and video calls',
-      'Ultra-strong N52 neodymium magnetic ring keeps phones locked on rough roads',
-      'High-speed inductive charging eliminates messy charging cords in the back'
+      '1) Backseat Viewing Comfort: Keeps your phone at eye level for rear passengers, making movies, video calls, and entertainment more convenient on the go.',
+      '2) Secure Headrest Grip: Strong metal hook design attaches firmly to the headrest rod, holding the mount steady even on bumpy rides.',
+      '3) Easy Install & Clean Setup: Installs quickly without tools and keeps the phone mounted neatly behind the seat for a clutter-free rear-seat experience.'
     ],
     galleryImages: [
       headrestMountImg,
@@ -809,36 +807,16 @@ export default function NodeConfiguratorPage() {
                         <div className="flex-1 min-w-0 flex flex-col justify-between h-[85px] py-0.5">
                           <div>
                             <p 
-                              onClick={() => {
-                                setActiveModalModule(mod);
-                                setActiveModalImageIdx(0);
-                              }}
-                              className="text-[14px] font-medium leading-[1.2] text-[#0A1E3F] line-clamp-2 cursor-pointer hover:underline"
+                              className="text-[14px] font-medium leading-[1.2] text-[#0A1E3F] line-clamp-2"
                             >
                               {mod.name}
                             </p>
-                            
-                            {/* "View more" link */}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setActiveModalModule(mod);
-                                setActiveModalImageIdx(0);
-                              }}
-                              className="text-[11px] text-[#0A1E3F]/70 hover:text-[#0A1E3F] underline font-normal leading-tight pt-0.5 block text-left cursor-pointer"
-                            >
-                              View more
-                            </button>
                           </div>
 
-                          {/* Action Area: Stand included in combo with zero separate stand price */}
+                          {/* Action Area */}
                           <div className="flex items-center justify-between gap-1 mt-auto pt-1">
-                            <span className="text-[11px] font-semibold text-[#0A1E3F]/80">
-                              Combo Stand
-                            </span>
-
+                            <span className="text-[11px] font-semibold text-[#0A1E3F]/80"></span>
                             <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[8px] bg-[#0A1E3F]/10 text-[#0A1E3F] text-[10px] font-bold uppercase tracking-wider select-none">
-                              <Check className="w-3 h-3 stroke-[3]" />
                               <span>INCLUDED</span>
                             </div>
                           </div>
@@ -883,11 +861,12 @@ export default function NodeConfiguratorPage() {
                 {openProductDetails && (
                   <div className="mt-2 text-xs sm:text-[13px] text-gray-600 space-y-2 leading-relaxed">
                     <p>
-                      The Car Combo is an all-in-one 25W Qi2 wireless charging ecosystem precision engineered for Indian roads and vehicle interiors. Comes custom configured for <strong>{currentCar.brand} {currentCar.name}</strong> along with 3 specialized mounting stands. Materials: Acrylonitrile Butadiene Styrene (ABS), Aluminium and Metal Stands.
+                      <strong>QICDOCK Car Combo – One Charger, Three Mounting Options, Endless Convenience</strong>
+                      <br/><br/>
+                      Experience effortless in-car charging with the QICDOCK Car Combo, combining a powerful 25W magnetic wireless charger with three adaptable mounting solutions. Enjoy the freedom to position your phone on the AC vent, centre console, or rear passenger headrest for greater comfort and convenience.
                     </p>
                     <ul className="space-y-1.5 list-disc pl-4 text-xs sm:text-[13px]">
                       <li>Custom-fit console dock designed specifically for {currentCar.name} ({currentCar.trayFit})</li>
-                      <li>AC Air Vent Mobile Stand with lockable 360° steel hook clamp</li>
                       <li>Rear Passenger Headrest Stand with dual-post headrest clamp for backseat entertainment</li>
                       <li>Universal Centre Console Dock with non-slip silicone backing</li>
                       <li>Qi2 Standards 25W magnetic wireless charging with fast thermal dissipation</li>

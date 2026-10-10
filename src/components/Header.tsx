@@ -383,7 +383,7 @@ export default function Header() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className={`pointer-events-auto md:hidden bg-[#FAF7F0] shadow-2xl transition-all animate-fadeIn px-5 py-6 ${
+        <div className={`pointer-events-auto md:hidden bg-[#FAF7F0] shadow-2xl transition-all animate-fadeIn px-5 py-6 max-h-[80vh] overflow-y-auto ${
           isScrolled ? 'mt-2 border-2 border-[#D6CDB8] rounded-2xl max-w-[1360px] mx-auto' : 'border-b border-[#E2DAC8]'
         }`}>
           {/* Main Mobile Navigation */}
